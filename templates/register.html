@@ -8,30 +8,30 @@
 </head>
 <body>
     <h2>Register</h2>
-    <form id="registerForm">
-        <input type="text" id="registerFullName" placeholder="Full Name" required><br>
-        <input type="text" id="registerEmail" placeholder="Email" required><br>
-        <input type="password" id="registerPassword" placeholder="Password" required><br>
+    <form action="/register" method="POST">
+        <input type="text" id="fullname" placeholder="Full Name" name="fullname" required><br>
+        <input type="text" id="email" placeholder="Email" name="email" required><br>
+        <input type="password" id="password" placeholder="Password" name="password" required><br>
         <button type="submit">Register</button>
     </form>
 
     <script>
         // Register Form Submission
-        document.getElementById('registerForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const password = document.getElementById('registerPassword').value;
-            const email = document.getElementById('registerEmail').value;
-            const fullName = document.getElementById('registerFullName').value;
+        // document.getElementById('registerForm').addEventListener('submit', async function(event) {
+        //     event.preventDefault();
+        //     const password = document.getElementById('registerPassword').value;
+        //     const email = document.getElementById('registerEmail').value;
+        //     const fullName = document.getElementById('registerFullName').value;
 
-            const response = await fetch('/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password, fullName, email})
-            });
+        //     const response = await fetch('/register', {
+        //         method: 'POST',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify({ password, fullName, email})
+        //     });
 
-            const result = await response.json();
-            alert(result.message || result.error);
-        });
+        //     const result = await response.json();
+        //     alert(result.message || result.error);
+        // });
     </script>
 </body>
 </html>

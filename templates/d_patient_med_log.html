@@ -48,21 +48,32 @@
                 </svg>
             </button>
             <div class="p-3">
-                <h1 class="font-bold text-lg mb-5">Patient Details</h1>
+                <h1 class="font-bold text-lg mb-5">New Med Log Entry</h1>
 
                 <form action="/" method="POST">
-                    <span>
-                    <label for="fname" class="mr-4">Date:</label>
-                    <input type="text" id="new_log_date" name="new_log_date" class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]"><br><br>
+                    <span class="flex items-center space-x-4 mb-5">
+                        <div>
+                            <label for="fname" class="mr-4">Date:</label>
+                            <input type="text" id="new_log_date" name="new_log_date" class="p-1 rounded-lg bg-[#ffffff] border border-[#868E96]">
+                        </div>
+                        <div>
+                        <select id="mode" name="option" class="p-1 border rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                            <option value="" disabled selected>Select Mode</option>
+                            <option value="text">Text</option>
+                            <option value="in-person">In-person</option>
+                            <option value="phone">Phone</option>
+                        </select>
+                    </div>
                     </span>
-                    <label for="lname" class="font-semibold text-large mr-4">Personal Notes</label>
-                    <input type="text" id="new_log_personal_notes" name="new_log_personal_notes" class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]"><br><br>
+                    <label for="lname" class="font-semibold text-large mr-4">Personal Notes</label><br>
+                    <textarea id="new_log_personal_notes" name="new_log_personal_notes" class="p-1 rounded-lg bg-[#ffffff] border border-[#868E96]"></textarea><br><br>
+
     
-                    <label for="lname" class="font-semibold text-large mr-4">Doctor's diagnosis</label>
-                    <input type="text" id="new_log_doctor_diagnosis" name="new_log_doctor_diagnosis" class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]"><br><br>
+                    <label for="lname" class="font-semibold text-large mr-4">Doctor's diagnosis</label><br>
+                    <input type="text" id="new_log_doctor_diagnosis" name="new_log_doctor_diagnosis" class="p-1 rounded-lg bg-[#ffffff] border border-[#868E96]"><br><br>
     
-                    <label for="lname" class="font-semibold text-large mr-4">Medications</label>
-                    <input type="text" id="new_patient_address" name="new_patient_address" class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]"><br><br>
+                    <label for="lname" class="font-semibold text-large mr-4">Medications</label><br>
+                    <input type="text" id="new_patient_address" name="new_patient_address" class="p-1 rounded-lg bg-[#ffffff] border border-[#868E96]"><br><br>
 
                     
                     <button type="submit" id="add-log" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
