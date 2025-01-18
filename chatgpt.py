@@ -1,6 +1,7 @@
 from openai import OpenAI
 import config
 import json
+import os
 
 class SymptomAnalyzer:
     def __init__(self):
@@ -33,56 +34,71 @@ class SymptomAnalyzer:
         
         self.conversation_history.append({'role': 'user', 'content': prompt})
         
+    def generate_conclusion(self):
+        if not self.conversation_history == []:
+            self.can_ask = False
+            conclusion_prompt = ('''Based on the information gathered, provide a summary of the patient\'s symptoms and possible next steps in JSON format.
+{
+    "patient_details": {
+        "age": 20,
+        "sex": "male"
+    },
+    "conversation_history": [
+        {
+            "role": "developer",
+            "content": "You are a doctor intern. The patient (the user) will provide you with some symptoms that they are facing, and you will ask follow-up questions that will help the real doctor diagnose the patient. Your follow-up questions should provide a comprehensive understanding of the patient's symptoms. Ask one question at a time, without any formatting (i.e. no bullet points, no numbering), just the question in pure String. Conclude the conversation after approximately 5 to 6 questions."
+        },
+        {
+            "role": "user",
+            "content": "I have a headache."
+        },
+        {
+            "role": "assistant",
+            "content": "How long have you had this headache?"
+        },
+        {
+            "role": "user",
+            "content": "For about 3-5 days. When I look up my head hurts."
+        }
+    ],
+    "possible_next_steps": [
+        "Monitor the headache and any additional symptoms.",
+        "Encourage hydration and regular meals.",
+        "Consider evaluating sleep hygiene and stress management.",
+        "If the headache persists or worsens, consult a healthcare professional."
+    ],
+    "summary": [
+        "The patient has a sharp, constant headache.",
+        "The headache started suddenly after waking up.",
+        "There are no accompanying symptoms such as nausea or changes in vision.",
+        "The patient has experienced shorter sleep recently.",
+        "The patient has not been drinking enough fluids or eating regularly."
+    ]
+}
+
+Note that the content above is for example to show you the structure.''')
+            self.conversation_history.append({'role': 'developer', 'content': conclusion_prompt})
+            
+            final_response = self.client.chat.completions.create(model=self.model, messages=self.conversation_history)
+            final_message = final_response.choices[0].message.content
+            
+            try:
+                self.data = json.loads(final_message)
+                
+                with open('temp/patient.json', 'w') as file:
+                    file.write(json.dumps(self.data, indent=4))
+                    
+                return self.data
+            except:
+                return final_message
+        
     def add_user_response(self, content):
         if self.can_ask:
             self.conversation_history.append({'role': 'user', 'content': content})
             self.questions_counter += 1
             
             if self.questions_counter >= self.max_questions:
-                conclusion_prompt = ('''Based on the information gathered, provide a summary of the patient\'s symptoms and possible next steps in JSON format.
-    {
-        "patient_details": {
-            "age": 20,
-            "sex": "male"
-        },
-        "conversation_history": [
-            {
-                "role": "developer",
-                "content": "You are a doctor intern. The patient (the user) will provide you with some symptoms that they are facing, and you will ask follow-up questions that will help the real doctor diagnose the patient. Your follow-up questions should provide a comprehensive understanding of the patient's symptoms. Ask one question at a time, without any formatting (i.e. no bullet points, no numbering), just the question in pure String. Conclude the conversation after approximately 5 to 6 questions."
-            },
-            {
-                "role": "user",
-                "content": "I have a headache."
-            },
-            {
-                "role": "assistant",
-                "content": "How long have you had this headache?"
-            },
-            {
-                "role": "user",
-                "content": "For about 3-5 days. When I look up my head hurts."
-            }
-        ],
-        "summary": [
-            "The patient has a headache.",
-            "The patient has had the headache for 3-5 days.",
-            "The patient experiences pain when looking up."
-        ]
-    }
-
-    Note that the content above is for example to show you the structure.''')
-                self.conversation_history.append({'role': 'developer', 'content': conclusion_prompt})
-                
-                final_response = self.client.chat.completions.create(model=self.model, messages=self.conversation_history)
-                final_message = final_response.choices[0].message.content
-                
-                self.can_ask = False
-                
-                try:
-                    self.data = json.loads(final_message)
-                    return self.data
-                except:
-                    return final_message
+                return self.generate_conclusion()
             else:
                 response = self.client.chat.completions.create(model=self.model, messages=self.conversation_history)
                 assistant_message = response.choices[0].message.content

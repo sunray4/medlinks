@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, session
 from flask_pymongo import PyMongo
+from pymongo import MongoClient
 
 # import db.factory
 import os
@@ -13,6 +14,14 @@ config.read(os.path.abspath(os.path.join(".ini")))
 app.config['MONGO_URI'] = config['PROD']['DB_URI']
 app.config['SECRET_KEY'] = config['PROD']['SECRET_KEY']
 mongo = PyMongo(app)
+
+client = MongoClient(app.config['MONGO_URI'])
+users = mongo.db.users
+
+
+@app.route('/register')
+def render_register():
+    return render_template('register.html')
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -28,11 +37,12 @@ def register():
     
     hashed_password = generate_password_hash(password)
     mongo.db.users.insert_one({'username': username, 'password': hashed_password})
-    return jsonify({'message': 'User registered successfully'}), 201
+
+    return jsonify({'message': 'User registered successfully', 'redirect': '/'}), 201
 
 
 # User Login
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     data = request.get_json()
     username = data.get('username')
@@ -45,7 +55,7 @@ def login():
     
     if user and check_password_hash(user['password'], password):
         session['username'] = username
-        return jsonify({'message': 'Logged in successfully'}), 200
+        return jsonify({'message': 'Logged in successfully', 'redirect': '/'}), 200
     else:
         return jsonify({'error': 'Invalid username or password'}), 401
 
@@ -63,10 +73,22 @@ def profile():
     else:
         return jsonify({'error': 'Unauthorized'}), 401
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template("d_new_logs.html")
-
+    if request.method == 'GET':
+        return render_template("d_patient_list.html")
+    elif request.method == 'POST':
+        patient_name = request.form['patient_fullname']
+        patient_dob = request.form['patient_dob']
+        patient_service_id = request.form['patient_service_id']
+        patient_address = request.form['patient_address']
+        patient_email = request.form['patient_email']
+        patient_phone_num = request.form['patient_phone_num']
+        patient_height = request.form['patient_height']
+        patient_weight = request.form['patient_weight']
+        patient_allergies = request.form['patient_allergies']
+        
+        return render_template("d_patient_list.html")
 
 @app.route('/new-logs/<doctor_id>')
 def new_logs(doctor_id):
@@ -83,3 +105,4 @@ if __name__ == "__main__":
     # app.config['MONGO_URI'] = config['PROD']['DB_URI']
 
     app.run(debug=True)
+

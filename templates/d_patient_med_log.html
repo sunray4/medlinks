@@ -1,6 +1,42 @@
 {% extends 'd_content.html' %}
 
 {% block d_content %}
+</head>
+<body>
+    <div>
+        <div>
+            <!-- Left side content -->
+            <h2>{Patient name}'s Med Log</h2>
+                <strong>Date:</strong> <br>
+                <strong>Personal Notes:</strong> <br>
+                <strong>Doctor's Diagnosis:</strong> <br>
+                <strong>Medications:</strong> <br>
+            </div>
+        </div>
+
+        <div>
+            <!-- Right side content -->
+            <h2>Create Patient Med Log</h2>
+            <form action="">
+                <label for="fname">Enter Date:</label>
+                <input type="text" id="new_log_date" name="new_log_date"><br><br>
+
+                <label for="lname">Personal Notes:</label>
+                <input type="text" id="new_log_personal_notes" name="new_log_personal_notes"><br><br>
+
+                <label for="lname">Doctor's diagnosis:</label>
+                <input type="text" id="new_log_doctor_diagnosis" name="new_log_doctor_diagnosis"><br><br>
+
+                <label for="lname">Medications:</label>
+                <input type="text" id="new_patient_address" name="new_patient_address"><br><br>
+
+                <input type="submit" value="Add Log">
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
 
 {% endblock %}
 

@@ -17,7 +17,6 @@ returns json
 '''
 print(bot.add_user_response('I have a headache.'))
 
-while True:
+while bot.can_ask:
     response = input('Your response: ')
-    if bot.can_ask:
-        print(bot.add_user_response(response))
+    print(bot.add_user_response(response))

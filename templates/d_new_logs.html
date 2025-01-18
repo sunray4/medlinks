@@ -2,27 +2,32 @@
 
 
 {% block d_content %}
-
-<div>
-
-    <table>
-        <tr class="grid grid-rows-3 gap-4">
-            <th class="py-3 text-left border-b-2 border-gray-700">Patient</th>
-            <th class="py-3 text-left border-b-2 border-gray-700">Date Sent</th>
-            <th class="py-3 text-left border-b-2 border-gray-700"> </th>
+<div class="w-full">
+    <table class="w-full table-auto">
+        <tr class="grid grid-cols-3 gap-4 border-b border-[#868E96]">
+            <th class="py-3 text-left ">Patient</th>
+            <th class="py-3 text-left">Date Sent</th>
+            <th class="py-3 text-left"> </th>
         </tr>
-        <!-- for loop iteration through all new logs -->
-        <tr class="grid grid-rows-3 gap-4">
+    </table>
+    <table class="w-full table-auto">
+        <!-- for loop iteration through all patients  -->
+        <tr class="grid grid-cols-3 gap-4 py-4">
             <td>Name</td>
-            <td>Date</td>
-            <form action="{{ url_for('redirect_doctor_to_patient_log', doctor_id={{doctor_id}}) }}" method="POST">
-                <button id="view-log-{{loop.index}}" class="bg-[#63A3B0] rounded-lg text-white"> 
-                    View Log
-                </button>
-            </form>
+            <td>Date sent</td>
+            <td class="text-right p-2">
+                <form action="{{ url_for('redirect_doctor_to_patient_log', doctor_id={{doctor_id}}) }}" method="POST">
+                    <button id="view-log" class="bg-[#63A3B0] rounded-lg text-white"> 
+                        <!-- -{{loop.index}} -->
+                        View Log
+                    </button>
+                </form>
+            </tr>
+            <!-- </fo -->
 
         </tr>
       </table>
+</div>
 
 
 </div>
