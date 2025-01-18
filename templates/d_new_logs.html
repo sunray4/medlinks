@@ -1,7 +1,7 @@
 {% extends 'd_content.html' %}
 
 
-{% block d_new_logs %}
+{% block d_content %}
 
 <div>
 
@@ -15,9 +15,8 @@
         <tr class="grid grid-rows-3 gap-4">
             <td>Name</td>
             <td>Date</td>
-            <form action="{{ url_for('redirect_to_log', log_id=1) }}" method="POST">
-                <button id="view-log" class="bg-[#63A3B0] rounded-lg text-white"> 
-                    <!-- -{{loop.index}} -->
+            <form action="{{ url_for('redirect_doctor_to_patient_log', doctor_id={{doctor_id}}) }}" method="POST">
+                <button id="view-log-{{loop.index}}" class="bg-[#63A3B0] rounded-lg text-white"> 
                     View Log
                 </button>
             </form>
