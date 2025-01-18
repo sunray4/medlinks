@@ -15,11 +15,12 @@
         <tr class="grid grid-rows-3 gap-4">
             <td>Name</td>
             <td>Date</td>
-
-            <button id="view-log" class="bg-[#63A3B0] rounded-lg text-white"> 
-                <!-- -{{loop.index}} -->
-                View Log
-            </button>
+            <form action="{{ url_for('redirect_to_log', log_id=1) }}" method="POST">
+                <button id="view-log" class="bg-[#63A3B0] rounded-lg text-white"> 
+                    <!-- -{{loop.index}} -->
+                    View Log
+                </button>
+            </form>
 
         </tr>
       </table>

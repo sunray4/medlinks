@@ -19,7 +19,7 @@ class MongoJsonEncoder(JSONEncoder):
 def create_app():
 
     APP_DIR = os.path.abspath(os.path.dirname(__file__))
-    STATIC_FOLDER = os.path.(join(APP_DIR, )'build/static')
+    STATIC_FOLDER = os.path.join(APP_DIR, '../templates/static')
     TEMPLATE_FOLDER = os.path('../templates')
 
     app = Flask(__name__, static_folder=STATIC_FOLDER,
