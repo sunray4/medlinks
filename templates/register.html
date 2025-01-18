@@ -9,45 +9,24 @@
 <body>
     <h2>Register</h2>
     <form id="registerForm">
-        <input type="text" id="registerUsername" placeholder="Username" required><br>
+        <input type="text" id="registerFullName" placeholder="Full Name" required><br>
+        <input type="text" id="registerEmail" placeholder="Email" required><br>
         <input type="password" id="registerPassword" placeholder="Password" required><br>
         <button type="submit">Register</button>
-    </form>
-
-    <h2>Login</h2>
-    <form id="loginForm">
-        <input type="text" id="loginUsername" placeholder="Username" required><br>
-        <input type="password" id="loginPassword" placeholder="Password" required><br>
-        <button type="submit">Login</button>
     </form>
 
     <script>
         // Register Form Submission
         document.getElementById('registerForm').addEventListener('submit', async function(event) {
             event.preventDefault();
-            const username = document.getElementById('registerUsername').value;
             const password = document.getElementById('registerPassword').value;
+            const email = document.getElementById('registerEmail').value;
+            const fullName = document.getElementById('registerFullName').value;
 
             const response = await fetch('/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-
-            const result = await response.json();
-            alert(result.message || result.error);
-        });
-
-        // Login Form Submission
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const username = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-
-            const response = await fetch('/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
+                body: JSON.stringify({ password, fullName, email})
             });
 
             const result = await response.json();

@@ -1,46 +1,131 @@
 {% extends 'd_content.html' %}
 
-{% block d_content %}
-</head>
-<body>
-    <div>
-        <div>
-            <!-- Left side content -->
-            <h2>{Patient name}'s Med Log</h2>
-                <strong>Date:</strong> <br>
-                <strong>Personal Notes:</strong> <br>
-                <strong>Doctor's Diagnosis:</strong> <br>
-                <strong>Medications:</strong> <br>
-            </div>
+
+{% block d_content%}
+
+<div id="page-container" class="">
+    <!-- Left Side Content -->
+    <div id="left-side" class="m-10 mx-56 ">
+        <div class="flex justify-between mb-10">
+            <input type="text" id="search" class="p-2 w-3/5 rounded-lg bg-[#ffffff] border border-[#868E96]"
+                placeholder="Search for a patient..." onkeyup="searchPatients()">
+            <button id="add-patient-btn" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Patient</button>
+
         </div>
-
-        <div>
-            <!-- Right side content -->
-            <h2>Create Patient Med Log</h2>
-            <form action="">
-                <label for="fname">Enter Date:</label>
-                <input type="text" id="new_log_date" name="new_log_date"><br><br>
-
-                <label for="lname">Personal Notes:</label>
-                <input type="text" id="new_log_personal_notes" name="new_log_personal_notes"><br><br>
-
-                <label for="lname">Doctor's diagnosis:</label>
-                <input type="text" id="new_log_doctor_diagnosis" name="new_log_doctor_diagnosis"><br><br>
-
-                <label for="lname">Medications:</label>
-                <input type="text" id="new_patient_address" name="new_patient_address"><br><br>
-
-                <input type="submit" value="Add Log">
-            </form>
+        <div class="w-full">
+            <table class="w-full table-auto">
+                <tr class="grid grid-cols-3 gap-4 border-b border-[#868E96]">
+                    <th class="py-3 text-left ">Patient</th>
+                    <th class="py-3 text-left">Date of Birth</th>
+                    <th class="py-3 text-left"> </th>
+                </tr>
+            </table>
+            <table class="w-full table-auto">
+                <!-- for loop iteration through all patients  -->
+                <tr class="grid grid-cols-3 gap-4 py-4">
+                    <td>Name</td>
+                    <td>Date of birth</td>
+                    <td class="text-right p-2">
+                        <button id="view-log" class=""> 
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
+                        </button>
+                    </tr>
+                    <!-- </fo -->
+        
+                </tr>
+              </table>
         </div>
     </div>
 
-</body>
-</html>
+    <!-- Right Side Content -->
+    <div id="right-side" class="translate-x-full ">
+        <div class="p-10 bg-[#E1E1E1]">
+            <button id="close-svg" class="w-full mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
+                    viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                    <path
+                        d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z" />
+                </svg>
+            </button>
+            <div class="p-3">
+                <h1 class="font-bold text-lg mb-5">Patient Details</h1>
 
-{% endblock %}
+                <form action="/" method="POST">
+                    <span>
+                    <label for="fname" class="mr-4">Date:</label>
+                    <input type="text" id="new_log_date" name="new_log_date" class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]"><br><br>
+                    </span>
+                    <label for="lname" class="font-semibold text-large mr-4">Personal Notes</label>
+                    <input type="text" id="new_log_personal_notes" name="new_log_personal_notes" class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]"><br><br>
+    
+                    <label for="lname" class="font-semibold text-large mr-4">Doctor's diagnosis</label>
+                    <input type="text" id="new_log_doctor_diagnosis" name="new_log_doctor_diagnosis" class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]"><br><br>
+    
+                    <label for="lname" class="font-semibold text-large mr-4">Medications</label>
+                    <input type="text" id="new_patient_address" name="new_patient_address" class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]"><br><br>
+
+                    
+                    <button type="submit" id="add-log" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
+                </form>
+                <div>
+                </div>
+            </div>
+        </div>
+
+        {% endblock %}
 
 
-{% block script %}
 
-{% endblock %}
+        {% block script %}
+        <script>
+
+            //    function displayPatients() {
+            //         const patientListElement = document.getElementById('patientList');
+            //         patientListElement.innerHTML = ""; // Clear the current list
+
+            //         // Loop through the patients and create list items
+            //         patients.forEach(patient => {
+            //             const listItem = document.createElement('li');
+            //             listItem.className = 'patient-item';
+            //             listItem.innerHTML = `${patient.name} - ${patient.dob}`; // Name and DOB format
+            //             patientListElement.appendChild(listItem);
+            //         });
+            //     }
+
+            const openPopupButton = document.getElementById('add-patient-btn');
+            const add_log = document.getElementById('add-log');
+            const close_svg = document.getElementById('close-svg');
+            const right_side = document.getElementById('right-side');
+            const left_side = document.getElementById('left-side');
+            const page_container = document.getElementById('page-container')
+
+            // Event listener to open the pop-up
+            openPopupButton.addEventListener('click', () => {
+                page_container.classList.add('grid', 'grid-cols-2', 'gap-4')
+                right_side.classList.remove('translate-x-full');
+                right_side.classList.add('translate-x-0');
+                left_side.classList.remove('mx-56');
+
+            });
+
+            // Event listener to close the pop-up
+            add_log.addEventListener('click', () => {
+                page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
+                right_side.classList.add('translate-x-full');
+                right_side.classList.remove('translate-x-0');
+                left_side.classList.add('mx-56');
+            });
+            close_svg.addEventListener('click', () => {
+                page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
+                right_side.classList.add('translate-x-full');
+                right_side.classList.remove('translate-x-0');
+                left_side.classList.add('mx-56');
+            });
+
+
+
+        </script>
+
+
+        {% endblock %}
+
