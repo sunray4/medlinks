@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, session, redirect, u
 from flask_pymongo import PyMongo
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
+import yagmail
 import uuid
 import string
 import secrets
@@ -12,6 +13,8 @@ import configparser
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+
+yag = yagmail.SMTP('from', 'app specific password')
 
 config = configparser.ConfigParser()
 config.read(os.path.abspath(os.path.join(".ini")))
@@ -105,9 +108,25 @@ def home():
             patient_allergies = request.form['patient_allergies']
             patient_id = str(uuid.uuid4())
             type = 'patient'
+            patient_password = generate_patient_password()
             
-            users.insert_one({'user_id': patient_id, 'fullname': patient_name, 'email': patient_email, 'password': generate_password_hash(generate_patient_password()), 'type': type, 'doctor_id': session['doctor_id'], 'dob': patient_dob, 'bc_service_card_id': patient_service_id, 'address': patient_address, 'phone_number': patient_phone_num, 'height': patient_height, 'weight': patient_weight, 'allergies': patient_allergies})
-            medlogs.insert_one({'medlog_id': str(uuid.uuid4()), 'patient_id': patient_id, })
+            users.insert_one({'user_id': patient_id, 'fullname': patient_name, 'email': patient_email, 'password': generate_password_hash(patient_password), 'type': type, 'doctor_id': session['doctor_id'], 'dob': patient_dob, 'bc_service_card_id': patient_service_id, 'address': patient_address, 'phone_number': patient_phone_num, 'height': patient_height, 'weight': patient_weight, 'allergies': patient_allergies})
+            medlogs.insert_one({'medlog_id': str(uuid.uuid4()), 'patient_id': patient_id, 'entries': [], 'doctor_id': session['doctor_id']})
+            
+            # send patient email w/ login info (email + password)
+
+            email_content = '''
+            Hi {patient_name}!
+            
+            Welcome to Medlinks! Your doctor has created an account for you. Here are your login credentials:
+            Email: {patient_email}
+            Password: {patient_password}
+            
+            Best wishes,
+            Your friends at Medlinks
+            '''
+            
+            yag.send(patient_email, 'Medlinks', email_content)
             
             return render_template("d_patient_list.html")
     else:
@@ -121,9 +140,21 @@ def new_logs(doctor_id):
 def patient_med_log():
     return render_template("d_patient_med_log.html")
 
+@app.route('/d-patient-list/')
+def patient_list():
+    return render_template("d_patient_list.html")
+
 @app.route('/redirect-doctor-to-patient-log/<doctor_id>', methods=['POST'])
 def redirect_doctor_to_patient_log(doctor_id, patient_id, entry_id):
     return render_template("d_patient_med_log.html", patient_id=patient_id, entry_id=entry_id)
+
+@app.route('/list_patients', methods=['GET'])
+def get_patients():
+    if 'email' in session:
+        users = users.find({}, {'email': 1})
+        user_list = [user['email'] for user in users]
+        return jsonify({'users': user_list}), 200
+    return jsonify({'error': 'Unauthorized'}), 401
 
 if __name__ == "__main__":
     # app = db.factory.create_app()

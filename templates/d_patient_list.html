@@ -118,31 +118,13 @@
 
         {% block script %}
         <script>
-            patients = await
-
-
-            function displayPatients() {
-                const patientListElement = document.getElementById('patientList');
-                patientListElement.innerHTML = ""; // Clear the current list
-
-                // Loop through the patients and create list items
-                patients.forEach(patient => {
-                    const listItem = document.createElement('li');
-                    listItem.className = 'patient-item';
-                    listItem.innerHTML = `${patient.name} - ${patient.dob}`; // Name and DOB format
-                    patientListElement.appendChild(listItem);
-                 });
-            }
-
             const openPopupButton = document.getElementById('add-patient-btn');
             const add_patient = document.getElementById('add-patient');
             const close_svg = document.getElementById('close-svg');
             const right_side = document.getElementById('right-side');
             const left_side = document.getElementById('left-side');
             const page_container = document.getElementById('page-container')
-
-            // Event listener to open the pop-up
-            openPopupButton.addEventListener('click', () => {
+             openPopupButton.addEventListener('click', () => {
                 page_container.classList.add('grid', 'grid-cols-2', 'gap-4')
                 right_side.classList.remove('translate-x-full');
                 right_side.classList.add('translate-x-0');
@@ -163,6 +145,37 @@
                 right_side.classList.remove('translate-x-0');
                 left_side.classList.add('mx-56');
             });
+
+            const response = fetch('/list_patients', {method: 'GET',
+            }).then(response => response.json())
+                    .then(data => {
+                        const userList = document.getElementById('userList');
+                        data.users.forEach(user => {
+                            const li = document.createElement('li');
+                            li.textContent = user;
+                            userList.appendChild(li);
+                        });
+                    }).catch(err => console.error('Error fetching users:', err));
+                
+
+
+            // function displayPatients() {
+            //     const patientListElement = document.getElementById('patientList');
+            //     patientListElement.innerHTML = ""; // Clear the current list
+
+            //     // Loop through the patients and create list items
+            //     patients.forEach(patient => {
+            //         const listItem = document.createElement('li');
+            //         listItem.className = 'patient-item';
+            //         listItem.innerHTML = `${patient.name} - ${patient.dob}`; // Name and DOB format
+            //         patientListElement.appendChild(listItem);
+            //      });
+            // }
+
+            
+
+            // Event listener to open the pop-up
+           
 
 
 
