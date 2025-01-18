@@ -1,0 +1,41 @@
+{% extends 'index.html' %}
+
+
+{% block d_nav %} 
+
+<nav class="bg-[#5A809A]">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex-shrink-0 text-white text-2xl">
+          MedLinks
+        </div>
+        <div class="hidden sm:flex sm:space-x-4">
+          <a href="/d_calendar" class="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Calendar</a>
+          <a href="/d_new_logs" class="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">New Logs</a>
+          <a href="/d_patients" class="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Patients</a>
+          <a href="/d_account" class="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Account</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+{% endblock %}
+
+{% block d_content %} 
+
+    {% block d_patient_list %} {% endblock %}
+    {% block d_new_logs %} {% endblock %}
+
+
+    
+
+
+{% endblock %}
+
+
+{% block script %}
+    {% block d_patient_list_script%} {% endblock %}
+    {% block d_new_logs_script %} {% endblock %}
+    
+    
+{% endblock %}

@@ -4,21 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MedLinks</title>
-  <link rel="stylesheet" href="/static/css/style.css">
-  <script src="/static/js/script.js" defer></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
-  <header>
-    <h1>Welcome to MedLinks</h1>
-  </header>
-  <main>
-    <form id="submitForm">
-      <label for="name">Enter your name:</label>
-      <input type="text" id="name" name="name" required>
-      <button type="submit">Submit</button>
-    </form>
-    <p id="response"></p>
-  </main>
+  {% block p_nav %} {% endblock %}
+  {% block d_nav %} {% endblock %}
+  
+  {% block p_content %} {% endblock %}
+  {% block d_content %} {% endblock %}
+
+  {% block script %} {% endblock %}
+
+
 </body>
 </html>
 

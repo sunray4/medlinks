@@ -1,5 +1,6 @@
 import requests
 import uuid
+import config
 
 '''
 Known problems:
@@ -10,8 +11,8 @@ Known problems:
 
 class Infermedica:
     def __init__(self):
-        self.app_id = '54d345b3'
-        self.app_key = '1bf5ea2c6acf5d85c98193fb1114467b'
+        self.app_id = config.INFERMEDICA_APP_ID
+        self.app_key = config.INFERMEDICA_APP_KEY
         
         self.max_questions = 8
         self.questions_counter = 0

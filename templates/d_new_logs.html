@@ -1,0 +1,32 @@
+{% extends 'd_content.html' %}
+
+
+{% block d_new_logs %}
+
+<div>
+
+    <table>
+        <tr class="grid grid-rows-3 gap-4">
+            <th class="py-3 text-left border-b-2 border-gray-700">Patient</th>
+            <th class="py-3 text-left border-b-2 border-gray-700">Date Sent</th>
+            <th class="py-3 text-left border-b-2 border-gray-700"> </th>
+        </tr>
+        <!-- for loop iteration through all new logs -->
+        <tr class="grid grid-rows-3 gap-4">
+            <td>Name</td>
+            <td>Date</td>
+
+            <button id="view-log-{{loop.index}}" class="bg-[#63A3B0] rounded-lg text-white">
+                View Log
+            </button>
+
+        </tr>
+      </table>
+
+
+</div>
+
+
+
+{% endblock %}
+

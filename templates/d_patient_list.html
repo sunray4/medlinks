@@ -1,0 +1,82 @@
+{% extends 'd_content.html' %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patients</title>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Left Side Content -->
+        <div class="left-side">
+            <h1>Patient List</h1>
+            <p>
+                <input type="text" id="search" placeholder="Search for a patient" onkeyup="searchPatients()">
+
+                <ul id="patientList">
+                    <!-- Patient list here -->
+                </ul>
+            
+
+            </p>
+        </div>
+
+        <!-- Right Side Content -->
+        <div class="right-side">
+            <h1>Patient Details</h1>
+            <p>
+                <form action="">
+                    <label for="fname">Full Name:</label>
+                    <input type="text" id="new_patient_full_name" name="new_patient_full_name"><br><br>
+                    <label for="lname">Date of Birth:</label>
+                    <input type="text" id="new_patient_date_of_birth" name="new_patient_date_of_birth"><br><br>
+                    <label for="lname">BC Service Card ID:</label>
+                    <input type="text" id="new_patient_BC_service_sard_ID" name="new_patient_BC_service_card_ID"><br><br>
+                    <label for="lname">Address:</label>
+                    <input type="text" id="new_patient_address" name="new_patient_address"><br><br>
+                    <label for="lname">Email:</label>
+                    <input type="text" id="new_patient_email" name="new_patient_email"><br><br>
+                    <label for="lname">Phone Number:</label>
+                    <input type="text" id="new_patient_phone_number" name="new_patient_phone_number"><br><br>
+                    <label for="lname">Height (cm):</label>
+                    <input type="text" id="new_patient_height" name="new_patient_height"><br><br>
+                    <label for="lname">Weight (kg):</label>
+                    <input type="text" id="new_patient_weight" name="new_patient_weight"><br><br>
+                    <label for="lname">Allergies:</label>
+                    <input type="text" id="new_patient_allergies" name="new_patient_allergies"><br><br>
+                    <input type="submit" value="Add Patient">
+                  </form>
+            </p>
+        </div>
+    </div>
+    <script>
+        function searchPatients() {
+            // Get value VIA search input
+            var input = document.getElementById('search').value.toLowerCase();
+            var patientList = document.getElementById('patientList');
+            var patients = patientList.getElementsByTagName('li');
+
+            // Loop through all patient list items and hide those that don't match the search query
+            for (var i = 0; i < patients.length; i++) {
+                var patientName = patients[i].getElementsByClassName('patient-name')[0].textContent.toLowerCase();
+                if (patientName.indexOf(input) > -1) {
+                    patients[i].style.display = "";
+                } else {
+                    patients[i].style.display = "none";
+                }
+            }
+        }
+    
+    <script/>
+
+</body>
+</html>
+
+
+{% block d_patient_list %}
+
+
+
+{% endblock %}

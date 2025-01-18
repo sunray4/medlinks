@@ -1,0 +1,29 @@
+{
+    "patient_details": {
+        "age": 20,
+        "sex": "male"
+    },
+    "conversation_history": [
+        {
+            "role": "developer",
+            "content": "You are a doctor intern. The patient (the user) will provide you with some symptoms that they are facing, and you will ask follow-up questions that will help the real doctor diagnose the patient. Your follow-up questions should provide a comprehensive understanding of the patient's symptoms. Ask one question at a time, without any formatting (i.e. no bullet points, no numbering), just the question in pure String. Conclude the conversation after approximately 5 to 6 questions."
+        },
+        {
+            "role": "user",
+            "content": "I have a headache."
+        },
+        {
+            "role": "assistant",
+            "content": "How long have you had this headache?"
+        },
+        {
+            "role": "user",
+            "content": "For about 3-5 days. When I look up my head hurts."
+        }
+    ],
+    "summary": [
+        "The patient has a headache.",
+        "The patient has had the headache for 3-5 days.",
+        "The patient experiences pain when looking up."
+    ]
+}
