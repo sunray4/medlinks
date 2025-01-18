@@ -6,34 +6,21 @@
 <div id="page-container" class="">
     <!-- Left Side Content -->
     <div id="left-side" class="m-10 mx-56 ">
-        <div class="flex justify-between mb-10">
-            <input type="text" id="search" class="p-2 w-3/5 rounded-lg bg-[#ffffff] border border-[#868E96]"
-                placeholder="Search for a patient..." onkeyup="searchPatients()">
-            <button id="add-patient-btn" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Patient</button>
+        <div class="flex justify-between mb-10 items-center">
+            <p class="text-3xl font-bold">Patient's Med Log</p>
+            <button id="add-patient-btn" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
 
         </div>
-        <div class="w-full">
-            <table class="w-full table-auto">
-                <tr class="grid grid-cols-3 gap-4 border-b border-[#868E96]">
-                    <th class="py-3 text-left ">Patient</th>
-                    <th class="py-3 text-left">Date of Birth</th>
-                    <th class="py-3 text-left"> </th>
-                </tr>
-            </table>
-            <table class="w-full table-auto">
-                <!-- for loop iteration through all patients  -->
-                <tr class="grid grid-cols-3 gap-4 py-4">
-                    <td>Name</td>
-                    <td>Date of birth</td>
-                    <td class="text-right p-2">
-                        <button id="view-log" class=""> 
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
-                        </button>
-                    </tr>
-                    <!-- </fo -->
-        
-                </tr>
-              </table>
+        <div class="w-full"> 
+            <!-- iterate through all med logs of that patient  -->
+                <div class="w-full bg-[#BDCAD6] rounded-lg focus:border focus:border-[#FF6969] p-7 mb-4">
+                    <span class="flex items-center justify-between px-10 pb-2">
+                        <p>Date<p>
+                        <div class="border border-white rounded-3xl p-2">Mode</div>
+                    </span>
+                    <hr class="bg-[#868E96]">
+                    <p class="italic text-[#3E4B52]">Paragrpah about diagnosis</p>
+                </div>
         </div>
     </div>
 
@@ -48,7 +35,7 @@
                 </svg>
             </button>
             <div class="p-3">
-                <h1 class="font-bold text-lg mb-5">New Med Log Entry</h1>
+                <h1 class="font-bold text-2xl mb-5">New Med Log Entry</h1>
 
                 <form action="/" method="POST">
                     <span class="flex items-center space-x-4 mb-5">
@@ -66,14 +53,14 @@
                     </div>
                     </span>
                     <label for="lname" class="font-semibold text-large mr-4">Personal Notes</label><br>
-                    <textarea id="new_log_personal_notes" name="new_log_personal_notes" class="p-1 rounded-lg bg-[#ffffff] border border-[#868E96]"></textarea><br><br>
+                    <textarea id="new_log_personal_notes" name="new_log_personal_notes" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></textarea><br><br>
 
     
                     <label for="lname" class="font-semibold text-large mr-4">Doctor's diagnosis</label><br>
-                    <input type="text" id="new_log_doctor_diagnosis" name="new_log_doctor_diagnosis" class="p-1 rounded-lg bg-[#ffffff] border border-[#868E96]"><br><br>
+                    <textarea id="new_log_doctor_diagnosis" name="new_log_doctor_diagnosis" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></textarea><br><br>
     
                     <label for="lname" class="font-semibold text-large mr-4">Medications</label><br>
-                    <input type="text" id="new_patient_address" name="new_patient_address" class="p-1 rounded-lg bg-[#ffffff] border border-[#868E96]"><br><br>
+                    <textarea id="new_patient_address" name="new_patient_address" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></textarea><br><br>
 
                     
                     <button type="submit" id="add-log" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>

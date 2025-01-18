@@ -48,6 +48,7 @@ def register():
         
         hashed_password = generate_password_hash(password)
         users.insert_one({'user_id': doctor_id, 'email': email, 'password': hashed_password, 'fullname': fullName, 'unread_message_list': [], 'patient_list': [], 'events': [], 'type': type})
+        session['doctor_id'] = doctor_id
         
     return jsonify({'message': 'User registered successfully', 'redirect': '/'}), 201
 
@@ -65,6 +66,7 @@ def login():
         return jsonify({'error': 'email and password are required'}), 400
     
     user = users.find_one({'email': email})
+    session['doctor_id'] = user['user_id']
     
     if user and check_password_hash(user['password'], password):
         session['email'] = email
@@ -73,7 +75,7 @@ def login():
         return jsonify({'error': 'Invalid email or password'}), 401
 
 # User Logout
-@app.route('/logout', methods=['POST'])
+@app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.pop('email', None)
     return jsonify({'message': 'Logged out successfully'}), 200
@@ -104,7 +106,7 @@ def home():
             patient_id = str(uuid.uuid4())
             type = 'patient'
             
-            users.insert_ones({'user_id': patient_id, 'fullname': patient_name, 'email': patient_email, 'password': generate_password_hash(generate_patient_password()), 'type': type, })
+            users.insert_one({'user_id': patient_id, 'fullname': patient_name, 'email': patient_email, 'password': generate_password_hash(generate_patient_password()), 'type': type, 'doctor_id': session['doctor_id'], 'dob': patient_dob, 'bc_service_card_id': patient_service_id, 'address': patient_address, 'phone_number': patient_phone_num, 'height': patient_height, 'weight': patient_weight, 'allergies': patient_allergies})
             medlogs.insert_one({'medlog_id': str(uuid.uuid4()), 'patient_id': patient_id, })
             
             return render_template("d_patient_list.html")

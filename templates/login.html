@@ -16,20 +16,20 @@
 
     <script>
         // Register Form Submission
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+        // document.getElementById('loginForm').addEventListener('submit', async function(event) {
+        //     event.preventDefault();
+        //     const email = document.getElementById('email').value;
+        //     const password = document.getElementById('password').value;
 
-            const response = await fetch('/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password, fullName, email})
-            });
+        //     const response = await fetch('/login', {
+        //         method: 'POST',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         body: JSON.stringify({ username, password, fullName, email})
+        //     });
 
-            const result = await response.json();
-            alert(result.message || result.error);
-        });
+        //     const result = await response.json();
+        //     alert(result.message || result.error);
+        // });
     </script>
 </body>
 </html>

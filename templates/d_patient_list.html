@@ -48,7 +48,7 @@
                 </svg>
             </button>
             <div class="p-3">
-                <h1 class="font-bold text-lg mb-5">Patient Details</h1>
+                <h1 class="font-bold text-2xl mb-5">Patient Details</h1>
 
                 <form action="/" method="POST">
                     <span>
@@ -118,19 +118,21 @@
 
         {% block script %}
         <script>
+            patients = await
 
-            //    function displayPatients() {
-            //         const patientListElement = document.getElementById('patientList');
-            //         patientListElement.innerHTML = ""; // Clear the current list
 
-            //         // Loop through the patients and create list items
-            //         patients.forEach(patient => {
-            //             const listItem = document.createElement('li');
-            //             listItem.className = 'patient-item';
-            //             listItem.innerHTML = `${patient.name} - ${patient.dob}`; // Name and DOB format
-            //             patientListElement.appendChild(listItem);
-            //         });
-            //     }
+            function displayPatients() {
+                const patientListElement = document.getElementById('patientList');
+                patientListElement.innerHTML = ""; // Clear the current list
+
+                // Loop through the patients and create list items
+                patients.forEach(patient => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'patient-item';
+                    listItem.innerHTML = `${patient.name} - ${patient.dob}`; // Name and DOB format
+                    patientListElement.appendChild(listItem);
+                 });
+            }
 
             const openPopupButton = document.getElementById('add-patient-btn');
             const add_patient = document.getElementById('add-patient');
