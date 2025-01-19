@@ -324,7 +324,6 @@ def patient_med_log(email):
         if not mode:
             return jsonify({'error': 'Entry mode is required'}), 400
         
-        
         patient = users.find_one({'email': email})
         medlog_id = patient['medlog_id']
 

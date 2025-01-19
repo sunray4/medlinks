@@ -7,8 +7,8 @@
     <!-- Left Side Content -->
     <!-- <div id="right-side-add" class="hidden bg-[#E1E1E1] p-10">
         <div class="bg-[#E1E1E1]  overflow-y-auto h-4/6"> -->
-    <div id="left-side" class="m-10 mx-56 col-span-2 overflow-y-auto h-max">
-        <div class="overflow-y-auto h-4/6">
+    <div id="left-side" class="m-10 mx-56 col-span-2">
+        <div class="">
         <div class="flex justify-between mb-10 items-center">
             <p class="text-3xl font-bold">{{ patient['fullname'] }}'s Med Log</p>
             <button id="add-patient-btn" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
@@ -34,7 +34,7 @@
 
     <!-- Right Side Content -->
     <div id="right-side-add" class="hidden bg-[#E1E1E1] p-10">
-        <div class="bg-[#E1E1E1]  overflow-y-auto h-4/6">
+        <div class="bg-[#E1E1E1]  overflow-y-auto h-5/6">
             <button id="close-svg-add" class="w-full mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
                     viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
@@ -186,7 +186,13 @@
     {% block script %}
     <script>
         const socket = io();
+        document.addEventListener('DOMContentLoaded', function () {
+            const left_side = document.getElementById('left-side');
 
+            // Set max-height and overflow properties when the page loads
+            left_side.style.maxHeight = 'calc(100vh - 140px)'; // Adjust as needed
+            left_side.style.overflowY = 'auto';
+        });
         const add_patient_btn = document.getElementById('add-patient-btn');
         const add_log = document.getElementById('add-log');
         const close_svg_add = document.getElementById('close-svg-add');
@@ -226,6 +232,9 @@
                 left_side.classList.remove('mx-56')
                 left_side.classList.remove('col-span-2')
                 // right_side_view.classList.add('h-screen');
+                left_side.style.maxHeight = 'calc(100vh - 140px)'; // Adjust as needed
+                left_side.style.overflowY = 'auto';
+
                 let med_table = document.getElementById('med-table');
                 const medication = medications[0];
                 let header_row = med_table.insertRow(-1);
@@ -276,6 +285,7 @@
         add_patient_btn.addEventListener('click', () => {
             console.log("btuoon clicked")
             right_side_add.classList.remove('hidden');
+            // right_side_add.classList.add('col-span-1');
 
             left_side.classList.remove('mx-56');
             // left_side.classList.remove('h-screen');
@@ -304,34 +314,34 @@
         });
 
 
-        // const medform = document.getElementById('medlog_form');
-        // const add_med = document.getElementById('add_med');
-        // const med_table = document.getElementById('med_table');
-        // add_med.addEventListener('click', (event) => {
-        //     // Prevent the form from submitting
-        //     event.preventDefault();
+        const medform = document.getElementById('medlog_form');
+        const add_med = document.getElementById('add_med');
+        const med_table = document.getElementById('med_table');
+        add_med.addEventListener('click', (event) => {
+            // Prevent the form from submitting
+            event.preventDefault();
 
-        //     const before_rowCount = med_table.querySelectorAll('tr').length;
+            const before_rowCount = med_table.querySelectorAll('tr').length;
 
-        //     // Add a new row to the table
-        //     const new_row = `< tr class="grid grid-cols-12 gap-x-4 mt-4" data - rows="3" >
-        //         <td class="col-span-3"><input type="text" class="w-full p-1" name="med_name_${before_rowCount}" placeholder="Medication..." /></td>
-        //         <td class="col-span-2"><input type="text" class="w-full p-1" name="med_dosage_${before_rowCount}" placeholder="Dosage..." /></td>
-        //         <td class="col-span-6"><textarea class="w-full p-1" name="med_instructions_${before_rowCount}" placeholder="Instructions..."></textarea></td>
-        //         <td class="col-span-1 p-1"><div class="text-right">
-        //             <button class="p-1"> 
-        //                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
-        //             </button>
-        //         </td>
-        //     </tr >`;
+            // Add a new row to the table
+            const new_row = `< tr class="grid grid-cols-12 gap-x-4 mt-4" data - rows="3" >
+                <td class="col-span-3"><input type="text" class="w-full p-1" name="med_name_${before_rowCount}" placeholder="Medication..." /></td>
+                <td class="col-span-2"><input type="text" class="w-full p-1" name="med_dosage_${before_rowCount}" placeholder="Dosage..." /></td>
+                <td class="col-span-6"><textarea class="w-full p-1" name="med_instructions_${before_rowCount}" placeholder="Instructions..."></textarea></td>
+                <td class="col-span-1 p-1"><div class="text-right">
+                    <button class="p-1"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
+                    </button>
+                </td>
+            </tr >`;
 
-        //     // Append the new row to the table
-        //     med_table.insertAdjacentHTML('beforeend', new_row);
+            // Append the new row to the table
+            med_table.insertAdjacentHTML('beforeend', new_row);
 
-        //     // Update the row count
-        //     const rowCount = med_table.querySelectorAll('tr').length - 1;
-        //     medform.action = '/d_patient_med_log/{{ patient["email"]}}?rows=' + rowCount;
-        // });
+            // Update the row count
+            const rowCount = med_table.querySelectorAll('tr').length - 1;
+            medform.action = '/d_patient_med_log/{{ patient["email"]}}?rows=' + rowCount;
+        });
     </script>
 
 
