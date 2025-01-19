@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Calendar</title>
+    <title>Patient Calendar</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.min.css">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.min.js"></script>
@@ -12,21 +12,42 @@
     <div id="calendar"></div>
 
     <script>
+
         const unavailable_title = 'Unavailable';
 
         let calendarEl = document.getElementById('calendar');
+
+        let calendarWidth = window.innerWidth * 0.8;  // 80% of the window width
+        let calendarHeight = 500;
+
         let calendar = new FullCalendar.Calendar(calendarEl, {
             events : [
                 {% for event in events %}
                 {
-                    title : unavailable_title,
+                    title : '{{event.time}}' + ' - ' + unavailable_title,
                     start : '{{event.date}}',
                 },
                 {% endfor %}
-            ]
+            ],
+            width: calendarWidth,  // Set width dynamically
+            height: calendarHeight,  // Set fixed height
+            contentHeight: 'auto', 
         });
         calendar.render();
     </script>
-    
+
+    <h1>Schedule appointment with {doctor_name}</h1>
+
+    <form action="/create_event" method="post">
+        <label for="date">Date (yyyy-mm-dd):</label>
+        <input type="text" id="date" name="date"><br><br>
+        <label for="time">Time (24h):</label>
+        <input type="text" id="time" name="time"><br><br>
+
+        <button id="secondTaskButton">Check Availablity</button>
+
+      </form>
+
+      <button id="secondTaskButton">Book</button>
 </body>
 </html>

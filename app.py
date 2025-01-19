@@ -29,6 +29,7 @@ mongo = PyMongo(app)
 client = MongoClient(app.config['MONGO_URI'], server_api=ServerApi('1'))
 users = client.get_database('medlinks').get_collection('users')
 medlogs = client.get_database('medlinks').get_collection('medlogs')
+events = client.get_database('medlinks').get_collection('events')
 
 bot = None
 
@@ -106,6 +107,8 @@ def profile():
 @app.route("/", methods=['GET', 'POST'])
 def home():
     if "email" in session:
+        user = users.find_one({'email': session['email']})
+        session['type'] = user['type']
         if request.method == 'GET':
             if session['type'] == 'doctor':
                 return render_template("d_patient_list.html")
@@ -131,8 +134,10 @@ def home():
             doctor_name = doctor['fullname']
             users.update_one({'user_id': session['doctor_id']}, {'$set': {'patient_list': doctor['patient_list']}})
             
-            users.insert_one({'user_id': patient_id, 'fullname': patient_name, 'email': patient_email, 'patient_sex': patient_sex, 'password': generate_password_hash(patient_password), 'type': type, 'doctor_id': session['doctor_id'], 'dob': patient_dob, 'bc_service_card_id': patient_service_id, 'address': patient_address, 'phone_number': patient_phone_num, 'height': patient_height, 'weight': patient_weight, 'allergies': patient_allergies})
-            medlogs.insert_one({'medlog_id': str(uuid.uuid4()), 'patient_id': patient_id, 'entries': [], 'doctor_id': session['doctor_id']})
+            medlog_id = str(uuid.uuid4())
+            users.insert_one({'user_id': patient_id, 'medlog_id': medlog_id, 'fullname': patient_name, 'email': patient_email, 'patient_sex': patient_sex, 'password': generate_password_hash(patient_password), 'type': type, 'doctor_id': session['doctor_id'], 'dob': patient_dob, 'bc_service_card_id': patient_service_id, 'address': patient_address, 'phone_number': patient_phone_num, 'height': patient_height, 'weight': patient_weight, 'allergies': patient_allergies})
+            medlogs.insert_one({'medlog_id': medlog_id, 'patient_id': patient_id, 'entries': [], 'doctor_id': session['doctor_id']})
+            
             
             # send patient email w/ login info (email + password)
             email_content = f'''
@@ -152,7 +157,7 @@ def home():
     else:
         return redirect(url_for('login'))
     
-@app.route('/post', methods=['GET', 'POST'])
+@app.route('/p-post', methods=['GET', 'POST'])
 def post():
     global bot
     bot = chatgpt.SymptomAnalyzer()
@@ -164,7 +169,7 @@ def post():
     age = today.year - dob_date.year - ((today.month, today.day) < (dob_date.month, dob_date.day))
     
     bot.get_user_inputs(age, sex)
-    return render_template('post.html')
+    return render_template('p_post.html')
 
 @socketio.on('user_message')
 def handle_user_message(message):
@@ -186,10 +191,10 @@ def new_logs():
     elif session['type'] == 'patient':
         return jsonify({'error': 'Unauthorized'}), 401
 
-@app.route('/d-patient-med-log/')
-def patient_med_log():
-    # print("running patient med log")
-    return render_template("d_patient_med_log.html")
+# @app.route('/d-patient-med-log/')
+# def patient_med_log():
+#     # print("running patient med log")
+#     return render_template("d_patient_med_log.html")
 
 @app.route('/d-patient-list/')
 def patient_list():
@@ -197,7 +202,7 @@ def patient_list():
 
 @app.route('/redirect-doctor-to-patient-log/<doctor_id>', methods=['POST'])
 def redirect_doctor_to_patient_log(doctor_id, patient_id, entry_id):
-    return render_template("d_patient_med_log.html", patient_id=patient_id, entry_id=entry_id)
+    return render_template(" .html", patient_id=patient_id, entry_id=entry_id)
 
 @app.route('/list_patients', methods=['GET'])
 def get_patients():
@@ -214,27 +219,84 @@ def get_patients():
 
     return jsonify({'emails': email_list, 'names': name_list, 'dob': dob_list }), 200
 
+@app.route('/d_patient_med_log/<email>', methods=['GET', 'POST'])
+def patient_med_log(email):
+    if request.method == 'GET':
+        patient = users.find_one({'email': email})
+        if not patient:
+            return jsonify({'error': 'Patient not found'}), 404
+    elif request.method == 'POST':
+        date = request.form['entry_date']
+        mode = request.form['entry_mode']
+        personal_notes = request.form['entry_personal_notes']
+        doctor_diagnosis = request.form['entry_doctor_diagnosis']
+        med_name = request.form['med_name']
+        med_dosage = request.form['med_dosage']
+        med_instructions = request.form['med_instructions']
+        inperson_meeting = request.form['inperson_meeting']
+        
+        patient = users.find_one({'email': email})
+        medlog_id = patient['medlog_id']
+
+        medlog = medlogs.find_one({'medlog_id': medlog_id})
+        medlog['entries'].append({'date': date, 'mode': mode, 'personal_notes': personal_notes, 'doctor_diagnosis': doctor_diagnosis, 'med_name': med_name, 'med_dosage': med_dosage, 'med_instructions': med_instructions, 'inperson_meeting': inperson_meeting})
+        medlogs.update_one({'medlog_id': medlog_id}, {'$set': {'entries': medlog['entries']}})
+
+    
+    return render_template("d_patient_med_log.html", patient=patient)
+
 events = [
     {
-        'todo': '15:00 - Appointment with Josh',
+        'todo': 'Appt. with Josh',
         'date': '2025-01-14',
+        'time': '12:00',
+        'type': 'Online', 
     },  
     {
-        'todo': '12:00 - Appointment with Sarah',
+        'todo': 'Appt. with Sarah',
         'date': '2025-01-14',
-    },
-    {
-        'todo': '12:00 - Appointment with Jeremy',
-        'date': '2025-01-23',
+        'time': '13:00',
+        'type': 'In person' 
     },
     
 ]
 
-@app.route('/d-calendar')
+@app.route('/create_event', methods=['POST'])
+def create_event():
+    if request.method == 'POST':
+        date = request.form['date']
+        time = request.form['time']
+        if "email" in session:
+            if session['type'] == 'patient':
+                user = users.find_one({'email': session['email']})
+                session_key = user['uuid']
+                doctor_id = user['doctor_id']
+                events.insert_one({'doctor_id': doctor_id, 'patient_id': patie})
+                
+
+@app.route('/display_events', methods=['GET'])
+def get_events():
+    if "email" in session:
+        if session['type'] == 'doctor':
+            user = users.find_one({'email': session['email']})
+            session_key = user['uuid']
+            events_session = events.find({ "doctor_id": session_key})
+            return jsonify({'events': events_session}), 200
+        elif session['type'] == 'patient':
+            user = users.find_one({'email': session['email']})
+            session_key = user['uuid']
+            events_session = events.find({ "patient_id": session_key})
+            return jsonify({'events': events_session}), 200
+    else:
+        return redirect(url_for('login'))
+        
+
+
+@app.route('/d_calendar')
 def d_calendar():
     return render_template('d_calendar.html', events = events)
 
-@app.route('/p-calendar')
+@app.route('/p_calendar')
 def p_calendar():
     return render_template('p_calendar.html', events = events)
 

@@ -12,16 +12,27 @@
     <div id="calendar"></div>
 
     <script>
+        const response =  fetch('/display_events', {method: 'GET'});
+        events = response.events
+
         let calendarEl = document.getElementById('calendar');
+
+        let calendarWidth = window.innerWidth * 0.8;  // 80% of the window width
+        let calendarHeight = 500;
+
         let calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
             events : [
                 {% for event in events %}
                 {
-                    title : '{{event.todo}}',
+                    title : '{{event.time}} - {{event.todo}} ({{event.type}})',
                     start : '{{event.date}}',
                 },
                 {% endfor %}
-            ]
+            ],
+            width: calendarWidth,  // Set width dynamically
+            height: calendarHeight,  // Set fixed height
+            contentHeight: 'auto', 
         });
         calendar.render();
     </script>
