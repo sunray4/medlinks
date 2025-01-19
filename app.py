@@ -52,6 +52,7 @@ def register():
         hashed_password = generate_password_hash(password)
         users.insert_one({'user_id': doctor_id, 'email': email, 'password': hashed_password, 'fullname': fullname, 'unread_message_list': [], 'patient_list': [], 'events': [], 'type': type})
         session['doctor_id'] = doctor_id
+        session['type'] = type
         
         flash('Successfully created account, please log in.', 'success')
         return redirect(url_for('home'))
@@ -74,6 +75,7 @@ def login():
         if user and check_password_hash(user['password'], password):
             session['email'] = email
             session['doctor_id'] = user['user_id']
+            session['type'] = user['type']
             return redirect(url_for('home'))
         else:
             flash('Invalid email or password. Please try again', 'error')
@@ -99,7 +101,10 @@ def profile():
 def home():
     if "email" in session:
         if request.method == 'GET':
-            return render_template("d_patient_list.html")
+            if session['type'] == 'doctor':
+                return render_template("d_patient_list.html")
+            elif session['type'] == 'patient':
+                return render_template("p_med_log.html")
         elif request.method == 'POST':
             patient_name = request.form['patient_fullname']
             patient_dob = request.form['patient_dob']
@@ -135,9 +140,13 @@ def home():
             return render_template("d_patient_list.html")
     else:
         return redirect(url_for('login'))
+    
+@app.route('/post', methods=['GET', 'POST'])
+def post():
+    pass
 
-@app.route('/d-new-logs/<doctor_id>')
-def new_logs(doctor_id):
+@app.route('/d-new-logs/')
+def new_logs():
     return render_template("d_new_logs.html")
 
 @app.route('/d-patient-med-log/')
@@ -157,12 +166,19 @@ def get_patients():
     users_list = users.find()
     email_list = []
     name_list = []
+    dob_list = []
     
     for user in users_list:
-        email_list.append(user['email'])
-        name_list.append(user['fullname'])
+        if user['type'] == 'patient':
+            email_list.append(user['email'])
+            name_list.append(user['fullname'])
+            dob_list.append(user['dob'])
 
-    return jsonify({'emails': email_list, 'names': name_list}), 200
+    return jsonify({'emails': email_list, 'names': name_list, 'dob': dob_list }), 200
+
+@app.route('/d-calendar')
+def calendar():
+    return render_template('d_calendar.html')
     
 
 if __name__ == "__main__":

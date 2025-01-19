@@ -3,9 +3,9 @@
 
 {% block d_content%}
 
-<div id="page-container" class="">
+<div id="page-container" class="grid grid-cols-2 gap-x-4'">
     <!-- Left Side Content -->
-    <div id="left-side" class="m-10 mx-56 ">
+    <div id="left-side" class="m-10 mx-56 col-span-2 h-screen">
         <div class="flex justify-between mb-10">
             <input type="text" id="search" class="p-2 w-3/5 rounded-lg bg-[#ffffff] border border-[#868E96]"
                 placeholder="Search for a patient..." onkeyup="searchPatients()">
@@ -14,19 +14,17 @@
         </div>
         <div class="w-full">
             <table class="w-full table-auto">
-                <tr class="grid grid-cols-3 gap-4 border-b border-[#868E96]">
+                <tr class="grid grid-cols-4 gap-4 border-b border-[#868E96]">
                     <th class="py-3 text-left ">Patient Name</th>
                     <th class="py-3 text-left ">Patient Email</th>
                     <th class="py-3 text-left">Date of Birth</th>
                     <th class="py-3 text-left"> </th>
                 </tr>
-            </table>
-            <table class="w-full table-auto" id="patientTable">
                 <!-- for loop iteration through all patients  -->
-                <tr class="grid grid-cols-3 gap-4 py-4 patient-row">
+                <tr class="grid grid-cols-4 gap-4 py-4 patient-row">
                     <td class="patient-name"><ul id="nameList"></ul></td>
                     <td class="patient-email"><ul id="emailList"></ul></td>
-                    <td class="patient-dob">Date of Birth</td>
+                    <td class="patient-dob"><ul id="dobList"></ul></td>
                     <td class="text-right p-2">
                         <button id="view-log" class=""> 
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
@@ -124,34 +122,36 @@
             const close_svg = document.getElementById('close-svg');
             const right_side = document.getElementById('right-side');
             const left_side = document.getElementById('left-side');
-            const page_container = document.getElementById('page-container')
-             openPopupButton.addEventListener('click', () => {
-                page_container.classList.add('grid', 'grid-cols-2', 'gap-4')
-                right_side.classList.remove('translate-x-full');
-                right_side.classList.add('translate-x-0');
+        
+            openPopupButton.addEventListener('click', () => {
+                right_side.classList.remove('hidden');
                 left_side.classList.remove('mx-56');
+                left_side.classList.remove('h-screen');
+                left_side.classList.remove('col-span-2');
 
             });
 
-            // Event listener to close the pop-up
+
             add_patient.addEventListener('click', () => {
-                page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
-                right_side.classList.add('translate-x-full');
-                right_side.classList.remove('translate-x-0');
+                right_side.classList.add('hidden');
                 left_side.classList.add('mx-56');
+                left_side.classList.add('col-span-2')
+                left_side.classList.add('h-screen');
             });
             close_svg.addEventListener('click', () => {
-                page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
-                right_side.classList.add('translate-x-full');
-                right_side.classList.remove('translate-x-0');
+                right_side.classList.add('hidden');
                 left_side.classList.add('mx-56');
+                left_side.classList.add('col-span-2')
+                left_side.classList.add('h-screen');
             });
 
             const response = fetch('/list_patients', {method: 'GET',
             }).then(response => response.json())
                     .then(data => {
+                        
                         const emailList = document.getElementById('emailList');
                         const nameList = document.getElementById('nameList');
+                        const dobList = document.getElementByID('dobList')
                         data.emails.forEach(user => {
                             const li1 = document.createElement('li');
                             li1.textContent = user;
@@ -161,6 +161,11 @@
                             const li2 = document.createElement('li');
                             li2.textContent = user;
                             nameList.appendChild(li2);
+                        });
+                        data.dob.forEach(user => {
+                            const li2 = document.createElement('li');
+                            li2.textContent = user;
+                            dobList.appendChild(li2);
                         });
                     }).catch(err => console.error('Error fetching users:', err));
                 

@@ -5,7 +5,7 @@
 
 <div id="page-container" class="grid grid-cols-2 gap-x-2">
     <!-- Left Side Content -->
-    <div id="left-side" class="m-10 mx-56 cols-span-2">
+    <div id="left-side" class="m-10 mx-56 col-span-2 h-screen">
         <div class="flex justify-between mb-10 items-center">
             <p class="text-3xl font-bold">Patient's Med Log</p>
             <button id="add-patient-btn" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
@@ -38,13 +38,13 @@
                 <h1 class="font-bold text-2xl mb-5">New Med Log Entry</h1>
 
                 <form action="/" method="POST">
-                    <span class="flex items-center space-x-4 mb-5">
+                    <span class="flex items-center space-x-4 mb-5 justify-between">
                         <div>
                             <label for="fname" class="mr-4">Date:</label>
                             <input type="text" id="entry_date" name="entry_date" class="p-1 rounded-lg bg-[#ffffff] border border-[#868E96]">
                         </div>
                         <div>
-                        <select id="entry_mode" name="entry_mode" class="p-1 border rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                        <select id="entry_mode" name="entry_mode" class=" p-1 border rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500">
                             <option value="" disabled selected>Select Mode</option>
                             <option value="text">Text</option>
                             <option value="in-person">In-person</option>
@@ -84,11 +84,12 @@
                     
                             </table>
                         </div>
-                        <label class="flex items-center space-x-2">
-                            <input type="radio" name="option" value="option3" class="focus:ring-indigo-500">
+                        <!-- add if statement, only if text mode would this button be available -->
+                        <label class="flex items-center space-x-2 mt-4">
+                            <input type="checkbox" name="option" value="option3" class="focus:ring-indigo-500">
                             <span>Please book an in-person meeting </span>
                         </label>
-                        <button type="submit" id="add-log" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
+                        <button type="submit" id="add-log" class="p-2 rounded-lg bg-[#DFC623] text-white mt-4">Add Log</button>
                     </form>
                 </div>
 
@@ -130,6 +131,8 @@
                 // right_side.classList.remove('translate-x-full');
                 // right_side.classList.add('translate-x-0');
                 left_side.classList.remove('mx-56');
+                left_side.classList.remove('h-screen');
+                left_side.classList.remove('col-span-2');
 
             });
 
@@ -140,7 +143,8 @@
                 // right_side.classList.add('translate-x-full');
                 // right_side.classList.remove('translate-x-0');
                 left_side.classList.add('mx-56');
-                left_side.classList.remove('col-span-2')
+                left_side.classList.add('col-span-2')
+                left_side.classList.add('h-screen');
             });
             close_svg.addEventListener('click', () => {
                 // page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
@@ -148,7 +152,8 @@
                 // right_side.classList.add('translate-x-full');
                 // right_side.classList.remove('translate-x-0');
                 left_side.classList.add('mx-56');
-                left_side.classList.remove('col-span-2')
+                left_side.classList.add('col-span-2')
+                left_side.classList.add('h-screen');
             });
 
 
