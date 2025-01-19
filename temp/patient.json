@@ -1,16 +1,24 @@
 {
     "patient_details": {
-        "age": 17,
+        "age": 25,
         "sex": "male"
     },
     "conversation_history": [
         {
             "role": "user",
-            "content": "I have a headache."
+            "content": "Hi."
         },
         {
             "role": "assistant",
-            "content": "How long have you been experiencing the headache?"
+            "content": "Could you please describe the symptoms you are experiencing?"
+        },
+        {
+            "role": "user",
+            "content": "Yes, my head hurts when I look up."
+        },
+        {
+            "role": "assistant",
+            "content": "How long have you been experiencing this headache, and is it constant or does it come and go?"
         },
         {
             "role": "user",
@@ -18,47 +26,40 @@
         },
         {
             "role": "assistant",
-            "content": "Can you describe the type of pain you're feeling\u2014do you consider it sharp, dull, throbbing, or something else?"
+            "content": "On a scale from 1 to 10, how would you rate the intensity of the headache?"
         },
         {
             "role": "user",
-            "content": "sharp pain."
+            "content": "8."
         },
         {
             "role": "assistant",
-            "content": "Is the headache localized to one specific area of your head, or is it more widespread?"
+            "content": "Do you have any other symptoms accompanying the headache, such as nausea, vomiting, visual disturbances, or sensitivity to light?"
         },
         {
             "role": "user",
-            "content": "central point."
+            "content": "No."
         },
         {
             "role": "assistant",
-            "content": "Have you noticed any other symptoms accompanying the headache, such as nausea, sensitivity to light, or changes in vision?"
+            "content": "Have you had any recent injuries to your head or neck, or have you been experiencing any stress or changes in your routine lately?"
         },
         {
             "role": "user",
-            "content": "nope."
-        },
-        {
-            "role": "assistant",
-            "content": "Have you experienced any recent stress, changes in sleep patterns, or increased screen time that might be contributing to the headache?"
-        },
-        {
-            "role": "user",
-            "content": "nope."
+            "content": "No."
         }
     ],
     "possible_next_steps": [
-        "Monitor the headache for any changes or additional symptoms.",
-        "Ensure adequate hydration and nutrition.",
-        "Encourage rest and relaxation.",
-        "If the headache does not improve or worsens, seek medical advice."
+        "Monitor the headache and any additional symptoms.",
+        "Encourage hydration and regular meals.",
+        "Consider evaluating sleep hygiene and stress management.",
+        "If the headache persists or worsens, consult a healthcare professional."
     ],
     "summary": [
-        "The patient has been experiencing a sharp headache for 2 days.",
-        "The pain is localized to a central point.",
-        "There are no additional symptoms reported, such as nausea or changes in vision.",
-        "The patient has not reported any recent stress or changes in sleep or screen time."
+        "The patient is experiencing a headache that intensifies when looking up.",
+        "The headache has persisted for 2 days.",
+        "The intensity of the headache is rated as 8 out of 10.",
+        "There are no accompanying symptoms such as nausea or visual disturbances.",
+        "The patient reports no recent injuries or significant stressors."
     ]
 }

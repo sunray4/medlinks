@@ -13,6 +13,7 @@ from flask_socketio import SocketIO, emit
 import os
 import configparser
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -28,6 +29,8 @@ mongo = PyMongo(app)
 client = MongoClient(app.config['MONGO_URI'], server_api=ServerApi('1'))
 users = client.get_database('medlinks').get_collection('users')
 medlogs = client.get_database('medlinks').get_collection('medlogs')
+
+bot = None
 
 def generate_patient_password():
     characters = string.ascii_letters + string.digits + string.punctuation
@@ -151,17 +154,37 @@ def home():
     
 @app.route('/post', methods=['GET', 'POST'])
 def post():
+    global bot
     bot = chatgpt.SymptomAnalyzer()
+    user = users.find_one({'email': session['email']})
+    sex = user['patient_sex']
+    dob = user['dob']
+    dob_date = datetime.strptime(dob, '%Y-%m-%d')
+    today = datetime.today()
+    age = today.year - dob_date.year - ((today.month, today.day) < (dob_date.month, dob_date.day))
+    
+    bot.get_user_inputs(age, sex)
     return render_template('post.html')
 
 @socketio.on('user_message')
 def handle_user_message(message):
-    bot = chatgpt.SymptomAnalyzer()
-    # response = bot.
+    global bot
+    try:
+        response = bot.add_user_response(message)
+        
+        if isinstance(response, (dict, list)):
+            emit('bot_response', response, broadcast=True)
+        else:
+            emit('bot_response', str(response), broadcast=True)
+    except Exception as e:
+        emit('bot_response', f"An error occurred: {str(e)}", broadcast=True)
 
 @app.route('/d-new-logs/')
 def new_logs():
-    return render_template("d_new_logs.html")
+    if session['type'] == 'doctor':
+        return render_template("d_new_logs.html")
+    elif session['type'] == 'patient':
+        return jsonify({'error': 'Unauthorized'}), 401
 
 @app.route('/d-patient-med-log/')
 def patient_med_log():
@@ -200,47 +223,12 @@ events = [
         'todo': '12:00 - Appointment with Sarah',
         'date': '2025-01-14',
     },
+    {
+        'todo': '12:00 - Appointment with Jeremy',
+        'date': '2025-01-23',
+    },
     
 ]
-
-@app.route('/add_patient')
-def add_patient():
-    patient_name = request.form['patient_fullname']
-    patient_dob = request.form['patient_dob']
-    patient_service_id = request.form['patient_service_id']
-    patient_address = request.form['patient_address']
-    patient_email = request.form['patient_email']
-    patient_phone_num = request.form['patient_phone_num']
-    patient_height = request.form['patient_height']
-    patient_weight = request.form['patient_weight']
-    patient_allergies = request.form['patient_allergies']
-    patient_id = str(uuid.uuid4())
-    type = 'patient'
-    patient_password = generate_patient_password()
-            
-    doctor = users.find_one({'user_id': session['doctor_id']})
-    doctor['patient_list'].append(patient_id)
-    doctor_name = doctor['fullname']
-    users.update_one({'user_id': session['doctor_id']}, {'$set': {'patient_list': doctor['patient_list']}})
-            
-    users.insert_one({'user_id': patient_id, 'fullname': patient_name, 'email': patient_email, 'password': generate_password_hash(patient_password), 'type': type, 'doctor_id': session['doctor_id'], 'dob': patient_dob, 'bc_service_card_id': patient_service_id, 'address': patient_address, 'phone_number': patient_phone_num, 'height': patient_height, 'weight': patient_weight, 'allergies': patient_allergies})
-    medlogs.insert_one({'medlog_id': str(uuid.uuid4()), 'patient_id': patient_id, 'entries': [], 'doctor_id': session['doctor_id']})
-            
-    # send patient email w/ login info (email + password)
-    email_content = f'''
-        Hi {patient_name}!
-            
-        Welcome to Medlinks! Your doctor, {doctor_name} has created an account for you. You can access Medlinks with these credentials:
-        Email: {patient_email}
-        Password: {patient_password}
-            
-        Best wishes,
-        Your friends at Medlinks
-        '''
-            
-    yag.send(patient_email, 'Medlinks', email_content)
-            
-    return render_template("d_patient_list.html")
 
 @app.route('/d-calendar')
 def d_calendar():

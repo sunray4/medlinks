@@ -14,15 +14,15 @@
         <div class="w-full"> 
             <!-- iterate through all med logs of that patient  -->
                 <button id="log-entry-open" class="w-full">
-                <div id="log-entry" class="w-full bg-[#BDCAD6] rounded-lg focus:border focus:border-[#FF6969] p-7 mb-4 px-10">
-                    <span class="flex items-center justify-between  pb-2">
-                        <p>Date<p>
-                        <div class="border border-white rounded-3xl p-1 px-2">Mode</div>
-                    </span>
-                    <hr class="bg-[#868E96] mb-2">
-                    <p class="italic text-[#3E4B52]">Paragrpah about diagnosis</p>
-                </div>
-            </button>
+                    <div id="log-entry" class="w-full bg-[#BDCAD6] rounded-lg focus:border focus:border-[#FF6969] p-7 mb-4 px-10">
+                        <span class="flex items-center justify-between  pb-2">
+                            <p>Date<p>
+                            <div class="border border-white rounded-3xl p-1 px-2">Mode</div>
+                        </span>
+                        <hr class="bg-[#868E96] mb-2">
+                        <p class="italic text-[#3E4B52] text-left">Paragrpah about diagnosis</p>
+                    </div>
+                </button>
         </div>
     </div>
 
@@ -46,13 +46,13 @@
                             <input type="text" id="entry_date" name="entry_date" class="p-1 rounded-lg bg-[#ffffff] border border-[#868E96]">
                         </div>
                         <div>
-                        <select id="entry_mode" name="entry_mode" class=" p-1 border rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500">
-                            <option value="" disabled selected>Select Mode</option>
-                            <option value="text">Text</option>
-                            <option value="in-person">In-person</option>
-                            <option value="phone">Phone</option>
-                        </select>
-                    </div>
+                            <select id="entry_mode" name="entry_mode" class=" p-1 border rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                                <option value="" disabled selected>Select Mode</option>
+                                <option value="text">Text</option>
+                                <option value="in-person">In-person</option>
+                                <option value="phone">Phone</option>
+                            </select>
+                        </div>
                     </span>
                     <label for="lname" class="font-semibold text-large mr-4">Personal Notes</label><br>
                     <textarea id="entry_personal_notes" name="entry_personal_notes" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></textarea><br><br>
@@ -62,104 +62,98 @@
                     <textarea id="entry_doctor_diagnosis" name="entry_doctor_diagnosis" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></textarea><br><br>
     
                     <label for="lname" class="font-semibold text-large mr-4">Medications</label><br>
-                        <div class=" bg-[#ffffff] p-4 rounded-lg">
-                
-                            <table class="w-full table-auto">
-                                <tr class="grid grid-cols-12 gap-x-4 border-b border-[#868E96]">
-                                    <th class="py-3 text-left col-span-3">Medication</th>
-                                    <th class="py-3 text-left col-span-2">Dosage</th>
-                                    <th class="py-3 text-left col-span-6">Instructions</th>
-                                    <th class="py-3 text-left col-span-1"> </th>
+                    <div class=" bg-[#ffffff] p-4 rounded-lg">
+            
+                        <table class="w-full table-auto">
+                            <tr class="grid grid-cols-12 gap-x-4 border-b border-[#868E96]">
+                                <th class="py-3 text-left col-span-3">Medication</th>
+                                <th class="py-3 text-left col-span-2">Dosage</th>
+                                <th class="py-3 text-left col-span-6">Instructions</th>
+                                <th class="py-3 text-left col-span-1"> </th>
+                            </tr>
+                            <!-- for loop iteration through all patients  -->
+                            <tr class="grid grid-cols-12 gap-x-4 mt-4">
+            
+                                <td class="col-span-3"><input type="text" class="w-full p-1" id="med_name" name="med_name" placeholder="Medication..." /></td>
+                                <td class="col-span-2"><input type="text" class="w-full p-1" id="med_dosage" name="med_dosage" placeholder="Dosage..." /></td>
+                                <td class="col-span-6"><textarea id="med_instructions" class="w-full p-1" name="med_instructions" placeholder="Instructions..."></textarea></td>
+                                <td class="col-span-1  p-1"><div class="text-right">
+                                    <button id="view-log" class=""> 
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
+                                    </button>
+                                </td>
                                 </tr>
-                                <!-- for loop iteration through all patients  -->
-                                <tr class="grid grid-cols-12 gap-x-4 mt-4">
                 
-                                    <td class="col-span-3"><input type="text" class="w-full p-1" id="med_name" name="med_name" placeholder="Medication..." /></td>
-                                    <td class="col-span-2"><input type="text" class="w-full p-1" id="med_dosage" name="med_dosage" placeholder="Dosage..." /></td>
-                                    <td class="col-span-6"><textarea id="med_instructions" class="w-full p-1" name="med_instructions" placeholder="Instructions..."></textarea></td>
-                                    <td class="col-span-1  p-1"><div class="text-right">
-                                        <button id="view-log" class=""> 
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
-                                        </button>
-                                    </td>
-                                    </tr>
-                    
-                            </table>
-                        </div>
-                        <!-- add if statement, only if text mode would this button be available -->
-                        <label class="flex items-center space-x-2 mt-4">
-                            <input type="checkbox" name="option" value="option3" class="focus:ring-indigo-500">
-                            <span>Please book an in-person meeting </span>
-                        </label>
-                        <button type="submit" id="add-log" class="p-2 rounded-lg bg-[#DFC623] text-white mt-4">Add Log</button>
-                    </form>
-                </div>
-
-                
-            </div>
-
-            <!-- right side view  -->
-            <div id="right-side-view" class="hidden">
-                <div class="p-10 bg-[#E1E1E1]">
-                    <button id="close-svg-view" class="w-full mb-5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
-                            viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                            <path
-                                d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z" />
-                        </svg>
-                    </button>
-                    <div class="p-3">
-                        <h1 class="font-bold text-2xl mb-5">New Med Log Entry</h1>
-                            <span class="flex items-center space-x-4 mb-5 justify-between">
-                                <div>
-                                    <p id="entry_date"></p>
-                                </div>
-                                <div class="p-1 border rounded-lg">
-                                    <p id="entry_mode"></p>
-                            </div>
-                            </span>
-                            <p class="font-semibold text-large mr-4">Personal Notes</p><br>
-                            <p id="entry_personal_notes"class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></p><br><br>
-        
-            
-                            <p class="font-semibold text-large mr-4">Doctor's diagnosis</label><br>
-                            <p id="entry_doctor_diagnosis" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></p><br><br>
-            
-                            <p class="font-semibold text-large mr-4">Medications</p><br>
-                                <div class=" bg-[#ffffff] p-4 rounded-lg">
-                        
-                                    <table class="w-full table-auto">
-                                        <tr class="grid grid-cols-12 gap-x-4 border-b border-[#868E96]">
-                                            <th class="py-3 text-left col-span-3">Medication</th>
-                                            <th class="py-3 text-left col-span-2">Dosage</th>
-                                            <th class="py-3 text-left col-span-6">Instructions</th>
-                                            <th class="py-3 text-left col-span-1"> </th>
-                                        </tr>
-                                        <!-- for loop iteration through all patients  -->
-                                        <tr class="grid grid-cols-12 gap-x-4 mt-4">
-                        
-                                            <td class="col-span-3 w-full p-1"  id="med_name"></td>
-                                            <td class="col-span-2 w-full p-1"  id="med_dosage"></td>
-                                            <td class="col-span-6 w-full p-1" id="med_instructions"></td>
-                                            <td class="col-span-1  p-1"><div class="text-right">
-                                                <button id="view-log" class=""> 
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
-                                                </button>
-                                            </td>
-                                            </tr>
-                            
-                                    </table>
-                                </div>
-                        </div>
-        
-                        
+                        </table>
                     </div>
-                </div>
+                    <!-- add if statement, only if text mode would this button be available -->
+                    <label class="flex items-center space-x-2 mt-4">
+                        <input type="checkbox" name="option" value="option3" class="focus:ring-indigo-500">
+                        <span>Please book an in-person meeting </span>
+                    </label>
+                    <button type="submit" id="add-log" class="p-2 rounded-lg bg-[#DFC623] text-white mt-4">Add Log</button>
+                </form>
             </div>
+        </div>
+    </div>
+
+        <!-- right side view  -->
+        <div id="right-side-view" class="hidden">
+            <div class="p-10 bg-[#E1E1E1]">
+                <button id="close-svg-view" class="w-full mb-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
+                        viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                        <path
+                            d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z" />
+                    </svg>
+                </button>
+                <div class="p-3">
+                    <h1 class="font-bold text-2xl mb-5">Med Log Entry</h1>
+                    <span class="flex items-center space-x-4 mb-5 justify-between">
+                        <div>
+                            <p id="entry_date"></p>
+                        </div>
+                        <div class="p-2 border border-gray-900 rounded-2xl">
+                            <p id="entry_mode"></p>
+                        </div>
+                    </span>
+                    <p class="font-semibold text-large mr-4">Personal Notes</p>
+                    <p id="entry_personal_notes"class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96] min-h-10" min-h-5></p><br><br>
+
+
+                    <p class="font-semibold text-large mr-4">Doctor's diagnosis</p>
+                    <p id="entry_doctor_diagnosis" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96] min-h-10"></p><br><br>
+
+                    <p class="font-semibold text-large mr-4">Medications</p>
+                    <div class=" bg-[#ffffff] p-4 rounded-lg">
+                
+                    <table class="w-full table-auto">
+                        <tr class="grid grid-cols-12 gap-x-4 border-b border-[#868E96]">
+                            <th class="py-3 text-left col-span-3">Medication</th>
+                            <th class="py-3 text-left col-span-2">Dosage</th>
+                            <th class="py-3 text-left col-span-6">Instructions</th>
+                            <th class="py-3 text-left col-span-1"> </th>
+                        </tr>
+                        <!-- for loop iteration through all patients  -->
+                        <tr class="grid grid-cols-12 gap-x-4 mt-4">
+        
+                            <td class="col-span-3 w-full p-1"  id="med_name"></td>
+                            <td class="col-span-2 w-full p-1"  id="med_dosage"></td>
+                            <td class="col-span-6 w-full p-1" id="med_instructions"></td>
+                            <td class="col-span-1  p-1"><div class="text-right">
+                                <button id="view-log" class=""> 
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
+                                </button>
+                            </td>
+                            </tr>
             
+                    </table>
+                </div>
+            </div>       
         </div>
 
 
+    </div>
         {% endblock %}
 
 
