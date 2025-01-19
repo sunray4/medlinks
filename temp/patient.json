@@ -1,65 +1,48 @@
 {
     "patient_details": {
-        "age": 25,
-        "sex": "male"
+        "age": 17,
+        "sex": "female"
     },
     "conversation_history": [
         {
+            "role": "assistant",
+            "content": "What symptoms are you currently experiencing?"
+        },
+        {
             "role": "user",
-            "content": "Hi."
+            "content": "i"
         },
         {
             "role": "assistant",
-            "content": "Could you please describe the symptoms you are experiencing?"
+            "content": "Could you please elaborate on the symptoms you meant to describe?"
         },
         {
             "role": "user",
-            "content": "Yes, my head hurts when I look up."
+            "content": "i"
         },
         {
             "role": "assistant",
-            "content": "How long have you been experiencing this headache, and is it constant or does it come and go?"
+            "content": "Are you having difficulty communicating your symptoms, or is there something specific you would like help with?"
         },
         {
             "role": "user",
-            "content": "2 days."
+            "content": "i"
         },
         {
             "role": "assistant",
-            "content": "On a scale from 1 to 10, how would you rate the intensity of the headache?"
-        },
-        {
-            "role": "user",
-            "content": "8."
-        },
-        {
-            "role": "assistant",
-            "content": "Do you have any other symptoms accompanying the headache, such as nausea, vomiting, visual disturbances, or sensitivity to light?"
-        },
-        {
-            "role": "user",
-            "content": "No."
-        },
-        {
-            "role": "assistant",
-            "content": "Have you had any recent injuries to your head or neck, or have you been experiencing any stress or changes in your routine lately?"
-        },
-        {
-            "role": "user",
-            "content": "No."
+            "content": "Do you need assistance with anything in particular, or would you like to describe how you're feeling?"
         }
     ],
     "possible_next_steps": [
-        "Monitor the headache and any additional symptoms.",
-        "Encourage hydration and regular meals.",
-        "Consider evaluating sleep hygiene and stress management.",
-        "If the headache persists or worsens, consult a healthcare professional."
+        "Consider seeking help from a trusted adult or healthcare professional.",
+        "Encourage the patient to express their feelings or symptoms more clearly.",
+        "Evaluate if there is any anxiety or difficulty in communicating.",
+        "Follow up at a later time to assess the patient's ability to articulate their symptoms."
     ],
     "summary": [
-        "The patient is experiencing a headache that intensifies when looking up.",
-        "The headache has persisted for 2 days.",
-        "The intensity of the headache is rated as 8 out of 10.",
-        "There are no accompanying symptoms such as nausea or visual disturbances.",
-        "The patient reports no recent injuries or significant stressors."
+        "The patient seems to struggle with communicating their symptoms.",
+        "The conversation did not provide specific symptoms or concerns.",
+        "It appears there may be difficulty in expressing feelings or needs.",
+        "Further evaluation may be needed to understand the patient's situation."
     ]
 }

@@ -383,7 +383,7 @@ def p_calendar():
 @socketio.on('message')
 def handle_message(data):
     print('received message: ' + data)
-    emit('message', data, broadcast=True)
+    emit('message', data) #, broadcast=True)
 
 if __name__ == "__main__":
     # app = db.factory.create_app()
