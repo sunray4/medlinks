@@ -19,25 +19,25 @@
         </div>
         <div class="w-full">
             <table class="w-full table-auto">
-                <tr class="grid grid-cols-4 gap-4 border-b border-[#868E96]">
-                    <th class="py-3 text-left ">Patient Name</th>
-                    <th class="py-3 text-left ">Patient Email</th>
-                    <th class="py-3 text-left">Date of Birth</th>
-                    <th class="py-3 text-left"> </th>
+                <tr class="grid grid-cols-5 gap-4 border-b border-[#868E96]">
+                    <th class="py-3 text-left col-span-2">Patient Name</th>
+                    <th class="py-3 text-center col-span-1">Patient Email</th>
+                    <th class="py-3 text-right col-span-1">Date of Birth</th>
+                    <th class="py-3 text-right col-span-1"> </th>
                 </tr>
                 <!-- for loop iteration through all patients  -->
                  <!-- {% for patient in patients %} -->
-                <tr class="grid grid-cols-4 gap-4 py-4 patient-row">
-                    <td class="patient-name">
+                <tr class="grid grid-cols-5 gap-4 py-4 patient-row">
+                    <td class="patient-name col-span-2">
                         <ul id="nameList"></ul>
                     </td>
-                    <td class="patient-email">
+                    <td class="patient-email col-span-1 text-center">
                         <ul id="emailList"></ul>
                     </td>
-                    <td class="patient-dob">
+                    <td class="patient-dob col-span-1 text-right">
                         <ul id="dobList"></ul>
                     </td>
-                    <td class="patient-delete text-right p-2">
+                    <td class="patient-delete text-right col-span-1 p-2">
                         <ul id="deleteList"></ul>
                     </td>
                 </tr>

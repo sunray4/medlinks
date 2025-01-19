@@ -8,7 +8,6 @@
     <!-- <div id="right-side-add" class="hidden bg-[#E1E1E1] p-10">
         <div class="bg-[#E1E1E1]  overflow-y-auto h-4/6"> -->
     <div id="left-side" class="m-10 mx-56 col-span-2">
-        <div class="">
         <div class="flex justify-between mb-10 items-center">
             <p class="text-3xl font-bold">{{ patient['fullname'] }}'s Med Log</p>
             <button id="add-patient-btn" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
@@ -34,7 +33,7 @@
 
     <!-- Right Side Content -->
     <div id="right-side-add" class="hidden bg-[#E1E1E1] p-10">
-        <div class="bg-[#E1E1E1]  overflow-y-auto h-5/6">
+        <div class="bg-[#E1E1E1]">
             <button id="close-svg-add" class="w-full mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
                     viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
@@ -50,7 +49,7 @@
                         <div>
                             <label for="fname" class="mr-4">Date:</label>
                             <input type="text" id="entry_date" name="entry_date"
-                                class="p-1 rounded-lg bg-[#ffffff] border border-[#868E96]">
+                                class="p-1 rounded-lg bg-[#ffffff] border border-[#868E96]" >
                         </div>
                         <div>
                             <select id="entry_mode" name="entry_mode"
@@ -68,12 +67,12 @@
 
                     <label for="entry_personal_notes" class="font-semibold text-large mr-4">Personal Notes</label><br>
                     <textarea id="entry_personal_notes" name="entry_personal_notes"
-                        class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></textarea><br><br>
+                        class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]" ></textarea><br><br>
 
                     <label for="entry_doctor_diagnosis" class="font-semibold text-large mr-4">Doctor's
                         diagnosis</label><br>
                     <textarea id="entry_doctor_diagnosis" name="entry_doctor_diagnosis"
-                        class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></textarea><br><br>
+                        class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]" ></textarea><br><br>
 
                     <label for="lname" class="font-semibold text-large mr-4">Medications</label><br>
                     <div class=" bg-[#ffffff] p-4 rounded-lg">
@@ -127,7 +126,7 @@
 
     <!-- right side view  -->
     <div id="right-side-view" class="hidden bg-[#E1E1E1] p-10">
-        <div class="bg-[#E1E1E1] overflow-y-auto h-4/6">
+        <div class="bg-[#E1E1E1]">
             <button id="close-svg-view" class="w-full mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
                     viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
@@ -150,13 +149,12 @@
                     min-h-5></p><br><br>
 
                 <p class="font-semibold text-large mr-4">Personal Notes</p>
-                <p id="entry-personal-notes" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96] min-h-10"
-                    min-h-5></p><br><br>
-
+                <textarea id="entry-personal-notes" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96] min-h-10"
+                    min-h-5></textarea><br><br>
 
                 <p class="font-semibold text-large mr-4">Doctor's diagnosis</p>
-                <p id="entry-doctor-diagnosis"
-                    class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96] min-h-10"></p><br><br>
+                <textarea id="entry-doctor-diagnosis"
+                    class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96] min-h-10"></textarea><br><br>
 
                 <p class="font-semibold text-large mr-4">Medications</p>
                 <div class=" bg-[#ffffff] p-4 rounded-lg">
@@ -174,9 +172,11 @@
 
                     </table>
                 </div>
+                <button id="save-log" class="p-2 rounded-lg bg-[#DFC623] text-white mt-4">Save
+                    Log</button>
             </div>
         </div>
-
+    
 
     </div>
     {% endblock %}
@@ -234,6 +234,8 @@
                 // right_side_view.classList.add('h-screen');
                 left_side.style.maxHeight = 'calc(100vh - 140px)'; // Adjust as needed
                 left_side.style.overflowY = 'auto';
+                right_side_view.style.maxHeight = 'calc(100vh - 40px)'; // Adjust as needed
+                right_side_view.style.overflowY = 'auto';
 
                 let med_table = document.getElementById('med-table');
                 const medication = medications[0];
@@ -252,12 +254,34 @@
                 let new_row = med_table.insertRow(-1);
                 new_row.classList.add('grid', 'grid-cols-12', 'gap-x-4', 'mt-4');
                 new_row.innerHTML = `
-                    <td class="col-span-3 w-full p-1" id="med-name">${med_name}</td>
-                    <td class="col-span-2 w-full p-1" id="med-dosage">${med_dosage}</td>
-                    <td class="col-span-6 w-full p-1" id="med-instructions">${med_instructions}</td>
+                    <input class="col-span-3 w-full p-1" id="med-name">${med_name}</input>
+                    <input class="col-span-2 w-full p-1" id="med-dosage">${med_dosage}</input>
+                    <input class="col-span-6 w-full p-1" id="med-instructions">${med_instructions}</input>
                 `;
             })
         });
+
+        document.getElementById('save-log').addEventListener('click', () => {
+            let personal_notes = document.getElementById('entry-personal-notes').value;
+            let diagnosis = document.getElementById('entry-doctor-diagnosis').value;
+            let med_name = document.getElementById('med-name').value;
+            let med_dosage = document.getElementById('med-dosage').value;
+            let med_instructions = document.getElementById('med-instructions').value;
+            let date = document.getElementById('entry-date').innerHTML;
+
+            let data = {
+                'user_id': '{{ session["user_id"] }}',
+                'date': date,
+                'personal_notes': personal_notes,
+                'doctor_diagnosis': diagnosis,
+                'med_name': med_name,
+                'med_dosage': med_dosage,
+                'med_instructions': med_instructions
+            }
+            console.log(data)
+
+            socket.emit('save_log', data)
+        })
 
 
         // const log_entry_open = document.getElementById('log-entry-open')
@@ -286,6 +310,8 @@
             console.log("btuoon clicked")
             right_side_add.classList.remove('hidden');
             // right_side_add.classList.add('col-span-1');
+            right_side_add.style.maxHeight = 'calc(100vh - 40px)'; // Adjust as needed
+            right_side_add.style.overflowY = 'auto';
 
             left_side.classList.remove('mx-56');
             // left_side.classList.remove('h-screen');
@@ -297,6 +323,7 @@
         add_log.addEventListener('click', () => {
             // page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
             right_side_add.classList.add('hidden');
+            
             // right_side.classList.add('translate-x-full');
             // right_side.classList.remove('translate-x-0');
             left_side.classList.add('mx-56');

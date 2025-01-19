@@ -300,6 +300,24 @@ def medlog_mark_red(data):
             medlogs.update_one({'doctor_id': data['user_id']}, {'$set': {'entries': medlog['entries']}})
             pass
 
+@socketio.on('save_log')
+def save_log(data):
+    patient_id = data['user_id']
+    medlog = medlogs.find_one({'doctor_id': patient_id})
+
+    for entry in medlog['entries']:
+        if entry['date'] == data['date']:
+            index = medlog['entries'].index(entry)
+
+            medlog['entries'][index]['personal_notes'] = data['personal_notes']
+            medlog['entries'][index]['doctor_diagnosis'] = data['doctor_diagnosis']
+            print(medlog['entries'][index]['medicines'])
+            medlog['entries'][index]['medicines'][0]['med_name'] = data['med_name']
+            medlog['entries'][index]['medicines'][0]['med_dosage'] = data['med_dosage']
+            medlog['entries'][index]['medicines'][0]['med_instructions'] = data['med_instructions']
+            
+            medlogs.update_one({'doctor_id': data['user_id']}, {'$set': {'entries': medlog['entries']}})
+
 @app.route('/d_patient_med_log/<email>', methods=['GET', 'POST'])
 def patient_med_log(email):
     if request.method == 'GET':
