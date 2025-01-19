@@ -3,61 +3,16 @@
         "age": 17,
         "sex": "not provided"
     },
-    "conversation_history": [
-        {
-            "role": "user",
-            "content": "hi"
-        },
-        {
-            "role": "assistant",
-            "content": "Can you please tell me about the symptoms you are experiencing?"
-        },
-        {
-            "role": "user",
-            "content": "heacahe"
-        },
-        {
-            "role": "assistant",
-            "content": "How long have you been experiencing this headache?"
-        },
-        {
-            "role": "user",
-            "content": "3 days"
-        },
-        {
-            "role": "assistant",
-            "content": "Can you describe the type of headache you are having? Is it dull, sharp, throbbing, or something else?"
-        },
-        {
-            "role": "user",
-            "content": "dull"
-        },
-        {
-            "role": "assistant",
-            "content": "Do you have any other symptoms accompanying the headache, such as nausea, sensitivity to light, or changes in vision?"
-        },
-        {
-            "role": "user",
-            "content": "visn change"
-        },
-        {
-            "role": "assistant",
-            "content": "Can you explain what changes in your vision you are experiencing? Are you seeing blurry areas, flashes of light, or anything else?"
-        },
-        {
-            "role": "user",
-            "content": "blurry"
-        }
-    ],
+    "conversation_history": [],
     "possible_next_steps": [
-        "Monitor the headache and the changes in vision.",
-        "Encourage rest and maintaining hydration.",
-        "Consider advising over-the-counter pain relief, if appropriate.",
-        "If symptoms worsen or new symptoms develop, it's important to seek medical attention sooner."
+        "Assess the patient's symptoms further through detailed follow-up.",
+        "Evaluate lifestyle factors that may contribute to the symptoms.",
+        "Encourage the patient to communicate any new symptoms that arise.",
+        "If symptoms persist without clarification, recommend seeing a healthcare provider."
     ],
     "summary": [
-        "The patient has been experiencing a dull headache for 3 days.",
-        "The headache is accompanied by changes in vision, specifically blurriness.",
-        "There are no additional symptoms mentioned, such as nausea or sensitivity to light."
+        "The patient has expressed symptoms but has not specified any details.",
+        "The duration and intensity of the symptoms are unknown.",
+        "No additional symptoms have been noted, making it challenging to assess further."
     ]
 }

@@ -218,6 +218,27 @@ def handle_final_data(data):
 
     emit('final_data', 'return_medlog')
 
+@app.route('/list-new-logs', methods=['GET'])
+def get_new_logs():
+    user = users.find_one({'email': session['email']})
+    medlog = medlogs.find({'doctor_id': user['user_id']})
+    name_list = []
+    email_list = []
+    date_sent = []
+
+    for log in medlog:
+        for entry in log['entries']:
+            if entry['is_viewed'] == False:
+                patient_id = log['patient_id']
+                patient = users.find_one({'user_id': patient_id})
+
+                name_list.append(patient['fullname'])
+                email_list.append(patient['email'])
+                date_sent.append(entry['date'])
+
+        
+    return jsonify({'emails': email_list, 'names': name_list, 'dates': date_sent}), 200
+
 @app.route('/d-new-logs/')
 def new_logs():
     if session['type'] == 'doctor':

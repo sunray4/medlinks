@@ -217,14 +217,21 @@
                 left_side.classList.remove('mx-56')
                 left_side.classList.remove('col-span-2')
                 // right_side_view.classList.add('h-screen');
-                
+                let med_table = document.getElementById('med-table');
                 const medication = medications[0];
-                
+                let header_row = med_table.insertRow(-1);
+                header_row.classList.add('grid', 'grid-cols-12', 'gap-x-4', 'border-b', 'border-[#868E96]');
+                header_row.innerHTML = `
+                    <td class="py-3 text-left col-span-3">Medication</td>
+                    <td class="py-3 text-left col-span-2">Dosage</td>
+                    <td class="py-3 text-left col-span-6">Instructions</td>
+                    <td class="py-3 text-left col-span-1"> </td>
+                `;
                 let med_name = medication['med_name'];
                 let med_dosage = medication['med_dosage'];
                 let med_instructions = medication['med_instructions'];
-                let med_table = document.getElementById('med-table');
-                let new_row = med_table.insertRow();
+                
+                let new_row = med_table.insertRow(-1);
                 new_row.classList.add('grid', 'grid-cols-12', 'gap-x-4', 'mt-4');
                 new_row.innerHTML = `
                     <td class="col-span-3 w-full p-1" id="med-name">${med_name}</td>
