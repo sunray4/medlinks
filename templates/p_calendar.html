@@ -12,6 +12,10 @@
     <div id="calendar"></div>
 
     <script>
+        const response = await fetch('/getdocname', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+    });
 
         const unavailable_title = 'Unavailable';
 
@@ -42,6 +46,8 @@
         <label for="date">Date (yyyy-mm-dd):</label>
         <input type="text" id="date" name="date"><br><br>
         <label for="time">Time (24h):</label>
+        <input type="text" id="time" name="time"><br><br>
+        <label for="time">Type (Online/In person)</label>
         <input type="text" id="time" name="time"><br><br>
 
         <button id="secondTaskButton">Check Availablity</button>

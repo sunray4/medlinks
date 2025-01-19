@@ -1,4 +1,4 @@
-{%  %}
+{% extends 'p_content.html' %}
 <!-- <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,50 +31,71 @@
             color: olive;
         }
     </style> -->
-{% block content %}
-    <div id="chat" class="bg-[#BDCAD6] rounded-lg p-10 m-10 mx-20"></div>
-    <input type="text" id="message" placeholder="Type your message here...">
-    <button id="send">Send</button>
+{% block p_content %}
+<div class="h-screen">
+    <div id="message_box" class="bg-[#BDCAD6] rounded-lg p-10 mx-20 flex flex-col justify-between h-full">
+        <!-- Chat container with flexible height and scrollable content -->
+        <div id="chat" class="min-h-[32px] flex-grow overflow-y-auto p-5">
+            <!-- Chat messages will be added here -->
+        </div>
+        
+        <!-- Message input box always at the bottom -->
+        <div class="w-full flex justify-center items-center mt-4">
+            <input type="text" id="message"
+            class="p-2 w-2/3 rounded-lg bg-[#ffffff] border border-[#868E96]" placeholder="Type your message here...">
+            <button id="send" class="hidden">Send</button>
+        </div>
+    </div>
+</div>
 
-    {% block script %}
-    <script>
-        const socket = io();
+{% endblock %}
 
-        document.getElementById('send').onclick = function() {
-            const message = document.getElementById('message').value;
-            socket.emit('user_message', message);
-            document.getElementById('message').value = '';
-        };
+{% block script %}
+<script>
+    const socket = io();
 
-        socket.on('bot_response', function(data) {
-            const chat = document.getElementById('chat');
-            if (typeof data === 'object') {
-                chat.innerHTML += `<div>${formatJson(data)}</div><br><br>`;
-            } else {
-                chat.innerHTML += `<div>${data}</div><br><br>`;
-            }
-            chat.scrollTop = chat.scrollHeight;
-        });
+    const messageInput = document.getElementById('message');
 
-        function formatJson(json) {
-            return JSON.stringify(json, null, 2)
-                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-                .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-                    var cls = 'json-value';
-                    if (/^"/.test(match)) {
-                        if (/:$/.test(match)) {
-                            cls = 'json-key';
-                        } else {
-                            cls = 'json-string';
-                        }
-                    } else if (/true|false/.test(match)) {
-                        cls = 'json-boolean';
-                    } else if (/null/.test(match)) {
-                        cls = 'json-null';
-                    }
-                    return '<span class="' + cls + '">' + match + '</span>';
-                });
+    messageInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            document.getElementById('send').click();
         }
-    </script>
+    });
+    document.getElementById('send').onclick = function() {
+        const message = document.getElementById('message').value;
+        socket.emit('user_message', message);
+        document.getElementById('message').value = '';
+    };
+
+    socket.on('bot_response', function(data) {
+        const chat = document.getElementById('chat');
+        if (typeof data === 'object') {
+            chat.innerHTML += `<div>${formatJson(data)}</div><br><br>`;
+        } else {
+            chat.innerHTML += `<div>${data}</div><br><br>`;
+        }
+        chat.scrollTop = chat.scrollHeight;
+    });
+
+    function formatJson(json) {
+        return JSON.stringify(json, null, 2)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cls = 'json-value';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'json-key';
+                    } else {
+                        cls = 'json-string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'json-boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'json-null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+    }
+</script>
 {% endblock %}
 

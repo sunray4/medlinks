@@ -13,18 +13,19 @@
         </div>
         <div class="w-full">
             <!-- iterate through all med logs of that patient  -->
-            <button id="log-entry-open" class="w-full">
-                <div id="log-entry"
-                    class="w-full bg-[#BDCAD6] rounded-lg focus:border focus:border-[#FF6969] p-7 mb-4 px-10">
-                    <span class="flex items-center justify-between  pb-2">
-                        <p>Date
-                        <p>
-                        <div class="border border-white rounded-3xl p-1 px-2">Mode</div>
-                    </span>
-                    <hr class="bg-[#868E96] mb-2">
-                    <p class="italic text-[#3E4B52] text-left">Paragrpah about diagnosis</p>
-                </div>
-            </button>
+            {% for i in medlogs %}
+                <button id="log-entry-open_{{ medlogs.index(i) + 1 }}" class="w-full">
+                    <div id="log-entry"
+                        class="w-full bg-[#BDCAD6] rounded-lg focus:border focus:border-[#FF6969] p-7 mb-4 px-10">
+                        <span class="flex items-center justify-between  pb-2">
+                            <p>{{ i['date'] }}</p>
+                            <div class="border border-white rounded-3xl p-1 px-2">{{ i['mode'] }}</div>
+                        </span>
+                        <hr class="bg-[#868E96] mb-2">
+                        <p class="italic text-[#3E4B52] text-left">{{ i['doctor_diagnosis'] }}</p>
+                    </div>
+                </button>
+            {% endfor %}
         </div>
     </div>
 
@@ -78,14 +79,14 @@
                                 <th class="py-3 text-left col-span-1"> </th>
                             </tr>
                             <!-- for loop iteration through all patients  -->
-                            <tr class="grid grid-cols-12 gap-x-4 mt-4" data-rows="3">
+                            <tr class="grid grid-cols-12 gap-x-4 mt-4">
 
-                                <td class="col-span-3"><input type="text" class="w-full p-1" id="med_name"
-                                        name="med_name" placeholder="Medication..." /></td>
-                                <td class="col-span-2"><input type="text" class="w-full p-1" id="med_dosage"
-                                        name="med_dosage" placeholder="Dosage..." /></td>
-                                <td class="col-span-6"><textarea id="med_instructions" class="w-full p-1"
-                                        name="med_instructions" placeholder="Instructions..."></textarea></td>
+                                <td class="col-span-3"><input type="text" class="w-full p-1" id="med_name_1"
+                                        name="med_name_1" placeholder="Medication..." /></td>
+                                <td class="col-span-2"><input type="text" class="w-full p-1" id="med_dosage_1"
+                                        name="med_dosage_1" placeholder="Dosage..." /></td>
+                                <td class="col-span-6"><textarea id="med_instructions_1" class="w-full p-1"
+                                        name="med_instructions_1" placeholder="Instructions..."></textarea></td>
                                 <td class="col-span-1  p-1">
                                     <div class="text-right">
                                         <button id="view_log" class="p-1">
@@ -191,7 +192,6 @@
 
     {% block script %}
     <script>
-
         const add_patient_btn = document.getElementById('add-patient-btn');
         const add_log = document.getElementById('add-log');
         const close_svg_add = document.getElementById('close-svg-add');
@@ -200,19 +200,34 @@
 
         const right_side_view = document.getElementById('right-side-view');
         const close_svg_view = document.getElementById('close-svg-view');
-        const log_entry_open = document.getElementById('log-entry-open')
 
+        const med_logs = {{ medlogs | tojson }};
 
-        log_entry_open.addEventListener('click', () => {
-            console.log(right_side_view.className)
-            right_side_view.classList.remove('hidden');
+        med_logs.forEach(element => {
+            let index = med_logs.indexOf(element) + 1;
 
-            left_side.classList.remove('mx-56');
-            // left_side.classList.remove('h-screen');
-            left_side.classList.remove('col-span-2');
-            right_side_view.classList.add('h-screen');
+            document.getElementById(`log-entry-open_${index}`).addEventListener('click', () => {
+                let date = element['date'];
+                let personal_notes = element['personal_notes'];
+                let doctors_notes = element['doctor_diagnosis'];
+                let medications = element['medicines'];
 
+                console.log(date, personal_notes, doctors_notes, medications);
+            })
         });
+
+
+        // const log_entry_open = document.getElementById('log-entry-open')
+        // log_entry_open.addEventListener('click', () => {
+        //     console.log(right_side_view.className)
+        //     right_side_view.classList.remove('hidden');
+
+        //     left_side.classList.remove('mx-56');
+        //     // left_side.classList.remove('h-screen');
+        //     left_side.classList.remove('col-span-2');
+        //     right_side_view.classList.add('h-screen');
+
+        // });
         close_svg_view.addEventListener('click', () => {
             // page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
             right_side_view.classList.add('hidden');

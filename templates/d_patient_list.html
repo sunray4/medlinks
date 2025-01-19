@@ -26,10 +26,10 @@
                     <th class="py-3 text-left"> </th>
                 </tr>
                 <!-- for loop iteration through all patients  -->
-                 {{for patient in patients}}
+                 {% for patient in patients %}
                 <tr class="grid grid-cols-4 gap-4 py-4 patient-row">
                     <td class="patient-name">
-                        {{}}
+                        <ul id="nameList"></ul>
                     </td>
                     <td class="patient-email">
                         <ul id="emailList"></ul>
@@ -42,6 +42,7 @@
 
                     </td>
                 </tr>
+                {% endfor %}
                 <!-- Add more patient rows as needed -->
             </table>
         </div>

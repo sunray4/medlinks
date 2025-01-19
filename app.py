@@ -111,7 +111,8 @@ def home():
         session['type'] = user['type']
         if request.method == 'GET':
             if session['type'] == 'doctor':
-                return render_template("d_patient_list.html")
+                patients = get_patients()
+                return render_template("d_patient_list.html", patients=patients)
             elif session['type'] == 'patient':
                 return render_template("p_med_log.html")
         elif request.method == 'POST':
@@ -153,7 +154,7 @@ def home():
             
             yag.send(patient_email, 'Medlinks', email_content)
             
-            return render_template("d_patient_list.html")
+            # return render_template("d_patient_list.html")
     else:
         return redirect(url_for('login'))
     
@@ -198,7 +199,7 @@ def new_logs():
 
 @app.route('/d-patient-list/')
 def patient_list():
-    patients = {}
+    patients = get_patients()
     return render_template("d_patient_list.html", patients=patients)
 
 @app.route('/redirect-doctor-to-patient-log/<doctor_id>', methods=['POST'])
@@ -232,27 +233,29 @@ def patient_med_log(email):
         mode = request.form.get('entry_mode', None)
         personal_notes = request.form.get('entry_personal_notes', None)
         doctor_diagnosis = request.form.get('entry_doctor_diagnosis', None)
-        med_name = request.form.get('med_name', None)
-        med_dosage = request.form.get('med_dosage', None)
-        med_instructions = request.form.get('med_instructions', None)
+        medicine = []
         inperson_meeting = request.form.get('inperson_meeting', None)
+
+        for i in range(int(rows)):
+            med_name = request.form.get('med_name_' + str(i+1), None)
+            med_dosage = request.form.get('med_dosage_' + str(i+1), None)
+            med_instructions = request.form.get('med_instructions_' + str(i+1), None)
+            medicine.append({'med_name': med_name, 'med_dosage': med_dosage, 'med_instructions': med_instructions})
         
         if not mode:
             return jsonify({'error': 'Entry mode is required'}), 400
         
-        print(rows)
         
         patient = users.find_one({'email': email})
         medlog_id = patient['medlog_id']
 
         medlog = medlogs.find_one({'medlog_id': medlog_id})
-        medlog['entries'].append({'date': date, 'mode': mode, 'personal_notes': personal_notes, 'doctor_diagnosis': doctor_diagnosis, 'med_name': med_name, 'med_dosage': med_dosage, 'med_instructions': med_instructions, 'inperson_meeting': inperson_meeting})
+        medlog['entries'].append({'date': date, 'mode': mode, 'personal_notes': personal_notes, 'doctor_diagnosis': doctor_diagnosis, 'medicines': medicine, 'inperson_meeting': inperson_meeting})
         medlogs.update_one({'medlog_id': medlog_id}, {'$set': {'entries': medlog['entries']}})
 
-    
-    return render_template("d_patient_med_log.html", patient=patient)
+    return render_template("d_patient_med_log.html", patient=patient, medlogs=medlogs.find_one({'medlog_id': patient['medlog_id']})['entries'])
 
-events = [
+events_dict = [
     {
         'todo': 'Appt. with Josh',
         'date': '2025-01-14',
@@ -268,47 +271,88 @@ events = [
     
 ]
 
+@app.route('/getdocname', methods=['GET'])
+def return_docname():
+    if 'email' in session:
+        if session['type'] == 'patient':
+            user = users.find_one({'email': session['email']})
+            doctor_id = user['doctor_id']
+            doctor_name = users.find_one({'user_id': doctor_id})['fullname']
+
+            return jsonify({'name': doctor_name})
+
 @app.route('/create_event', methods=['POST'])
 def create_event():
     if request.method == 'POST':
         date = request.form['date']
         time = request.form['time']
+        appt_type = request.form['type']
         if "email" in session:
             if session['type'] == 'patient':
                 user = users.find_one({'email': session['email']})
                 session_key = user['user_id']
                 doctor_id = user['doctor_id']
-                events.insert_one({'doctor_id': doctor_id, 'patient_id': session_key, 'date': date, 'time': time})
-                return render_template("p_calendar.html")
+                event_id = str(uuid.uuid4())
+                patient_name = user['fullname']
+                todo = 'Appt. w/ ' + patient_name
+                events.insert_one({'event_id': event_id, 'todo':todo, 'type':appt_type, 'doctor_id': doctor_id, 'patient_id': session_key, 'date': date, 'time': time})
+                user = users.find_one({'email': session['email']})
+                session_key = user['user_id']
+                print(session_key)
+                events_session = events.find({ "patient_id": session_key})
+                patient_email = user['email']
+                
+                patient_event_email_content = f'''
+                Hi {patient_name}!
+
+                Your appointment has been booked for {date} at {time}.
+
+                Best wishes,
+                Your friends at Medlinks
+                '''
+
+                yag.send(patient_email, 'Medlinks', patient_event_email_content)
+
+                doctor_event_email_content = f'''
+                
+                
+                
+                Best wishes,
+                Your friends at Medlinks
+                '''
+
+                return render_template("p_calendar.html", events = events_session)
         else: 
             return redirect(url_for('login'))
                 
 
-@app.route('/display_events', methods=['GET'])
-def get_events():
+@app.route('/d_calendar')
+def d_calendar():
     if "email" in session:
-        if session['type'] == 'doctor':
+        if session['type'] == 'patient':
+            return jsonify({'error': 'Unauthorized'}), 401
+        elif session['type'] == 'doctor':
             user = users.find_one({'email': session['email']})
             session_key = user['user_id']
             events_session = events.find({ "doctor_id": session_key})
-            return jsonify({'events': events_session}), 200
+            
+            return render_template('d_calendar.html', events = events_session)
+    else:
+        return redirect(url_for('login'))
+
+@app.route('/p_calendar')
+def p_calendar():
+    if "email" in session:
+        if session['type'] == 'doctor':
+            return jsonify({'error': 'Unauthorized'}), 401
         elif session['type'] == 'patient':
             user = users.find_one({'email': session['email']})
             session_key = user['user_id']
             events_session = events.find({ "patient_id": session_key})
-            return jsonify({'events': events_session}), 200
+            
+            return render_template('p_calendar.html', events = events_session)
     else:
         return redirect(url_for('login'))
-        
-
-
-@app.route('/d_calendar')
-def d_calendar():
-    return render_template('d_calendar.html', events = events)
-
-@app.route('/p_calendar')
-def p_calendar():
-    return render_template('p_calendar.html', events = events)
 
 @socketio.on('message')
 def handle_message(data):
