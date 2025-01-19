@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
 from flask_pymongo import PyMongo
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
@@ -14,7 +14,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
-yag = yagmail.SMTP('from', 'app specific password')
+yag = yagmail.SMTP('medlinks.app@gmail.com', 'uqqz awlm wrqo vbyy')
 
 config = configparser.ConfigParser()
 config.read(os.path.abspath(os.path.join(".ini")))
@@ -34,54 +34,58 @@ def generate_patient_password():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'GET':
-        return render_template('register.html')
-    elif request.method == 'POST':
-        fullName = request.form['fullname']
+    if request.method == 'POST':
+        firstname = request.form['first-name']
+        lastname = request.form['last-name']
+        fullname = firstname + ' ' + lastname
         email = request.form['email']
         password = request.form['password']
         doctor_id = str(uuid.uuid4())
         type = 'doctor'
         
         if not email or not password:
-            return jsonify({'error': 'Email and password are required'}), 400
+            flash('Email and password are required.', 'error')
 
         if users.find_one({'email': email}):
-            return jsonify({'error': 'Email already exists'}), 400
+            flash('Email already exists.', 'error')
         
         hashed_password = generate_password_hash(password)
-        users.insert_one({'user_id': doctor_id, 'email': email, 'password': hashed_password, 'fullname': fullName, 'unread_message_list': [], 'patient_list': [], 'events': [], 'type': type})
+        users.insert_one({'user_id': doctor_id, 'email': email, 'password': hashed_password, 'fullname': fullname, 'unread_message_list': [], 'patient_list': [], 'events': [], 'type': type})
         session['doctor_id'] = doctor_id
         
-    return jsonify({'message': 'User registered successfully', 'redirect': '/'}), 201
+        flash('Successfully created account, please log in.', 'success')
+        return redirect(url_for('home'))
+    
+    return render_template('register.html')
 
 
 # User Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'GET':
-        return render_template('login.html')
-    elif request.method == 'POST':
+    if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
     
-    if not email or not password:
-        return jsonify({'error': 'email and password are required'}), 400
-    
-    user = users.find_one({'email': email})
-    session['doctor_id'] = user['user_id']
-    
-    if user and check_password_hash(user['password'], password):
-        session['email'] = email
-        return jsonify({'message': 'Logged in successfully', 'redirect': '/'}), 200
-    else:
-        return jsonify({'error': 'Invalid email or password'}), 401
+        if not email or not password:
+            return jsonify({'error': 'email and password are required'}), 400
+        
+        user = users.find_one({'email': email})
+        
+        if user and check_password_hash(user['password'], password):
+            session['email'] = email
+            session['doctor_id'] = user['user_id']
+            return redirect(url_for('home'))
+        else:
+            flash('Invalid email or password. Please try again', 'error')
+            
+    return render_template('login.html')
 
 # User Logout
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.pop('email', None)
-    return jsonify({'message': 'Logged out successfully'}), 200
+    flash('Successfully logged out.', 'success')
+    return redirect(url_for('login'))
 
 # Protected Route Example
 @app.route('/profile', methods=['GET'])
@@ -150,11 +154,16 @@ def redirect_doctor_to_patient_log(doctor_id, patient_id, entry_id):
 
 @app.route('/list_patients', methods=['GET'])
 def get_patients():
-    if 'email' in session:
-        users = users.find({}, {'email': 1})
-        user_list = [user['email'] for user in users]
-        return jsonify({'users': user_list}), 200
-    return jsonify({'error': 'Unauthorized'}), 401
+    users_list = users.find()
+    email_list = []
+    name_list = []
+    
+    for user in users_list:
+        email_list.append(user['email'])
+        name_list.append(user['fullname'])
+
+    return jsonify({'emails': email_list, 'names': name_list}), 200
+    
 
 if __name__ == "__main__":
     # app = db.factory.create_app()

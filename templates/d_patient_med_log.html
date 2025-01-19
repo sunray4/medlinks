@@ -3,9 +3,9 @@
 
 {% block d_content%}
 
-<div id="page-container" class="">
+<div id="page-container" class="grid grid-cols-2 gap-x-2">
     <!-- Left Side Content -->
-    <div id="left-side" class="m-10 mx-56 ">
+    <div id="left-side" class="m-10 mx-56 cols-span-2">
         <div class="flex justify-between mb-10 items-center">
             <p class="text-3xl font-bold">Patient's Med Log</p>
             <button id="add-patient-btn" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
@@ -13,8 +13,8 @@
         </div>
         <div class="w-full"> 
             <!-- iterate through all med logs of that patient  -->
-                <div class="w-full bg-[#BDCAD6] rounded-lg focus:border focus:border-[#FF6969] p-7 mb-4">
-                    <span class="flex items-center justify-between px-10 pb-2">
+                <div id="log-entry" class="w-full bg-[#BDCAD6] rounded-lg focus:border focus:border-[#FF6969] p-7 mb-4 px-10">
+                    <span class="flex items-center justify-between  pb-2">
                         <p>Date<p>
                         <div class="border border-white rounded-3xl p-1 px-2">Mode</div>
                     </span>
@@ -25,7 +25,7 @@
     </div>
 
     <!-- Right Side Content -->
-    <div id="right-side" class="translate-x-full ">
+    <div id="right-side" class="hidden">
         <div class="p-10 bg-[#E1E1E1]">
             <button id="close-svg" class="w-full mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
@@ -41,10 +41,10 @@
                     <span class="flex items-center space-x-4 mb-5">
                         <div>
                             <label for="fname" class="mr-4">Date:</label>
-                            <input type="text" id="new_log_date" name="new_log_date" class="p-1 rounded-lg bg-[#ffffff] border border-[#868E96]">
+                            <input type="text" id="entry_date" name="entry_date" class="p-1 rounded-lg bg-[#ffffff] border border-[#868E96]">
                         </div>
                         <div>
-                        <select id="mode" name="option" class="p-1 border rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                        <select id="entry_mode" name="entry_mode" class="p-1 border rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500">
                             <option value="" disabled selected>Select Mode</option>
                             <option value="text">Text</option>
                             <option value="in-person">In-person</option>
@@ -53,42 +53,46 @@
                     </div>
                     </span>
                     <label for="lname" class="font-semibold text-large mr-4">Personal Notes</label><br>
-                    <textarea id="new_log_personal_notes" name="new_log_personal_notes" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></textarea><br><br>
+                    <textarea id="entry_personal_notes" name="entry_personal_notes" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></textarea><br><br>
 
     
                     <label for="lname" class="font-semibold text-large mr-4">Doctor's diagnosis</label><br>
-                    <textarea id="new_log_doctor_diagnosis" name="new_log_doctor_diagnosis" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></textarea><br><br>
+                    <textarea id="entry_doctor_diagnosis" name="entry_doctor_diagnosis" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></textarea><br><br>
     
                     <label for="lname" class="font-semibold text-large mr-4">Medications</label><br>
-                    <div class=" bg-[#ffffff] p-4 rounded-lg">
-                    <table class="w-full table-auto">
-                        <tr class="grid grid-cols-3 gap-4 border-b border-[#868E96]">
-                            <th class="py-3 text-left ">Patient</th>
-                            <th class="py-3 text-left">Date of Birth</th>
-                            <th class="py-3 text-left"> </th>
-                        </tr>
-                    </table>
-                    <table class="w-full table-auto">
-                        <!-- for loop iteration through all patients  -->
-                        <tr class="grid grid-cols-79 gap-4 py-4">
-                            <td class="col-span-2">Name</td>
-                            <td>Date of birth</td>
-                            <td class="text-right p-2">
-                                <button id="view-log" class=""> 
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
-                                </button>
-                            </tr>
-                            <!-- </fo -->
+                        <div class=" bg-[#ffffff] p-4 rounded-lg">
                 
-                        </tr>
-                      </table>
-                    </div><br><br>
-
+                            <table class="w-full table-auto">
+                                <tr class="grid grid-cols-12 gap-x-4 border-b border-[#868E96]">
+                                    <th class="py-3 text-left col-span-3">Medication</th>
+                                    <th class="py-3 text-left col-span-2">Dosage</th>
+                                    <th class="py-3 text-left col-span-6">Instructions</th>
+                                    <th class="py-3 text-left col-span-1"> </th>
+                                </tr>
+                                <!-- for loop iteration through all patients  -->
+                                <tr class="grid grid-cols-12 gap-x-4 mt-4">
+                
+                                    <td class="col-span-3"><input type="text" class="w-full p-1" id="med_name" name="med_name" placeholder="Medication..." /></td>
+                                    <td class="col-span-2"><input type="text" class="w-full p-1" id="med_dosage" name="med_dosage" placeholder="Dosage..." /></td>
+                                    <td class="col-span-6"><textarea id="med_instructions" class="w-full p-1" name="med_instructions" placeholder="Instructions..."></textarea></td>
+                                    <td class="col-span-1  p-1"><div class="text-right">
+                                        <button id="view-log" class=""> 
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
+                                        </button>
+                                    </td>
+                                    </tr>
                     
-                    <button type="submit" id="add-log" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
-                </form>
-                <div>
+                            </table>
+                        </div>
+                        <label class="flex items-center space-x-2">
+                            <input type="radio" name="option" value="option3" class="focus:ring-indigo-500">
+                            <span>Please book an in-person meeting </span>
+                        </label>
+                        <button type="submit" id="add-log" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
+                    </form>
                 </div>
+
+                
             </div>
         </div>
 
@@ -111,35 +115,40 @@
             //             patientListElement.appendChild(listItem);
             //         });
             //     }
-
+            const page_container = document.getElementById('page-container')
             const openPopupButton = document.getElementById('add-patient-btn');
             const add_log = document.getElementById('add-log');
             const close_svg = document.getElementById('close-svg');
             const right_side = document.getElementById('right-side');
             const left_side = document.getElementById('left-side');
-            const page_container = document.getElementById('page-container')
+            
 
             // Event listener to open the pop-up
             openPopupButton.addEventListener('click', () => {
-                page_container.classList.add('grid', 'grid-cols-2', 'gap-4')
-                right_side.classList.remove('translate-x-full');
-                right_side.classList.add('translate-x-0');
+                // page_container.classList.add('grid', 'grid-cols-2', 'gap-4')
+                right_side.classList.remove('hidden');
+                // right_side.classList.remove('translate-x-full');
+                // right_side.classList.add('translate-x-0');
                 left_side.classList.remove('mx-56');
 
             });
 
             // Event listener to close the pop-up
             add_log.addEventListener('click', () => {
-                page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
-                right_side.classList.add('translate-x-full');
-                right_side.classList.remove('translate-x-0');
+                // page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
+                right_side.classList.add('hidden');
+                // right_side.classList.add('translate-x-full');
+                // right_side.classList.remove('translate-x-0');
                 left_side.classList.add('mx-56');
+                left_side.classList.remove('col-span-2')
             });
             close_svg.addEventListener('click', () => {
-                page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
-                right_side.classList.add('translate-x-full');
-                right_side.classList.remove('translate-x-0');
+                // page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
+                right_side.classList.add('hidden');
+                // right_side.classList.add('translate-x-full');
+                // right_side.classList.remove('translate-x-0');
                 left_side.classList.add('mx-56');
+                left_side.classList.remove('col-span-2')
             });
 
 
