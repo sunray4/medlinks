@@ -6,6 +6,8 @@ import yagmail
 import uuid
 import string
 import secrets
+import chatgpt
+from flask_socketio import SocketIO, emit
 
 # import db.factory
 import os
@@ -13,6 +15,7 @@ import configparser
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 
 yag = yagmail.SMTP('medlinks.app@gmail.com', 'uqqz awlm wrqo vbyy')
 
@@ -108,6 +111,7 @@ def home():
         elif request.method == 'POST':
             patient_name = request.form['patient_fullname']
             patient_dob = request.form['patient_dob']
+            patient_sex = request.form['patient_sex']
             patient_service_id = request.form['patient_service_id']
             patient_address = request.form['patient_address']
             patient_email = request.form['patient_email']
@@ -119,15 +123,19 @@ def home():
             type = 'patient'
             patient_password = generate_patient_password()
             
-            users.insert_one({'user_id': patient_id, 'fullname': patient_name, 'email': patient_email, 'password': generate_password_hash(patient_password), 'type': type, 'doctor_id': session['doctor_id'], 'dob': patient_dob, 'bc_service_card_id': patient_service_id, 'address': patient_address, 'phone_number': patient_phone_num, 'height': patient_height, 'weight': patient_weight, 'allergies': patient_allergies})
+            doctor = users.find_one({'user_id': session['doctor_id']})
+            doctor['patient_list'].append(patient_id)
+            doctor_name = doctor['fullname']
+            users.update_one({'user_id': session['doctor_id']}, {'$set': {'patient_list': doctor['patient_list']}})
+            
+            users.insert_one({'user_id': patient_id, 'fullname': patient_name, 'email': patient_email, 'patient_sex': patient_sex, 'password': generate_password_hash(patient_password), 'type': type, 'doctor_id': session['doctor_id'], 'dob': patient_dob, 'bc_service_card_id': patient_service_id, 'address': patient_address, 'phone_number': patient_phone_num, 'height': patient_height, 'weight': patient_weight, 'allergies': patient_allergies})
             medlogs.insert_one({'medlog_id': str(uuid.uuid4()), 'patient_id': patient_id, 'entries': [], 'doctor_id': session['doctor_id']})
             
             # send patient email w/ login info (email + password)
-
-            email_content = '''
+            email_content = f'''
             Hi {patient_name}!
             
-            Welcome to Medlinks! Your doctor has created an account for you. Here are your login credentials:
+            Welcome to Medlinks! Your doctor, {doctor_name} has created an account for you. You can access Medlinks with these credentials:
             Email: {patient_email}
             Password: {patient_password}
             
@@ -143,7 +151,13 @@ def home():
     
 @app.route('/post', methods=['GET', 'POST'])
 def post():
-    pass
+    bot = chatgpt.SymptomAnalyzer()
+    return render_template('post.html')
+
+@socketio.on('user_message')
+def handle_user_message(message):
+    bot = chatgpt.SymptomAnalyzer()
+    # response = bot.
 
 @app.route('/d-new-logs/')
 def new_logs():
@@ -151,6 +165,7 @@ def new_logs():
 
 @app.route('/d-patient-med-log/')
 def patient_med_log():
+    # print("running patient med log")
     return render_template("d_patient_med_log.html")
 
 @app.route('/d-patient-list/')
@@ -176,14 +191,73 @@ def get_patients():
 
     return jsonify({'emails': email_list, 'names': name_list, 'dob': dob_list }), 200
 
-@app.route('/d-calendar')
-def calendar():
-    return render_template('d_calendar.html')
+events = [
+    {
+        'todo': '15:00 - Appointment with Josh',
+        'date': '2025-01-14',
+    },  
+    {
+        'todo': '12:00 - Appointment with Sarah',
+        'date': '2025-01-14',
+    },
     
+]
+
+@app.route('/add_patient')
+def add_patient():
+    patient_name = request.form['patient_fullname']
+    patient_dob = request.form['patient_dob']
+    patient_service_id = request.form['patient_service_id']
+    patient_address = request.form['patient_address']
+    patient_email = request.form['patient_email']
+    patient_phone_num = request.form['patient_phone_num']
+    patient_height = request.form['patient_height']
+    patient_weight = request.form['patient_weight']
+    patient_allergies = request.form['patient_allergies']
+    patient_id = str(uuid.uuid4())
+    type = 'patient'
+    patient_password = generate_patient_password()
+            
+    doctor = users.find_one({'user_id': session['doctor_id']})
+    doctor['patient_list'].append(patient_id)
+    doctor_name = doctor['fullname']
+    users.update_one({'user_id': session['doctor_id']}, {'$set': {'patient_list': doctor['patient_list']}})
+            
+    users.insert_one({'user_id': patient_id, 'fullname': patient_name, 'email': patient_email, 'password': generate_password_hash(patient_password), 'type': type, 'doctor_id': session['doctor_id'], 'dob': patient_dob, 'bc_service_card_id': patient_service_id, 'address': patient_address, 'phone_number': patient_phone_num, 'height': patient_height, 'weight': patient_weight, 'allergies': patient_allergies})
+    medlogs.insert_one({'medlog_id': str(uuid.uuid4()), 'patient_id': patient_id, 'entries': [], 'doctor_id': session['doctor_id']})
+            
+    # send patient email w/ login info (email + password)
+    email_content = f'''
+        Hi {patient_name}!
+            
+        Welcome to Medlinks! Your doctor, {doctor_name} has created an account for you. You can access Medlinks with these credentials:
+        Email: {patient_email}
+        Password: {patient_password}
+            
+        Best wishes,
+        Your friends at Medlinks
+        '''
+            
+    yag.send(patient_email, 'Medlinks', email_content)
+            
+    return render_template("d_patient_list.html")
+
+@app.route('/d-calendar')
+def d_calendar():
+    return render_template('d_calendar.html', events = events)
+
+@app.route('/p-calendar')
+def p_calendar():
+    return render_template('p_calendar.html', events = events)
+
+@socketio.on('message')
+def handle_message(data):
+    print('received message: ' + data)
+    emit('message', data, broadcast=True)
 
 if __name__ == "__main__":
     # app = db.factory.create_app()
     # app.config['DEBUG'] = True
     # app.config['MONGO_URI'] = config['PROD']['DB_URI']
 
-    app.run(debug=True, port=5500)
+    socketio.run(app, debug=True, port=5500)

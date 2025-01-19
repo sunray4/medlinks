@@ -13,6 +13,7 @@
         </div>
         <div class="w-full"> 
             <!-- iterate through all med logs of that patient  -->
+                <button id="log-entry-open" class="w-full">
                 <div id="log-entry" class="w-full bg-[#BDCAD6] rounded-lg focus:border focus:border-[#FF6969] p-7 mb-4 px-10">
                     <span class="flex items-center justify-between  pb-2">
                         <p>Date<p>
@@ -21,13 +22,14 @@
                     <hr class="bg-[#868E96] mb-2">
                     <p class="italic text-[#3E4B52]">Paragrpah about diagnosis</p>
                 </div>
+            </button>
         </div>
     </div>
 
     <!-- Right Side Content -->
-    <div id="right-side" class="hidden">
+    <div id="right-side-add" class="hidden">
         <div class="p-10 bg-[#E1E1E1]">
-            <button id="close-svg" class="w-full mb-5">
+            <button id="close-svg-add" class="w-full mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
                     viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
                     <path
@@ -95,7 +97,68 @@
 
                 
             </div>
+
+            <!-- right side view  -->
+            <div id="right-side-view" class="hidden">
+                <div class="p-10 bg-[#E1E1E1]">
+                    <button id="close-svg-view" class="w-full mb-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
+                            viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                            <path
+                                d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z" />
+                        </svg>
+                    </button>
+                    <div class="p-3">
+                        <h1 class="font-bold text-2xl mb-5">New Med Log Entry</h1>
+                            <span class="flex items-center space-x-4 mb-5 justify-between">
+                                <div>
+                                    <p id="entry_date"></p>
+                                </div>
+                                <div class="p-1 border rounded-lg">
+                                    <p id="entry_mode"></p>
+                            </div>
+                            </span>
+                            <p class="font-semibold text-large mr-4">Personal Notes</p><br>
+                            <p id="entry_personal_notes"class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></p><br><br>
+        
+            
+                            <p class="font-semibold text-large mr-4">Doctor's diagnosis</label><br>
+                            <p id="entry_doctor_diagnosis" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></p><br><br>
+            
+                            <p class="font-semibold text-large mr-4">Medications</p><br>
+                                <div class=" bg-[#ffffff] p-4 rounded-lg">
+                        
+                                    <table class="w-full table-auto">
+                                        <tr class="grid grid-cols-12 gap-x-4 border-b border-[#868E96]">
+                                            <th class="py-3 text-left col-span-3">Medication</th>
+                                            <th class="py-3 text-left col-span-2">Dosage</th>
+                                            <th class="py-3 text-left col-span-6">Instructions</th>
+                                            <th class="py-3 text-left col-span-1"> </th>
+                                        </tr>
+                                        <!-- for loop iteration through all patients  -->
+                                        <tr class="grid grid-cols-12 gap-x-4 mt-4">
+                        
+                                            <td class="col-span-3 w-full p-1"  id="med_name"></td>
+                                            <td class="col-span-2 w-full p-1"  id="med_dosage"></td>
+                                            <td class="col-span-6 w-full p-1" id="med_instructions"></td>
+                                            <td class="col-span-1  p-1"><div class="text-right">
+                                                <button id="view-log" class=""> 
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
+                                                </button>
+                                            </td>
+                                            </tr>
+                            
+                                    </table>
+                                </div>
+                        </div>
+        
+                        
+                    </div>
+                </div>
+            </div>
+            
         </div>
+
 
         {% endblock %}
 
@@ -104,32 +167,40 @@
         {% block script %}
         <script>
 
-            //    function displayPatients() {
-            //         const patientListElement = document.getElementById('patientList');
-            //         patientListElement.innerHTML = ""; // Clear the current list
-
-            //         // Loop through the patients and create list items
-            //         patients.forEach(patient => {
-            //             const listItem = document.createElement('li');
-            //             listItem.className = 'patient-item';
-            //             listItem.innerHTML = `${patient.name} - ${patient.dob}`; // Name and DOB format
-            //             patientListElement.appendChild(listItem);
-            //         });
-            //     }
-            const page_container = document.getElementById('page-container')
-            const openPopupButton = document.getElementById('add-patient-btn');
+            const add_patient_btn = document.getElementById('add-patient-btn');
             const add_log = document.getElementById('add-log');
-            const close_svg = document.getElementById('close-svg');
-            const right_side = document.getElementById('right-side');
+            const close_svg_add = document.getElementById('close-svg-add');
+            const right_side_add = document.getElementById('right-side-add');
             const left_side = document.getElementById('left-side');
-            
+
+            const right_side_view = document.getElementById('right-side-view');
+            const close_svg_view = document.getElementById('close-svg-view');
+            const log_entry_open = document.getElementById('log-entry-open')
+
+
+            log_entry_open.addEventListener('click', () => {
+                console.log(right_side_view.className)
+                right_side_view.classList.remove('hidden');
+                
+                left_side.classList.remove('mx-56');
+                left_side.classList.remove('h-screen');
+                left_side.classList.remove('col-span-2');
+
+            });
+            close_svg_view.addEventListener('click', () => {
+                // page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
+                right_side_view.classList.add('hidden');
+                // right_side.classList.add('translate-x-full');
+                // right_side.classList.remove('translate-x-0');
+                left_side.classList.add('mx-56');
+                left_side.classList.add('col-span-2')
+                left_side.classList.add('h-screen');
+            });
 
             // Event listener to open the pop-up
-            openPopupButton.addEventListener('click', () => {
-                // page_container.classList.add('grid', 'grid-cols-2', 'gap-4')
-                right_side.classList.remove('hidden');
-                // right_side.classList.remove('translate-x-full');
-                // right_side.classList.add('translate-x-0');
+            add_patient_btn.addEventListener('click', () => {
+                right_side_add.classList.remove('hidden');
+                
                 left_side.classList.remove('mx-56');
                 left_side.classList.remove('h-screen');
                 left_side.classList.remove('col-span-2');
@@ -139,16 +210,16 @@
             // Event listener to close the pop-up
             add_log.addEventListener('click', () => {
                 // page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
-                right_side.classList.add('hidden');
+                right_side_add.classList.add('hidden');
                 // right_side.classList.add('translate-x-full');
                 // right_side.classList.remove('translate-x-0');
                 left_side.classList.add('mx-56');
                 left_side.classList.add('col-span-2')
                 left_side.classList.add('h-screen');
             });
-            close_svg.addEventListener('click', () => {
+            close_svg_add.addEventListener('click', () => {
                 // page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
-                right_side.classList.add('hidden');
+                right_side_add.classList.add('hidden');
                 // right_side.classList.add('translate-x-full');
                 // right_side.classList.remove('translate-x-0');
                 left_side.classList.add('mx-56');

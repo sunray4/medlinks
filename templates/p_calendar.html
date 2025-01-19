@@ -12,12 +12,14 @@
     <div id="calendar"></div>
 
     <script>
+        const unavailable_title = 'Unavailable',
+
         let calendarEl = document.getElementById('calendar');
         let calendar = new FullCalendar.Calendar(calendarEl, {
             events : [
                 {% for event in events %}
                 {
-                    title : '{{event.todo}}',
+                    title : unavailable_title,
                     start : '{{event.date}}',
                 },
                 {% endfor %}

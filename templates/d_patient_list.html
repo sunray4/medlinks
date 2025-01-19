@@ -22,12 +22,22 @@
                 </tr>
                 <!-- for loop iteration through all patients  -->
                 <tr class="grid grid-cols-4 gap-4 py-4 patient-row">
-                    <td class="patient-name"><ul id="nameList"></ul></td>
-                    <td class="patient-email"><ul id="emailList"></ul></td>
-                    <td class="patient-dob"><ul id="dobList"></ul></td>
+                    <td class="patient-name">
+                        <ul id="nameList"></ul>
+                    </td>
+                    <td class="patient-email">
+                        <ul id="emailList"></ul>
+                    </td>
+                    <td class="patient-dob">
+                        <ul id="dobList"></ul>
+                    </td>
                     <td class="text-right p-2">
-                        <button id="view-log" class=""> 
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
+                        <button id="view-log" class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
+                                viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                                <path
+                                    d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z" />
+                            </svg>
                         </button>
                     </td>
                 </tr>
@@ -37,7 +47,7 @@
     </div>
 
     <!-- Right Side Content -->
-    <div id="right-side" class="translate-x-full ">
+    <div id="right-side" class="hidden">
         <div class="p-10 bg-[#E1E1E1]">
             <button id="close-svg" class="w-full mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
@@ -49,7 +59,7 @@
             <div class="p-3">
                 <h1 class="font-bold text-2xl mb-5">Patient Details</h1>
 
-                <form action="/" method="POST">
+                <form action="/add_patient" method="POST">
                     <span>
                         <label for="fname" class="font-medium mr-4">Full Name:</label>
                         <input type="text" id="patient_fullname" name="patient_fullname"
@@ -60,51 +70,72 @@
                         <label for="lname" class="font-medium mr-4">Date of Birth:</label>
                         <input type="text" id="patient_dob" name="patient_dob"
                             class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]">
+
+
+                        <!-- <div class="relative max-w-sm">
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                </svg>
+                            </div>
+                            <input id="datepicker-format" datepicker datepicker-format="mm-dd-yyyy" type="text"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Select date">
+                        </div> -->
+
                     </span>
                     <br><br>
                     <span>
-                        <label for="lname" class="font-medium mr-4">BC Service Card ID:</label>
+                        <label for="sex" class="font-medium mr-4" id="sex">Sex (male/female): </label>
+                        <input type="text" id="patient_sex" name="patient_sex" class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]">
+                    </span>
+                    <br><br>
+                    <span>
+                        <label for="lname" class="font-medium mr-4" id="bcServicesCard">BC Service Card ID:</label>
                         <input type="text" id="patient_service_id" name="patient_service_id"
                             class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]">
                     </span>
                     <br><br>
                     <span>
-                        <label for="lname" class="font-medium mr-4">Address:</label>
+                        <label for="lname" class="font-medium mr-4" id="address">Address:</label>
                         <input type="text" id="patient_address" name="patient_address"
                             class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]">
                     </span>
                     <br><br>
                     <span>
-                        <label for="lname" class="font-medium mr-4">Email:</label>
+                        <label for="lname" class="font-medium mr-4" id="email">Email:</label>
                         <input type="text" id="patient_email" name="patient_email"
                             class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]">
                     </span>
                     <br><br>
                     <span>
-                        <label for="lname" class="font-medium mr-4">Phone Number:</label>
+                        <label for="lname" class="font-medium mr-4" id="phoneNumber">Phone Number:</label>
                         <input type="text" id="patient_phone_num" name="patient_phone_num"
                             class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]">
                     </span>
                     <br><br>
                     <span>
-                        <label for="lname" class="font-medium mr-4">Height (cm):</label>
+                        <label for="lname" class="font-medium mr-4" id="height">Height (cm):</label>
                         <input type="text" id="patient_height" name="patient_height"
                             class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]">
                     </span>
                     <br><br>
                     <span>
-                        <label for="lname" class="font-medium mr-4">Weight (kg):</label>
+                        <label for="lname" class="font-medium mr-4" id="weight">Weight (kg):</label>
                         <input type="text" id="patient_weight" name="patient_weight"
                             class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]">
                     </span>
                     <br><br>
                     <span>
-                        <label for="lname" class="font-medium mr-4">Allergies:</label>
+                        <label for="lname" class="font-medium mr-4" id="allergies">Allergies:</label>
                         <input type="text" id="patient_allergies" name="patient_allergies"
                             class="p-2 rounded-lg bg-[#ffffff] border border-[#868E96]">
                     </span>
                     <br><br>
-                    <button type="submit" id="add-patient" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Patient</button>
+                    <button type="submit" id="add-patient" class="p-2 rounded-lg bg-[#DFC623] text-white">Add
+                        Patient</button>
                 </form>
                 <div>
                 </div>
@@ -114,7 +145,6 @@
         {% endblock %}
 
 
-
         {% block script %}
         <script>
             const openPopupButton = document.getElementById('add-patient-btn');
@@ -122,13 +152,12 @@
             const close_svg = document.getElementById('close-svg');
             const right_side = document.getElementById('right-side');
             const left_side = document.getElementById('left-side');
-        
+
             openPopupButton.addEventListener('click', () => {
                 right_side.classList.remove('hidden');
                 left_side.classList.remove('mx-56');
                 left_side.classList.remove('h-screen');
                 left_side.classList.remove('col-span-2');
-
             });
 
 
@@ -137,6 +166,8 @@
                 left_side.classList.add('mx-56');
                 left_side.classList.add('col-span-2')
                 left_side.classList.add('h-screen');
+
+
             });
             close_svg.addEventListener('click', () => {
                 right_side.classList.add('hidden');
@@ -145,30 +176,30 @@
                 left_side.classList.add('h-screen');
             });
 
-            const response = fetch('/list_patients', {method: 'GET',
+            const response = fetch('/list_patients', {
+                method: 'GET',
             }).then(response => response.json())
-                    .then(data => {
-                        
-                        const emailList = document.getElementById('emailList');
-                        const nameList = document.getElementById('nameList');
-                        const dobList = document.getElementByID('dobList')
-                        data.emails.forEach(user => {
-                            const li1 = document.createElement('li');
-                            li1.textContent = user;
-                            emailList.appendChild(li1);
-                        });
-                        data.names.forEach(user => {
-                            const li2 = document.createElement('li');
-                            li2.textContent = user;
-                            nameList.appendChild(li2);
-                        });
-                        data.dob.forEach(user => {
-                            const li2 = document.createElement('li');
-                            li2.textContent = user;
-                            dobList.appendChild(li2);
-                        });
-                    }).catch(err => console.error('Error fetching users:', err));
-                
+                .then(data => {
+                    const emailList = document.getElementById('emailList');
+                    const nameList = document.getElementById('nameList');
+                    const dobList = document.getElementById('dobList')
+                    data.emails.forEach(user => {
+                        const li1 = document.createElement('li');
+                        li1.textContent = user;
+                        emailList.appendChild(li1);
+                    });
+                    data.names.forEach(user => {
+                        const li2 = document.createElement('li');
+                        li2.textContent = user;
+                        nameList.appendChild(li2);
+                    });
+                    data.dob.forEach(user => {
+                        const li2 = document.createElement('li');
+                        li2.textContent = user;
+                        dobList.appendChild(li2);
+                    });
+                }).catch(err => console.error('Error fetching users:', err));
+
             // function displayPatients() {
             //     const patientListElement = document.getElementById('patientList');
             //     patientListElement.innerHTML = ""; // Clear the current list
@@ -183,7 +214,7 @@
             // }
 
             // Event listener to open the pop-up
-           
+
 
             function searchPatients() {
                 const searchInput = document.getElementById('search').value.toLowerCase();
