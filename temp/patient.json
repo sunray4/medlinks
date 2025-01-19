@@ -5,6 +5,10 @@
     },
     "conversation_history": [
         {
+            "role": "assistant",
+            "content": "What symptoms are you currently experiencing?"
+        },
+        {
             "role": "user",
             "content": "I have a headache."
         },
@@ -18,31 +22,39 @@
         },
         {
             "role": "assistant",
-            "content": "Are there any specific activities or situations that seem to make your symptoms worse?"
+            "content": "Have you noticed any specific triggers or activities that make your symptoms worse?"
         },
         {
             "role": "user",
-            "content": "When I look up my head hurts."
+            "content": "It hurts more when I look up."
         },
         {
             "role": "assistant",
-            "content": "Have you noticed any additional symptoms, such as fever, fatigue, or changes in appetite?"
+            "content": "Are you experiencing any other symptoms alongside the main ones you mentioned, such as fever, fatigue, or changes in appetite?"
         },
         {
             "role": "user",
-            "content": "No, just the headache."
+            "content": "No other symptoms."
+        },
+        {
+            "role": "assistant",
+            "content": "Have you had any recent illnesses, injuries, or changes in your environment or routine that you think might be related to your symptoms?"
+        },
+        {
+            "role": "user",
+            "content": "No, everything is normal."
         }
     ],
     "possible_next_steps": [
-        "Monitor the headache for any changes.",
-        "Ensure the patient stays hydrated and maintains a regular eating schedule.",
-        "Observe for any new symptoms that may arise.",
-        "If the headache persists or worsens, consult a healthcare professional for further evaluation."
+        "Monitor the headache and observe any new symptoms that may develop.",
+        "Ensure proper hydration and nutrition.",
+        "Evaluate daily activities or screen time that might contribute to eye strain.",
+        "If the headache persists or shows no improvement, consider visiting a healthcare professional."
     ],
     "summary": [
-        "The patient has been experiencing a headache for approximately 3-5 days.",
-        "The headache worsens when looking upwards.",
-        "There are no accompanying symptoms such as fever or fatigue.",
-        "The patient seems otherwise healthy and active."
+        "The patient has been experiencing a headache for about 3-5 days.",
+        "Headache worsens when looking up.",
+        "No accompanying symptoms reported.",
+        "No recent illnesses, injuries, or major changes in routine noted."
     ]
 }

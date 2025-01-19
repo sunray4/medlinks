@@ -254,9 +254,9 @@
                 let new_row = med_table.insertRow(-1);
                 new_row.classList.add('grid', 'grid-cols-12', 'gap-x-4', 'mt-4');
                 new_row.innerHTML = `
-                    <input class="col-span-3 w-full p-1" id="med-name">${med_name}</input>
-                    <input class="col-span-2 w-full p-1" id="med-dosage">${med_dosage}</input>
-                    <input class="col-span-6 w-full p-1" id="med-instructions">${med_instructions}</input>
+                    <input class="col-span-3 w-full p-1" id="med-name" value="${med_name}"></input>
+                    <input class="col-span-2 w-full p-1" id="med-dosage" value="${med_dosage}"></input>
+                    <input class="col-span-6 w-full p-1" id="med-instructions" value="${med_instructions}"></input>
                 `;
             })
         });
