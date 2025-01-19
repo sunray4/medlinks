@@ -5,7 +5,10 @@
 
 <div id="page-container" class="grid grid-cols-2 gap-x-2">
     <!-- Left Side Content -->
+    <!-- <div id="right-side-add" class="hidden bg-[#E1E1E1] p-10">
+        <div class="bg-[#E1E1E1]  overflow-y-auto h-4/6"> -->
     <div id="left-side" class="m-10 mx-56 col-span-2 overflow-y-auto h-max">
+        <div class="overflow-y-auto h-4/6">
         <div class="flex justify-between mb-10 items-center">
             <p class="text-3xl font-bold">{{ patient['fullname'] }}'s Med Log</p>
             <button id="add-patient-btn" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
@@ -182,6 +185,8 @@
 
     {% block script %}
     <script>
+        const socket = io();
+
         const add_patient_btn = document.getElementById('add-patient-btn');
         const add_log = document.getElementById('add-log');
         const close_svg_add = document.getElementById('close-svg-add');
@@ -205,13 +210,17 @@
                 let doctors_notes = element['doctor_diagnosis'];
                 let medications = element['medicines'];
 
-                console.log(date, personal_notes, doctors_notes, medications);
-
                 document.getElementById('entry-patient-notes').innerHTML = patient_notes;
                 document.getElementById('entry-personal-notes').innerHTML = personal_notes;
                 document.getElementById('entry-doctor-diagnosis').innerHTML = doctors_notes;
                 document.getElementById('entry-date').innerHTML = date;
                 document.getElementById('entry-mode').innerHTML = element['mode'];
+
+                send_data = {
+                    'user_id': "{{ session['user_id'] }}",
+                    'date': date
+                }
+                socket.emit('d_patient_med_log_mark_read', send_data);
 
                 right_side_view.classList.remove('hidden');
                 left_side.classList.remove('mx-56')

@@ -5,8 +5,11 @@
 
 <div id="page-container" class="grid grid-cols-2 gap-x-2">
     <!-- Left Side Content -->
+    <!-- <div id="left-side" class="m-10 mx-56 col-span-2">
+        <div class=""> -->
     <div id="left-side" class="m-10 mx-56 col-span-2">
-        <div class="flex justify-between mb-10 items-center">
+        <div class=""> 
+        <div class="flex justify-between mb-10 items-center ">
             <p class="text-3xl font-bold">Your Med Log</p>
 
 
@@ -27,6 +30,7 @@
             </button>
             {% endfor %}
         </div>
+    </div>
     </div>
 
     <!-- Right Side Content -->
@@ -105,7 +109,13 @@
 
     {% block script %}
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const left_side = document.getElementById('left-side');
 
+            // Set max-height and overflow properties when the page loads
+            left_side.style.maxHeight = 'calc(100vh - 140px)'; // Adjust as needed
+            left_side.style.overflowY = 'auto';
+        });
         const left_side = document.getElementById('left-side');
 
         const right_side_view = document.getElementById('right-side-view');
@@ -135,7 +145,18 @@
                 left_side.classList.remove('mx-56')
                 left_side.classList.remove('col-span-2')
                 // right_side_view.classList.add('h-screen');
-
+                left_side.style.maxHeight = 'calc(100vh - 140px)'; // Adjust as needed
+                left_side.style.overflowY = 'auto';
+                
+                let med_table = document.getElementById('med-table');
+                let header_row = med_table.insertRow(-1);
+                header_row.classList.add('grid', 'grid-cols-12', 'gap-x-4', 'border-b', 'border-[#868E96]');
+                header_row.innerHTML = `
+                    <td class="py-3 text-left col-span-3">Medication</td>
+                    <td class="py-3 text-left col-span-2">Dosage</td>
+                    <td class="py-3 text-left col-span-6">Instructions</td>
+                    <td class="py-3 text-left col-span-1"> </td>
+                `;
                 medications.forEach(medication => {
                     let med_index = medications.indexOf(medication);
                     let med_name = medication['med_name'];

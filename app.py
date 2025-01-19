@@ -213,7 +213,7 @@ def handle_final_data(data):
     medlog_id = patient['medlog_id']
 
     medlog = medlogs.find_one({'medlog_id': medlog_id})
-    medlog['entries'].append({'date': today_date, 'mode': mode, 'patient_notes': patient_notes, 'personal_notes': personal_notes, 'doctor_diagnosis': doctor_diagnosis, 'medicines': medicine, 'inperson_meeting': ''})
+    medlog['entries'].append({'date': today_date, 'mode': mode, 'patient_notes': patient_notes, 'personal_notes': personal_notes, 'doctor_diagnosis': doctor_diagnosis, 'medicines': medicine, 'inperson_meeting': '', 'is_viewed': False})
     medlogs.update_one({'medlog_id': medlog_id}, {'$set': {'entries': medlog['entries']}})
 
     emit('final_data', 'return_medlog')
@@ -228,6 +228,7 @@ def get_new_logs():
 
     for log in medlog:
         for entry in log['entries']:
+            print(entry)
             if entry['is_viewed'] == False:
                 patient_id = log['patient_id']
                 patient = users.find_one({'user_id': patient_id})
@@ -288,6 +289,17 @@ def get_patients():
 
     return jsonify({'emails': email_list, 'names': name_list, 'dob': dob_list }), 200
 
+@socketio.on('d_patient_med_log_mark_read')
+def medlog_mark_red(data):
+    medlog = medlogs.find_one({'doctor_id': data['user_id']})
+    for entry in medlog['entries']:
+        if entry['date'] == data['date']:
+            entry['is_viewed'] = True
+            index = medlog['entries'].index(entry)
+            medlog['entries'][index] = entry
+            medlogs.update_one({'doctor_id': data['user_id']}, {'$set': {'entries': medlog['entries']}})
+            pass
+
 @app.route('/d_patient_med_log/<email>', methods=['GET', 'POST'])
 def patient_med_log(email):
     if request.method == 'GET':
@@ -302,7 +314,7 @@ def patient_med_log(email):
         doctor_diagnosis = request.form.get('entry_doctor_diagnosis', None)
         medicine = []
         inperson_meeting = request.form.get('inperson_meeting', None)
-        isViewed = False
+        isViewed = True
 
         med_name = request.form.get('med_name_1', None)
         med_dosage = request.form.get('med_dosage_1', None)

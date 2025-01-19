@@ -1,18 +1,19 @@
 {
     "patient_details": {
         "age": 17,
-        "sex": "not provided"
+        "sex": "unknown"
     },
     "conversation_history": [],
     "possible_next_steps": [
-        "Assess the patient's symptoms further through detailed follow-up.",
-        "Evaluate lifestyle factors that may contribute to the symptoms.",
-        "Encourage the patient to communicate any new symptoms that arise.",
-        "If symptoms persist without clarification, recommend seeing a healthcare provider."
+        "Encourage the patient to monitor their symptoms closely.",
+        "Suggest maintaining hydration and a balanced diet.",
+        "Advise on evaluating triggers such as stress or sleep patterns.",
+        "If symptoms persist or worsen, recommend consulting a healthcare professional."
     ],
     "summary": [
-        "The patient has expressed symptoms but has not specified any details.",
-        "The duration and intensity of the symptoms are unknown.",
-        "No additional symptoms have been noted, making it challenging to assess further."
+        "The patient has not provided specific symptoms.",
+        "The duration and nature of the symptoms remain unclear.",
+        "No accompanying symptoms have been reported.",
+        "Further information is needed for a detailed understanding of the situation."
     ]
 }

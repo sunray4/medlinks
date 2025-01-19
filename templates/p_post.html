@@ -3,8 +3,8 @@
 {% block p_content %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/md-editor/latest/mdEditor.min.css">
 <script src="https://cdn.jsdelivr.net/md-editor/latest/mdEditor.min.js"></script>
-<div id="container" class="overflow-y-auto h-5/6">
-    <div id="message_box" class="bg-[#BDCAD6] rounded-lg p-10 m-10 mx-20 flex flex-col justify-between ">
+<div id="container" class="overflow-y-auto h-5/6 p-10 px-20 pb-5">
+    <div id="message_box" class="bg-[#BDCAD6] rounded-lg p-10 flex flex-col justify-between ">
         <!-- Chat container with flexible height and scrollable content -->
         <div id="chat" class="min-h-[32px] flex-grow overflow-y-auto p-5 h-96">
             <!-- Chat messages will be added here -->
@@ -71,14 +71,29 @@
             let content = formatJson(data);
             console.log(content)
             container.innerHTML += `
-            <textarea id="summary" class="bg-[#BDCAD6] rounded-lg p-10 m-10 mx-20 mb-5 w-full h-fit inline-block" styles="width: 100%;">
+            <div id='summary_box' class="bg-[#BDCAD6] rounded-lg p-10 mt-5 w-full h-fit">
+            <p>Thank you for answering the questions of MedGPT! Below is a summary of your converation. Please make edits and add more information that you think will help your doctor understand your sympotoms.</p><br>
+            <hr>
+    
+            <textarea id="summary" class="bg-white rounded-lg p-2 w-full h-max inline-block" styles="width: 100%; ">
                 ${content}
-            </textarea>`
+            </textarea>
+            <button onclick="postLog()" id="postbtn" class="p-2 mt-4 rounded-2xl bg-[#DFC623] text-white">Post</button>
+            </div>`
+
+
             ;
+
+            const textarea = document.getElementById('summary');
+            resizeTextarea(textarea);
+
             // scrollToBottom();
-            container.innerHTML += `<br><button onclick="postLog()" id="postbtn" class="p-2 m-10 mx-20 rounded-2xl bg-[#63A3B0]">Post</button>`;
+            container.innerHTML += ``;
             scrollToBottom();
-            container.scrollTop = container.scrollHeight;
+            const summaryBox = document.getElementById('summary_box');
+            summaryBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+
 
         } else {
             if (typeof data != 'object') {
@@ -87,6 +102,15 @@
             }
         }
     });
+
+    function resizeTextarea(textarea) {
+    // Reset the height to 'auto' to shrink before expanding
+    textarea.style.height = 'auto';
+
+    // Set the height to match the scrollHeight (the full height of the content)
+    textarea.style.height = textarea.scrollHeight + 'px';
+}
+
 
     socket.on('final_data', function(data) {
         if (data === 'return_medlog') {
