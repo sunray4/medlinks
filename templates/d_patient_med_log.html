@@ -283,6 +283,12 @@
             socket.emit('save_log', data)
         })
 
+        socket.on('save_log', function(data) {
+            if (data == 'return_patient_list') {
+                window.location = '/';
+            }
+        })
+
 
         // const log_entry_open = document.getElementById('log-entry-open')
         // log_entry_open.addEventListener('click', () => {

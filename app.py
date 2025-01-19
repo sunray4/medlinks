@@ -318,6 +318,8 @@ def save_log(data):
             
             medlogs.update_one({'doctor_id': data['user_id']}, {'$set': {'entries': medlog['entries']}})
 
+            socketio.emit('save_log', 'return_patient_list')
+
 @app.route('/d_patient_med_log/<email>', methods=['GET', 'POST'])
 def patient_med_log(email):
     if request.method == 'GET':

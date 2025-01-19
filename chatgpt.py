@@ -107,8 +107,8 @@ Note that the content above is for example to show you the structure.''')
                 
                 return assistant_message
         else:
-            # return ValueError('Chat session has ended or is not live. Please call the get_user_inputs() method first.')
-            return 'MedGPT is processing your symptoms...'
+            return ValueError('Chat session has ended or is not live. Please call the get_user_inputs() method first.')
+            # return 'MedGPT is processing your symptoms...'
             
         
     def analyze_symptoms(self):

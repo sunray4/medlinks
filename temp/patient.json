@@ -5,55 +5,44 @@
     },
     "conversation_history": [
         {
-            "role": "assistant",
-            "content": "Can you please describe any symptoms or behaviors that have led you to feel this way?"
-        },
-        {
             "role": "user",
-            "content": "I don't have a brain."
+            "content": "I have a headache."
         },
         {
             "role": "assistant",
-            "content": "Are you experiencing any difficulties with thinking, remembering things, or understanding instructions?"
+            "content": "How long have you been experiencing these symptoms?"
         },
         {
             "role": "user",
-            "content": "No I can't touch my head."
+            "content": "For about 3-5 days."
         },
         {
             "role": "assistant",
-            "content": "Can you explain more about why you feel you can't touch your head? Is there any pain or discomfort when you try?"
+            "content": "Are there any specific activities or situations that seem to make your symptoms worse?"
         },
         {
             "role": "user",
-            "content": "No I can't feel my head."
+            "content": "When I look up my head hurts."
         },
         {
             "role": "assistant",
-            "content": "Have you noticed any other sensations or difficulties in different parts of your body?"
+            "content": "Have you noticed any additional symptoms, such as fever, fatigue, or changes in appetite?"
         },
         {
             "role": "user",
-            "content": "No."
-        },
-        {
-            "role": "assistant",
-            "content": "Have you experienced any recent injuries or illnesses that could have affected your ability to feel your head?"
-        },
-        {
-            "role": "user",
-            "content": "Yeah I jumped off a building."
+            "content": "No, just the headache."
         }
     ],
     "possible_next_steps": [
-        "Seek immediate medical evaluation due to the recent jump from a building.",
-        "Monitor for any signs of head injury, confusion, or loss of consciousness.",
-        "Provide a calm environment and reassurance until medical help is available."
+        "Monitor the headache for any changes.",
+        "Ensure the patient stays hydrated and maintains a regular eating schedule.",
+        "Observe for any new symptoms that may arise.",
+        "If the headache persists or worsens, consult a healthcare professional for further evaluation."
     ],
     "summary": [
-        "The patient, a 7-year-old male, feels he cannot touch or feel his head.",
-        "He does not report pain or discomfort when he attempts to touch it.",
-        "There are no additional sensations or difficulties noted in other body parts.",
-        "The patient has a recent history of jumping off a building, which may indicate potential injury."
+        "The patient has been experiencing a headache for approximately 3-5 days.",
+        "The headache worsens when looking upwards.",
+        "There are no accompanying symptoms such as fever or fatigue.",
+        "The patient seems otherwise healthy and active."
     ]
 }

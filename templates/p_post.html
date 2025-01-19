@@ -33,7 +33,10 @@
             document.getElementById('send').click();
         }
     });
+    
+    var sends = 0;
     document.getElementById('send').onclick = function() {
+        
         const message = document.getElementById('message').value;
         const chat = document.getElementById('chat');
         // const message_container_outer = document.createElement('div');
@@ -55,6 +58,14 @@
         scrollToBottom();
         socket.emit('user_message', message);
         document.getElementById('message').value = '';
+        
+        sends++;
+        
+        if (sends >= 6) {
+            document.getElementById('message').disabled = true
+            chat.innerHTML += `<div  id="assistant_message" class="rounded-2xl text-black bg-white p-2 mb-2 max-w-2xl inline-block">MedGPT is now processing your symptoms...</div><br><br>`;
+            scrollToBottom();
+        }
     };
 
     var cur = 0;
@@ -68,6 +79,7 @@
         console.log(cur, max)
 
         if (cur >= max && typeof data === 'object') {
+            
             let content = formatJson(data);
             console.log(content)
             container.innerHTML += `
@@ -79,10 +91,7 @@
                 ${content}
             </textarea>
             <button onclick="postLog()" id="postbtn" class="p-2 mt-4 rounded-2xl bg-[#DFC623] text-white">Post</button>
-            </div>`
-
-
-            ;
+            </div>`;
 
             const textarea = document.getElementById('summary');
             resizeTextarea(textarea);
