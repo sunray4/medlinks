@@ -1,37 +1,8 @@
 {% extends 'p_content.html' %}
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat with Bot</title>
-    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-    <style>
-        /* Add some basic styling */
-        #chat {
-            width: 300px;
-            height: 400px;
-            border: 1px solid #ccc;
-            overflow-y: scroll;
-            padding: 10px;
-        }
-        #message {
-            width: 80%;
-        }
-        #send {
-            width: 15%;
-        }
-        .json-key {
-            color: brown;
-        }
-        .json-value {
-            color: navy;
-        }
-        .json-string {
-            color: olive;
-        }
-    </style> -->
+
 {% block p_content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/md-editor/latest/mdEditor.min.css">
+<script src="https://cdn.jsdelivr.net/md-editor/latest/mdEditor.min.js"></script>
 <div id="container" class="">
     <div id="message_box" class="bg-[#BDCAD6] rounded-lg p-10 m-10 mx-20 flex flex-col justify-between ">
         <!-- Chat container with flexible height and scrollable content -->
@@ -81,51 +52,64 @@
                 <p id='patient_message' class="text-white">${message}<p>
                 </div></div>`;
         chat.scrollTop = chat.scrollHeight;
+        scrollToBottom();
         socket.emit('user_message', message);
         document.getElementById('message').value = '';
     };
 
+    var cur = 0;
+
     socket.on('bot_response', function(data) {
         const max = 6;
-        const cur = 0;
         const chat = document.getElementById('chat');
         const container = document.getElementById('container');
-        if (typeof data === 'object') {
-            chat.innerHTML += `<div id="assistant_message" class="rounded-2xl text-black bg-white p-2 mb-2 max-w-2xl inline-block">${formatJson(data)}</div>`;
+        cur ++;
+        
+        console.log(cur, max)
+
+        if (cur == max && typeof data === 'object') {
+            let content = formatJson(data);
+            container.innerHTML += `
+            <textarea id="summary" class="rounded-2xl text-black bg-white p-2 mb-2 inline-block" styles="width: 100%;">
+                ${content}
+            </textarea>`
+            ;
+            scrollToBottom();
+            socket.emit('final_data', formatJson(data));
         } else {
             chat.innerHTML += `<div  id="assistant_message" class="rounded-2xl text-black bg-white p-2 mb-2 max-w-2xl inline-block">${data}</div><br><br>`;
+            scrollToBottom();
         }
-        cur++;
-        
-        // if (cur == max) {
-        //     container.innerHTML += `
-        //     <div id="message_box" class="bg-[#BDCAD6] rounded-lg p-10 m-10 mx-20 flex flex-col justify-between ">
-        //     <div id="summary" class="rounded-2xl text-black bg-white p-2 mb-2 max-w-2xl inline-block">
-        //         ${formatJson(data)}
-        //     </div></div>`
-        //     ;
-        // }
     });
 
     function formatJson(json) {
-        return JSON.stringify(json, null, 2)
-            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-            .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-                var cls = 'json-value';
-                if (/^"/.test(match)) {
-                    if (/:$/.test(match)) {
-                        cls = 'json-key';
-                    } else {
-                        cls = 'json-string';
-                    }
-                } else if (/true|false/.test(match)) {
-                    cls = 'json-boolean';
-                } else if (/null/.test(match)) {
-                    cls = 'json-null';
-                }
-                return '<span class="' + cls + '">' + match + '</span>';
-            });
+        let formattedText = ""
+
+        formattedText += `Patient Details:\n`;
+        formattedText += `Age: ${json.patient_details.age}\n`;
+        formattedText += `Sex: ${json.patient_details.sex}\n`;
+
+        formattedText += `Possible Next Steps:\n`;
+        json.possible_next_steps.forEach((step, index) => {
+            formattedText += `${index+1}. ${step}\n`;
+        })
+        formattedText += `\n`;
+
+        formattedText += 'Summary:\n';
+        json.summary.forEach((line, index) => {
+            formattedText += `${index+1}. ${line}\n`;
+        })
+
+        return formattedText
+    }
+
+    // Function to scroll the chat container to the bottom
+    function scrollToBottom() {
+        const chatContainer = document.getElementById('chat');
+        chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 </script>
+
 {% endblock %}
 
+<script src="https://cdn.jsdelivr.net/md-editor/latest/mdEditor.min.js"></script>

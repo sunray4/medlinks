@@ -110,7 +110,11 @@ def profile():
 def home():
     if "email" in session:
         user = users.find_one({'email': session['email']})
-        session['type'] = user['type']
+        try:
+            if not user['type']: session['type'] = 'doctor'
+            else: session['type'] = user['type']
+        except:
+            session['type'] = 'doctor'
         if request.method == 'GET':
             if session['type'] == 'doctor':
                 patients = get_patients()
@@ -156,8 +160,8 @@ def home():
             '''
             
             yag.send(patient_email, 'Medlinks', email_content)
-            
-            # return render_template("d_patient_list.html")
+            patients = get_patients()
+            return render_template("d_patient_list.html", patients=patients)
     else:
         return redirect(url_for('login'))
     
@@ -188,10 +192,18 @@ def handle_user_message(message):
     except Exception as e:
         emit('bot_response', f"An error occurred: {str(e)}", broadcast=True)
 
+@socketio.on('final_data')
+def handle_final_data(data):
+    print(data)
+    user = users.find_one({'email': session['email']})
+    
+    pass
+
 @app.route('/d-new-logs/')
 def new_logs():
     if session['type'] == 'doctor':
-        return render_template("d_new_logs.html", doctor_id=session['doctor_id'])
+        user = users.find_one({'email': session['email']})
+        return render_template("d_new_logs.html", doctor_id=user['user_id'])
     elif session['type'] == 'patient':
         return jsonify({'error': 'Unauthorized'}), 401
 

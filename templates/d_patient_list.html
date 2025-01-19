@@ -10,7 +10,7 @@
 </style>
 <div id="page-container" class="grid grid-cols-2 gap-x-4'">
     <!-- Left Side Content -->
-    <div id="left-side" class="m-10 mx-56 col-span-2 h-screen">
+    <div id="left-side" class="m-10 mx-56 col-span-2">
         <div class="flex justify-between mb-10">
             <input type="text" id="search" class="p-2 w-3/5 rounded-lg bg-[#ffffff] border border-[#868E96]"
                 placeholder="Search for a patient..." onkeyup="searchPatients()">
@@ -26,7 +26,7 @@
                     <th class="py-3 text-left"> </th>
                 </tr>
                 <!-- for loop iteration through all patients  -->
-                 {% for patient in patients %}
+                 <!-- {% for patient in patients %} -->
                 <tr class="grid grid-cols-4 gap-4 py-4 patient-row">
                     <td class="patient-name">
                         <ul id="nameList"></ul>
@@ -41,15 +41,16 @@
                         <ul id="deleteList"></ul>
                     </td>
                 </tr>
-                {% endfor %}
+                <!-- {% endfor %} -->
                 <!-- Add more patient rows as needed -->
             </table>
         </div>
     </div>
 
     <!-- Right Side Content -->
-    <div id="right-side" class="hidden">
-        <div class="p-10 bg-[#E1E1E1]">
+    <div id="right-side" class="hidden bg-[#E1E1E1] p-10">
+        <div class="bg-[#E1E1E1] overflow-y-auto h-3/5">
+        <div class=" ">
             <button id="close-svg" class="w-full mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
                     viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
@@ -138,7 +139,8 @@
                     <button type="submit" id="add-patient" class="p-2 rounded-lg bg-[#DFC623] text-white">Add
                         Patient</button>
                 </form>
-                <div>
+            </div>
+                    <div>
                 </div>
             </div>
         </div>
@@ -167,7 +169,7 @@
                 left_side.classList.add('mx-56');
                 left_side.classList.add('col-span-2')
                 left_side.classList.add('h-screen');
-
+                populatePatientList(); //added sunday 7am
 
             });
             close_svg.addEventListener('click', () => {
@@ -177,7 +179,11 @@
                 left_side.classList.add('h-screen');
             });
 
-            const response = fetch('/list_patients', {
+
+            document.addEventListener('DOMContentLoaded', populatePatientList);
+
+
+            function populatePatientList(){ fetch('/list_patients', {
                 method: 'GET',
             }).then(response => response.json())
                 .then(data => {
@@ -220,22 +226,19 @@
                         </svg>`
                         ;
 
-                        // Add the SVG to the button's innerHTML
                         deleteButton.innerHTML = svg_content;
                         deleteButton.onclick = function() {
                             window.location = `/d_delete_from_doctor/${email}`;
                         };
-
-                        // Append the button to the list item
                         deleteLi.appendChild(deleteButton);
 
-                        // Assuming deletebList is defined as the parent element
                         deleteList.appendChild(deleteLi);
 
                         
                     });
                     
                 }).catch(err => console.error('Error fetching users:', err));
+            };
 
             // function displayPatients() {
             //     const patientListElement = document.getElementById('patientList');

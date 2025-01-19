@@ -3,9 +3,9 @@
 
 {% block d_content%}
 
-<div id="page-container" class="grid grid-cols-2 gap-x-2">
+<div id="page-container" class="grid grid-cols-2 gap-x-2 overflow-y-hidden">
     <!-- Left Side Content -->
-    <div id="left-side" class="m-10 mx-56 col-span-2 h-screen">
+    <div id="left-side" class="m-10 mx-56 col-span-2 overflow-y-auto h-fit">
         <div class="flex justify-between mb-10 items-center">
             <p class="text-3xl font-bold">{{ patient['fullname'] }}'s Med Log</p>
             <button id="add-patient-btn" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
@@ -30,8 +30,8 @@
     </div>
 
     <!-- Right Side Content -->
-    <div id="right-side-add" class="hidden">
-        <div class="p-10 bg-[#E1E1E1]">
+    <div id="right-side-add" class="hidden bg-[#E1E1E1] p-10">
+        <div class="bg-[#E1E1E1] overflow-y-auto h-fit">
             <button id="close-svg-add" class="w-full mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
                     viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
@@ -123,8 +123,8 @@
     </div>
 
     <!-- right side view  -->
-    <div id="right-side-view" class="hidden">
-        <div class="p-10 bg-[#E1E1E1]">
+    <div id="right-side-view" class="hidden bg-[#E1E1E1] p-10">
+        <div class="bg-[#E1E1E1] overflow-y-auto h-fit">
             <button id="close-svg-view" class="w-full mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
                     viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
@@ -210,7 +210,7 @@
                 right_side_view.classList.remove('hidden');
                 left_side.classList.remove('mx-56')
                 left_side.classList.remove('col-span-2')
-                right_side_view.classList.add('h-screen');
+                // right_side_view.classList.add('h-screen');
 
                 medications.forEach(medication => {
                     let med_index = medications.indexOf(medication);
@@ -249,7 +249,7 @@
             // right_side.classList.remove('translate-x-0');
             left_side.classList.add('mx-56');
             left_side.classList.add('col-span-2')
-            left_side.classList.add('h-screen');
+            // left_side.classList.add('h-screen');
         });
 
         // Event listener to open the pop-up
@@ -259,7 +259,7 @@
             left_side.classList.remove('mx-56');
             // left_side.classList.remove('h-screen');
             left_side.classList.remove('col-span-2');
-            right_side_add.classList.add('h-screen');
+            // right_side_add.classList.add('h-screen');
         });
 
         // Event listener to close the pop-up
