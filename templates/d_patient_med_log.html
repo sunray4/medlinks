@@ -3,9 +3,9 @@
 
 {% block d_content%}
 
-<div id="page-container" class="grid grid-cols-2 gap-x-2 overflow-y-hidden">
+<div id="page-container" class="grid grid-cols-2 gap-x-2">
     <!-- Left Side Content -->
-    <div id="left-side" class="m-10 mx-56 col-span-2 overflow-y-auto h-fit">
+    <div id="left-side" class="m-10 mx-56 col-span-2 overflow-y-auto h-max">
         <div class="flex justify-between mb-10 items-center">
             <p class="text-3xl font-bold">{{ patient['fullname'] }}'s Med Log</p>
             <button id="add-patient-btn" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
@@ -31,7 +31,7 @@
 
     <!-- Right Side Content -->
     <div id="right-side-add" class="hidden bg-[#E1E1E1] p-10">
-        <div class="bg-[#E1E1E1] overflow-y-auto h-fit">
+        <div class="bg-[#E1E1E1]  overflow-y-auto h-4/6">
             <button id="close-svg-add" class="w-full mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
                     viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
@@ -59,6 +59,10 @@
                             </select>
                         </div>
                     </span>
+                    <label for="entry_patient_notes" class="font-semibold text-large mr-4">Patient Notes</label><br>
+                    <textarea id="entry_patient_notes" name="entry_patient_notes"
+                        class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]" disabled></textarea><br><br>
+
                     <label for="entry_personal_notes" class="font-semibold text-large mr-4">Personal Notes</label><br>
                     <textarea id="entry_personal_notes" name="entry_personal_notes"
                         class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96]"></textarea><br><br>
@@ -89,25 +93,21 @@
                                         name="med_instructions_1" placeholder="Instructions..."></textarea></td>
                                 <td class="col-span-1  p-1">
                                     <div class="text-right">
+                                        <!---
                                         <button id="view_log" class="p-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
-                                                viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                                                viewBox="0 0 448 512">!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.
                                                 <path
                                                     d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z" />
                                             </svg>
                                         </button>
+                                    --->
                                 </td>
 
                             </tr>
 
                         </table>
-                        <button id="add_med" class="p-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
-                                viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                                <path
-                                    d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
-                            </svg>
-                        </button>
+                        
                     </div>
                     <!-- add if statement, only if text mode would this button be available -->
                     <label class="flex items-center space-x-2 mt-4">
@@ -124,7 +124,7 @@
 
     <!-- right side view  -->
     <div id="right-side-view" class="hidden bg-[#E1E1E1] p-10">
-        <div class="bg-[#E1E1E1] overflow-y-auto h-fit">
+        <div class="bg-[#E1E1E1] overflow-y-auto h-4/6">
             <button id="close-svg-view" class="w-full mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
                     viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
@@ -142,6 +142,10 @@
                         <p id="entry-mode"></p>
                     </div>
                 </span>
+                <p class="font-semibold text-large mr-4">Patient Notes</p>
+                <p id="entry-patient-notes" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96] min-h-10"
+                    min-h-5></p><br><br>
+
                 <p class="font-semibold text-large mr-4">Personal Notes</p>
                 <p id="entry-personal-notes" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96] min-h-10"
                     min-h-5></p><br><br>
@@ -196,12 +200,14 @@
                 document.getElementById('med-table').innerHTML = '';
 
                 let date = element['date'];
+                let patient_notes = element['patient_notes'];
                 let personal_notes = element['personal_notes'];
                 let doctors_notes = element['doctor_diagnosis'];
                 let medications = element['medicines'];
 
                 console.log(date, personal_notes, doctors_notes, medications);
 
+                document.getElementById('entry-patient-notes').innerHTML = patient_notes;
                 document.getElementById('entry-personal-notes').innerHTML = personal_notes;
                 document.getElementById('entry-doctor-diagnosis').innerHTML = doctors_notes;
                 document.getElementById('entry-date').innerHTML = date;
@@ -211,22 +217,20 @@
                 left_side.classList.remove('mx-56')
                 left_side.classList.remove('col-span-2')
                 // right_side_view.classList.add('h-screen');
-
-                medications.forEach(medication => {
-                    let med_index = medications.indexOf(medication);
-                    let med_name = medication['med_name'];
-                    let med_dosage = medication['med_dosage'];
-                    let med_instructions = medication['med_instructions'];
-
-                    let med_table = document.getElementById('med-table');
-                    let new_row = med_table.insertRow(-1);
-                    new_row.classList.add('grid', 'grid-cols-12', 'gap-x-4', 'mt-4');
-                    new_row.innerHTML = `
-                        <td class="col-span-3 w-full p-1" id="med-name">${med_name}</td>
-                        <td class="col-span-2 w-full p-1" id="med-dosage">${med_dosage}</td>
-                        <td class="col-span-6 w-full p-1" id="med-instructions">${med_instructions}</td>
-                    `;
-                })
+                
+                const medication = medications[0];
+                
+                let med_name = medication['med_name'];
+                let med_dosage = medication['med_dosage'];
+                let med_instructions = medication['med_instructions'];
+                let med_table = document.getElementById('med-table');
+                let new_row = med_table.insertRow();
+                new_row.classList.add('grid', 'grid-cols-12', 'gap-x-4', 'mt-4');
+                new_row.innerHTML = `
+                    <td class="col-span-3 w-full p-1" id="med-name">${med_name}</td>
+                    <td class="col-span-2 w-full p-1" id="med-dosage">${med_dosage}</td>
+                    <td class="col-span-6 w-full p-1" id="med-instructions">${med_instructions}</td>
+                `;
             })
         });
 
@@ -254,6 +258,7 @@
 
         // Event listener to open the pop-up
         add_patient_btn.addEventListener('click', () => {
+            console.log("btuoon clicked")
             right_side_add.classList.remove('hidden');
 
             left_side.classList.remove('mx-56');
@@ -283,34 +288,34 @@
         });
 
 
-        const medform = document.getElementById('medlog_form');
-        const add_med = document.getElementById('add_med');
-        const med_table = document.getElementById('med_table');
-        add_med.addEventListener('click', (event) => {
-            // Prevent the form from submitting
-            event.preventDefault();
+        // const medform = document.getElementById('medlog_form');
+        // const add_med = document.getElementById('add_med');
+        // const med_table = document.getElementById('med_table');
+        // add_med.addEventListener('click', (event) => {
+        //     // Prevent the form from submitting
+        //     event.preventDefault();
 
-            const before_rowCount = med_table.querySelectorAll('tr').length;
+        //     const before_rowCount = med_table.querySelectorAll('tr').length;
 
-            // Add a new row to the table
-            const new_row = `< tr class="grid grid-cols-12 gap-x-4 mt-4" data - rows="3" >
-                <td class="col-span-3"><input type="text" class="w-full p-1" name="med_name_${before_rowCount}" placeholder="Medication..." /></td>
-                <td class="col-span-2"><input type="text" class="w-full p-1" name="med_dosage_${before_rowCount}" placeholder="Dosage..." /></td>
-                <td class="col-span-6"><textarea class="w-full p-1" name="med_instructions_${before_rowCount}" placeholder="Instructions..."></textarea></td>
-                <td class="col-span-1 p-1"><div class="text-right">
-                    <button class="p-1"> 
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
-                    </button>
-                </td>
-            </tr >`;
+        //     // Add a new row to the table
+        //     const new_row = `< tr class="grid grid-cols-12 gap-x-4 mt-4" data - rows="3" >
+        //         <td class="col-span-3"><input type="text" class="w-full p-1" name="med_name_${before_rowCount}" placeholder="Medication..." /></td>
+        //         <td class="col-span-2"><input type="text" class="w-full p-1" name="med_dosage_${before_rowCount}" placeholder="Dosage..." /></td>
+        //         <td class="col-span-6"><textarea class="w-full p-1" name="med_instructions_${before_rowCount}" placeholder="Instructions..."></textarea></td>
+        //         <td class="col-span-1 p-1"><div class="text-right">
+        //             <button class="p-1"> 
+        //                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
+        //             </button>
+        //         </td>
+        //     </tr >`;
 
-            // Append the new row to the table
-            med_table.insertAdjacentHTML('beforeend', new_row);
+        //     // Append the new row to the table
+        //     med_table.insertAdjacentHTML('beforeend', new_row);
 
-            // Update the row count
-            const rowCount = med_table.querySelectorAll('tr').length - 1;
-            medform.action = '/d_patient_med_log/{{ patient["email"]}}?rows=' + rowCount;
-        });
+        //     // Update the row count
+        //     const rowCount = med_table.querySelectorAll('tr').length - 1;
+        //     medform.action = '/d_patient_med_log/{{ patient["email"]}}?rows=' + rowCount;
+        // });
     </script>
 
 

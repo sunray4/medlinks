@@ -1,36 +1,182 @@
 {% extends 'd_content.html' %}
 
 
-{% block d_content %}
-<div class="w-full">
-    <table class="w-full table-auto">
-        <tr class="grid grid-cols-3 gap-4 border-b border-[#868E96]">
-            <th class="py-3 text-left ">Patient</th>
-            <th class="py-3 text-left">Date Sent</th>
-            <th class="py-3 text-left"> </th>
-        </tr>
-    </table>
-    <table class="w-full table-auto">
-        <!-- for loop iteration through all patients  -->
-        <tr class="grid grid-cols-3 gap-4 py-4">
-            <td>Name</td>
-            <td>Date sent</td>
-            <td class="text-right p-2">
-                <form action="{{ url_for('redirect_doctor_to_patient_log') }}, doctor_id={{ doctor_id }}" method="POST">
-                    <button id="view-log" class="bg-[#63A3B0] rounded-lg text-white"> 
-                        View Log
-                    </button>
-                </form>
-            </tr>
+{% block d_content%}
+<style>
+    /* Add vertical spacing to list items */
+    #nameList li, #emailList li, #dobList li {
+        margin-bottom: 10px; /* Adjust the value as needed */
+    }
+</style>
+<div id="page-container" class="grid grid-cols-2 gap-x-4'">
+    <!-- Left Side Content -->
+    <div id="left-side" class="m-10 mx-56 col-span-2 overflow-y-auto h-max">
+        <div class="flex justify-between mb-10 items-center">
+            <p class="text-3xl font-bold">New entries</p>
+            <!-- <button id="add-patient-btn" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button> -->
 
-        </tr>
-      </table>
-</div>
+        </div>
+        <div class="w-full">
+            <table class="w-full table-auto">
+                <tr class="grid grid-cols-4 gap-4 border-b border-[#868E96]">
+                    <th class="py-3 text-left ">Patient Name</th>
+                    <th class="py-3 text-left ">Patient Email</th>
+                    <!-- date of med entry  -->
+                    <th class="py-3 text-left">Date sent</th> 
 
-
-</div>
-
-
-
+                    <th class="py-3 text-left"> </th>
+                </tr>
+                <!-- for loop iteration through all patients  -->
+                <!-- {% for patient in patients %} -->
+                 {% for medlog in medlogs %}
+                    <tr class="grid grid-cols-4 gap-4 py-4 patient-row">
+                        <td class="patient-name">
+                            <ul id="nameList">test</ul>
+                        </td>
+                        <td class="patient-email">
+                            <ul id="emailList"></ul>
+                        </td>
+                        <td class="patient-dob">
+                            <ul id="dobList"></ul>
+                        </td>
+                        <td class="patient-delete text-right p-2">
+                            <ul id="deleteList"></ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <!-- {% endfor %} -->
+                <!-- Add more patient rows as needed -->
+            </table>
+        </div>
+    </div>
 {% endblock %}
 
+
+        {% block script %}
+        <script>
+            const openPopupButton = document.getElementById('add-patient-btn');
+            const add_patient = document.getElementById('add-patient');
+            const close_svg = document.getElementById('close-svg');
+            const right_side = document.getElementById('right-side');
+            const left_side = document.getElementById('left-side');
+
+            openPopupButton.addEventListener('click', () => {
+                right_side.classList.remove('hidden');
+                left_side.classList.remove('mx-56');
+                left_side.classList.remove('h-screen');
+                left_side.classList.remove('col-span-2');
+            });
+
+
+            add_patient.addEventListener('click', () => {
+                right_side.classList.add('hidden');
+                left_side.classList.add('mx-56');
+                left_side.classList.add('col-span-2')
+                left_side.classList.add('h-screen');
+                populatePatientList(); //added sunday 7am
+
+            });
+            close_svg.addEventListener('click', () => {
+                right_side.classList.add('hidden');
+                left_side.classList.add('mx-56');
+                left_side.classList.add('col-span-2')
+                left_side.classList.add('h-screen');
+            });
+
+
+            document.addEventListener('DOMContentLoaded', populatePatientList);
+
+
+            function populatePatientList(){ fetch('/list_patients', {
+                method: 'GET',
+            }).then(response => response.json())
+                .then(data => {
+                    const emailList = document.getElementById('emailList');
+                    const nameList = document.getElementById('nameList');
+                    const dobList = document.getElementById('dobList')
+                    const deleteList = document.getElementById('deleteList')
+                    data.emails.forEach((email, index) => {
+                        const name = data.names[index];
+                        const dob = data.dob[index];
+
+                        // Create list items for each patient
+                        const nameLi = document.createElement('li');
+                        nameLi.textContent = name;
+                        nameLi.style.cursor = 'pointer'; // Make it look clickable
+                        nameLi.addEventListener('click', () => {
+                            // Redirect to the patient's med log page
+                            window.location.href = `/d_patient_med_log/${email}`;
+                        });
+                        nameList.appendChild(nameLi);
+
+                        const emailLi = document.createElement('li');
+                        emailLi.textContent = email;
+                        emailList.appendChild(emailLi);
+
+                        const dobLi = document.createElement('li');
+                        dobLi.textContent = dob;
+                        dobList.appendChild(dobLi);
+
+
+                        const deleteLi = document.createElement('li');
+                        const deleteButton = document.createElement('button');
+
+                        // SVG content as a string
+                        const svg_content = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
+                            viewBox="0 0 448 512">
+                            <path
+                                d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z" />
+                        </svg>`
+                        ;
+
+                        deleteButton.innerHTML = svg_content;
+                        deleteButton.onclick = function() {
+                            window.location = `/d_delete_from_doctor/${email}`;
+                        };
+                        deleteLi.appendChild(deleteButton);
+
+                        deleteList.appendChild(deleteLi);
+
+                        
+                    });
+                    
+                }).catch(err => console.error('Error fetching users:', err));
+            };
+
+            // function displayPatients() {
+            //     const patientListElement = document.getElementById('patientList');
+            //     patientListElement.innerHTML = ""; // Clear the current list
+
+            //     // Loop through the patients and create list items
+            //     patients.forEach(patient => {
+            //         const listItem = document.createElement('li');
+            //         listItem.className = 'patient-item';
+            //         listItem.innerHTML = `${patient.name} - ${patient.dob}`; // Name and DOB format
+            //         patientListElement.appendChild(listItem);
+            //      });
+            // }
+
+            // Event listener to open the pop-up
+
+
+            function searchPatients() {
+                const searchInput = document.getElementById('search').value.toLowerCase();
+                const patientRows = document.querySelectorAll('.patient-row');
+
+                patientRows.forEach(row => {
+                    const name = row.querySelector('.patient-name').textContent.toLowerCase();
+                    const dob = row.querySelector('.patient-dob').textContent.toLowerCase();
+
+                    if (name.includes(searchInput) || dob.includes(searchInput)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+
+        </script>
+
+
+        {% endblock %}

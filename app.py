@@ -196,14 +196,36 @@ def handle_user_message(message):
 def handle_final_data(data):
     print(data)
     user = users.find_one({'email': session['email']})
+    today_date = datetime.today().strftime('%Y-%m-%d')
+
+    patient_notes = data.replace('\n', '<br>')
+    personal_notes = ''
+    doctor_diagnosis = ''
+    medicine = []
+    mode = 'Text'
+
+    med_name = ''
+    med_dosage = ''
+    med_instructions = ''
+    medicine.append({'med_name': med_name, 'med_dosage': med_dosage, 'med_instructions': med_instructions})
     
-    pass
+    patient = users.find_one({'email': session['email']})
+    medlog_id = patient['medlog_id']
+
+    medlog = medlogs.find_one({'medlog_id': medlog_id})
+    medlog['entries'].append({'date': today_date, 'mode': mode, 'patient_notes': patient_notes, 'personal_notes': personal_notes, 'doctor_diagnosis': doctor_diagnosis, 'medicines': medicine, 'inperson_meeting': ''})
+    medlogs.update_one({'medlog_id': medlog_id}, {'$set': {'entries': medlog['entries']}})
+
+    emit('final_data', 'return_medlog')
 
 @app.route('/d-new-logs/')
 def new_logs():
     if session['type'] == 'doctor':
         user = users.find_one({'email': session['email']})
-        return render_template("d_new_logs.html", doctor_id=user['user_id'])
+
+        medlog = medlogs.find({'doctor_id': user['user_id']})
+
+        return render_template("d_new_logs.html", doctor_id=user['user_id'], medlogs=medlog)
     elif session['type'] == 'patient':
         return jsonify({'error': 'Unauthorized'}), 401
 
@@ -217,7 +239,7 @@ def patient_list():
     patients = get_patients()
     return render_template("d_patient_list.html", patients=patients)
 
-@app.route('/p_med_logs/')
+@app.route('/p_med_log/')
 def patient_med_logs():
     if session['type'] == 'patient':
         patient = users.find_one({'email': session['email']})
@@ -225,9 +247,9 @@ def patient_med_logs():
     else:
         return redirect(url_for('home'))
 
-@app.route('/redirect-doctor-to-patient-log/<doctor_id>', methods=['POST'])
-def redirect_doctor_to_patient_log(doctor_id, patient_id, entry_id):
-    return render_template("d_patient_med_log.html", patient_id=patient_id, entry_id=entry_id)
+# @app.route('/redirect-doctor-to-patient-log/<doctor_id>', methods=['POST'])
+# def redirect_doctor_to_patient_log(doctor_id, patient_id, entry_id):
+#     return render_template("d_patient_med_log.html", patient_id=patient_id, entry_id=entry_id)
 
 @app.route('/list_patients', methods=['GET'])
 def get_patients():
@@ -252,19 +274,19 @@ def patient_med_log(email):
         if not patient:
             return jsonify({'error': 'Patient not found'}), 404
     elif request.method == 'POST':
-        rows = request.args.get('rows')
         date = request.form.get('entry_date', None)
         mode = request.form.get('entry_mode', None)
+        patient_notes = request.form.get('entry_patient_notes', None)
         personal_notes = request.form.get('entry_personal_notes', None)
         doctor_diagnosis = request.form.get('entry_doctor_diagnosis', None)
         medicine = []
         inperson_meeting = request.form.get('inperson_meeting', None)
+        isViewed = False
 
-        for i in range(int(rows)):
-            med_name = request.form.get('med_name_' + str(i+1), None)
-            med_dosage = request.form.get('med_dosage_' + str(i+1), None)
-            med_instructions = request.form.get('med_instructions_' + str(i+1), None)
-            medicine.append({'med_name': med_name, 'med_dosage': med_dosage, 'med_instructions': med_instructions})
+        med_name = request.form.get('med_name_1', None)
+        med_dosage = request.form.get('med_dosage_1', None)
+        med_instructions = request.form.get('med_instructions_1', None)
+        medicine.append({'med_name': med_name, 'med_dosage': med_dosage, 'med_instructions': med_instructions})
         
         if not mode:
             return jsonify({'error': 'Entry mode is required'}), 400
@@ -274,7 +296,7 @@ def patient_med_log(email):
         medlog_id = patient['medlog_id']
 
         medlog = medlogs.find_one({'medlog_id': medlog_id})
-        medlog['entries'].append({'date': date, 'mode': mode, 'personal_notes': personal_notes, 'doctor_diagnosis': doctor_diagnosis, 'medicines': medicine, 'inperson_meeting': inperson_meeting})
+        medlog['entries'].append({'date': date, 'mode': mode, 'patient_notes': patient_notes, 'personal_notes': personal_notes, 'doctor_diagnosis': doctor_diagnosis, 'medicines': medicine, 'inperson_meeting': inperson_meeting, 'is_viewed': isViewed})
         medlogs.update_one({'medlog_id': medlog_id}, {'$set': {'entries': medlog['entries']}})
 
     return render_template("d_patient_med_log.html", patient=patient, medlogs=medlogs.find_one({'medlog_id': patient['medlog_id']})['entries'])

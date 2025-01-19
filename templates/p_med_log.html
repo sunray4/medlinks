@@ -33,7 +33,7 @@
 
     <!-- right side view  -->
     <div id="right-side-view" class="hidden bg-[#E1E1E1] p-10">
-        <div class="bg-[#E1E1E1] overflow-y-auto h-3/5">
+        <div class="bg-[#E1E1E1] overflow-y-auto h-5/6">
             <button id="close-svg-view" class="w-full mb-5">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
                     viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
@@ -51,10 +51,13 @@
                         <p id="entry-mode"></p>
                     </div>
                 </span>
-                <p class="font-semibold text-large mr-4">Personal Notes</p>
+                <!-- <p class="font-semibold text-large mr-4">Personal Notes</p>
                 <p id="entry-personal-notes" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96] min-h-10"
-                    min-h-5></p><br><br>
+                    min-h-5></p><br><br> -->
 
+                <p class="font-semibold text-large mr-4">Patient Notes</p>
+                <p id="entry-patient-notes"
+                    class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96] min-h-10"></p><br><br>
 
                 <p class="font-semibold text-large mr-4">Doctor's diagnosis</p>
                 <p id="entry-doctor-diagnosis"
@@ -64,19 +67,34 @@
                 <div class=" bg-[#ffffff] p-4 rounded-lg">
 
                     <table class="w-full table-auto" id="med-table">
-                        <tr class="grid grid-cols-12 gap-x-4 border-b border-[#868E96]">
+                    <thead>
+                        <tr class="grid grid-cols-12 gap-x-4 border-b border-[#868E96] bg-gray-100">
                             <th class="py-3 text-left col-span-3">Medication</th>
                             <th class="py-3 text-left col-span-2">Dosage</th>
                             <th class="py-3 text-left col-span-6">Instructions</th>
                             <th class="py-3 text-left col-span-1"> </th>
                         </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Example static row for debugging -->
+        <tr class="grid grid-cols-12 gap-x-4 mt-4">
+            <td class="col-span-3 w-full p-1">Example Medication</td>
+            <td class="col-span-2 w-full p-1">10mg</td>
+            <td class="col-span-6 w-full p-1">Take after meals</td>
+            <td class="col-span-1 w-full p-1">-</td>
+        </tr>
+                    </tody>
                         <!-- for loop iteration through all patients  -->
                         <tr class="grid grid-cols-12 gap-x-4 mt-4">
                         </tr>
 
                     </table>
                 </div>
+                <div class="p-2 rounded-md bg-[#63A3B0] mt-5 w-20">
+                    <a href="/p_calendar" class="text-white" target="_blank">Calendar</a>
+                    </div>
             </div>
+            
         </div>
 
 
@@ -102,13 +120,13 @@
                 document.getElementById('med-table').innerHTML = '';
 
                 let date = element['date'];
-                let personal_notes = element['personal_notes'];
+                let patient_notes = element['patient_notes'];
                 let doctors_notes = element['doctor_diagnosis'];
                 let medications = element['medicines'];
 
-                console.log(date, personal_notes, doctors_notes, medications);
+                console.log(date, patient_notes, doctors_notes, medications);
 
-                document.getElementById('entry-personal-notes').innerHTML = personal_notes;
+                document.getElementById('entry-patient-notes').innerHTML = patient_notes;
                 document.getElementById('entry-doctor-diagnosis').innerHTML = doctors_notes;
                 document.getElementById('entry-date').innerHTML = date;
                 document.getElementById('entry-mode').innerHTML = element['mode'];
@@ -116,7 +134,7 @@
                 right_side_view.classList.remove('hidden');
                 left_side.classList.remove('mx-56')
                 left_side.classList.remove('col-span-2')
-                right_side_view.classList.add('h-screen');
+                // right_side_view.classList.add('h-screen');
 
                 medications.forEach(medication => {
                     let med_index = medications.indexOf(medication);
@@ -133,6 +151,7 @@
                         <td class="col-span-6 w-full p-1" id="med-instructions">${med_instructions}</td>
                     `;
                 })
+
             })
         });
 
@@ -155,7 +174,7 @@
             // right_side.classList.remove('translate-x-0');
             left_side.classList.add('mx-56');
             left_side.classList.add('col-span-2')
-            left_side.classList.add('h-screen');
+            // left_side.classList.add('h-screen');
         });
 
 

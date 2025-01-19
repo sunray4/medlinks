@@ -1,56 +1,63 @@
 {
     "patient_details": {
-        "age": 7,
-        "sex": "male"
+        "age": 17,
+        "sex": "not provided"
     },
     "conversation_history": [
         {
             "role": "user",
-            "content": "I have a headache."
+            "content": "hi"
         },
         {
             "role": "assistant",
-            "content": "How long have you been experiencing these symptoms?"
+            "content": "Can you please tell me about the symptoms you are experiencing?"
         },
         {
             "role": "user",
-            "content": "For a few days."
+            "content": "heacahe"
         },
         {
             "role": "assistant",
-            "content": "Are you having any pain or discomfort associated with these symptoms?"
+            "content": "How long have you been experiencing this headache?"
         },
         {
             "role": "user",
-            "content": "Yes, it hurts when I look up."
+            "content": "3 days"
         },
         {
             "role": "assistant",
-            "content": "Have you noticed any changes in your appetite or energy levels recently?"
+            "content": "Can you describe the type of headache you are having? Is it dull, sharp, throbbing, or something else?"
         },
         {
             "role": "user",
-            "content": "I feel tired and haven't been eating well."
+            "content": "dull"
         },
         {
             "role": "assistant",
-            "content": "Are there any other symptoms, such as fever, cough, or rash, that you are experiencing?"
+            "content": "Do you have any other symptoms accompanying the headache, such as nausea, sensitivity to light, or changes in vision?"
         },
         {
             "role": "user",
-            "content": "No, just the headache."
+            "content": "visn change"
+        },
+        {
+            "role": "assistant",
+            "content": "Can you explain what changes in your vision you are experiencing? Are you seeing blurry areas, flashes of light, or anything else?"
+        },
+        {
+            "role": "user",
+            "content": "blurry"
         }
     ],
     "possible_next_steps": [
-        "Monitor the headache and any additional symptoms.",
-        "Encourage hydration and regular meals.",
-        "Consider evaluating sleep patterns and rest.",
-        "If the headache persists or worsens, consult a healthcare professional."
+        "Monitor the headache and the changes in vision.",
+        "Encourage rest and maintaining hydration.",
+        "Consider advising over-the-counter pain relief, if appropriate.",
+        "If symptoms worsen or new symptoms develop, it's important to seek medical attention sooner."
     ],
     "summary": [
-        "The patient is experiencing a headache for a few days.",
-        "The headache worsens with certain movements, particularly looking up.",
-        "The patient reports feeling tired and not eating well.",
-        "No additional symptoms like fever or cough have been noted."
+        "The patient has been experiencing a dull headache for 3 days.",
+        "The headache is accompanied by changes in vision, specifically blurriness.",
+        "There are no additional symptoms mentioned, such as nausea or sensitivity to light."
     ]
 }

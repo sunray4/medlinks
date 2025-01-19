@@ -67,20 +67,38 @@
         
         console.log(cur, max)
 
-        if (cur == max && typeof data === 'object') {
+        if (cur >= max && typeof data === 'object') {
             let content = formatJson(data);
+            console.log(content)
             container.innerHTML += `
-            <textarea id="summary" class="rounded-2xl text-black bg-white p-2 mb-2 inline-block" styles="width: 100%;">
+            <p id="summary" class="rounded-2xl text-black bg-white p-2 mb-2 inline-block" styles="width: 100%;">
                 ${content}
-            </textarea>`
+            </p>`
             ;
+            // scrollToBottom();
+            container.innerHTML += `<button onclick="postLog()" id="postbtn">Post</button>`;
             scrollToBottom();
-            socket.emit('final_data', formatJson(data));
+            container.scrollTop = container.scrollHeight;
+
         } else {
-            chat.innerHTML += `<div  id="assistant_message" class="rounded-2xl text-black bg-white p-2 mb-2 max-w-2xl inline-block">${data}</div><br><br>`;
-            scrollToBottom();
+            if (typeof data != 'object') {
+                chat.innerHTML += `<div  id="assistant_message" class="rounded-2xl text-black bg-white p-2 mb-2 max-w-2xl inline-block">${data}</div><br><br>`;
+                scrollToBottom();
+            }
         }
     });
+
+    socket.on('final_data', function(data) {
+        if (data === 'return_medlog') {
+            window.location = '/';
+        }
+    });
+
+    function postLog() {
+        content = document.getElementById('summary').value;
+
+        socket.emit('final_data', content);
+    }
 
     function formatJson(json) {
         let formattedText = ""
