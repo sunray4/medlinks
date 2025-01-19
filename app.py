@@ -60,6 +60,7 @@ def register():
         users.insert_one({'user_id': doctor_id, 'email': email, 'password': hashed_password, 'fullname': fullname, 'unread_message_list': [], 'patient_list': [], 'events': [], 'type': type})
         session['doctor_id'] = doctor_id
         session['type'] = type
+        session['user_id'] = doctor_id
         
         flash('Successfully created account, please log in.', 'success')
         return redirect(url_for('home'))
@@ -83,6 +84,7 @@ def login():
             session['email'] = email
             session['doctor_id'] = user['user_id']
             session['type'] = user['type']
+            session['user_id'] = user['user_id']
             return redirect(url_for('home'))
         else:
             flash('Invalid email or password. Please try again', 'error')
@@ -188,7 +190,7 @@ def handle_user_message(message):
 @app.route('/d-new-logs/')
 def new_logs():
     if session['type'] == 'doctor':
-        return render_template("d_new_logs.html")
+        return render_template("d_new_logs.html", doctor_id=session['doctor_id'])
     elif session['type'] == 'patient':
         return jsonify({'error': 'Unauthorized'}), 401
 
@@ -204,11 +206,12 @@ def patient_list():
 
 @app.route('/redirect-doctor-to-patient-log/<doctor_id>', methods=['POST'])
 def redirect_doctor_to_patient_log(doctor_id, patient_id, entry_id):
-    return render_template(" .html", patient_id=patient_id, entry_id=entry_id)
+    return render_template("d_patient_med_log.html", patient_id=patient_id, entry_id=entry_id)
 
 @app.route('/list_patients', methods=['GET'])
 def get_patients():
-    users_list = users.find()
+    patient_list = users.find_one({'user_id': session['doctor_id']})['patient_list']
+    users_list = users.find({'user_id': {'$in': patient_list}})
     email_list = []
     name_list = []
     dob_list = []
@@ -279,7 +282,7 @@ def return_docname():
             doctor_id = user['doctor_id']
             doctor_name = users.find_one({'user_id': doctor_id})['fullname']
 
-            return jsonify({'name': doctor_name})
+            return jsonify({'name': doctor_name}), 200
 
 @app.route('/create_event', methods=['POST'])
 def create_event():
@@ -301,6 +304,8 @@ def create_event():
                 print(session_key)
                 events_session = events.find({ "patient_id": session_key})
                 patient_email = user['email']
+                doctor_name = users.find_one({'user_id': doctor_id})['fullname']
+                doctor_email = users.find_one({'user_id': doctor_id})['email']
                 
                 patient_event_email_content = f'''
                 Hi {patient_name}!
@@ -311,15 +316,18 @@ def create_event():
                 Your friends at Medlinks
                 '''
 
-                yag.send(patient_email, 'Medlinks', patient_event_email_content)
+                yag.send(patient_email, 'Medlinks Appointment', patient_event_email_content)
 
                 doctor_event_email_content = f'''
-                
-                
-                
-                Best wishes,
-                Your friends at Medlinks
+                Hi {doctor_name},
+
+                An appointment with {patient_name} has been booked for {date} at {time}.
+
+                Best regards,
+                Medlinks
                 '''
+
+                yag.send(doctor_email, 'Medlinks Appointment', doctor_event_email_content)
 
                 return render_template("p_calendar.html", events = events_session)
         else: 
@@ -339,6 +347,15 @@ def d_calendar():
             return render_template('d_calendar.html', events = events_session)
     else:
         return redirect(url_for('login'))
+    
+@app.route('/d_delete_from_doctor/<email>', methods=['GET', 'POST'])
+def d_delete_from_doctor(email):
+    user = users.find_one({'email': email})
+    doctor = users.find_one({'user_id': session['doctor_id']})
+    doctor['patient_list'].remove(user['user_id'])
+    users.update_one({'user_id': session['doctor_id']}, {'$set': {'patient_list': doctor['patient_list']}})
+    
+    return redirect(url_for('home'))
 
 @app.route('/p_calendar')
 def p_calendar():

@@ -12,11 +12,14 @@
     <div id="calendar"></div>
 
     <script>
-        const response = await fetch('/getdocname', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-    });
-
+        const response = fetch('/getdocname', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        }).then(response => response.json())
+            .then(data => {
+                const title = document.getElementById('appointmentTitle');
+                title.textContent += data.name;
+            });
         const unavailable_title = 'Unavailable';
 
         let calendarEl = document.getElementById('calendar');
@@ -40,7 +43,7 @@
         calendar.render();
     </script>
 
-    <h1>Schedule appointment with {doctor_name}</h1>
+    <h1 id="appointmentTitle">Schedule appointment with </h1>
 
     <form action="/create_event" method="post">
         <label for="date">Date (yyyy-mm-dd):</label>

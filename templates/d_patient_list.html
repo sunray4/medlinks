@@ -39,7 +39,6 @@
                     </td>
                     <td class="patient-delete text-right p-2">
                         <ul id="deleteList"></ul>
-
                     </td>
                 </tr>
                 {% endfor %}
@@ -223,6 +222,9 @@
 
                         // Add the SVG to the button's innerHTML
                         deleteButton.innerHTML = svg_content;
+                        deleteButton.onclick = function() {
+                            window.location = `/d_delete_from_doctor/${email}`;
+                        };
 
                         // Append the button to the list item
                         deleteLi.appendChild(deleteButton);

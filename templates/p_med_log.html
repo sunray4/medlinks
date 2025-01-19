@@ -1,16 +1,223 @@
 {% extends 'p_content.html' %}
 
 
+{% block p_content%}
+
+<div id="page-container" class="grid grid-cols-2 gap-x-2">
+    <!-- Left Side Content -->
+    <div id="left-side" class="m-10 mx-56 col-span-2 h-screen">
+        <div class="flex justify-between mb-10 items-center">
+            <p class="text-3xl font-bold">{{ patient['fullname'] }}'s Med Log</p>
+            <button id="add-patient-btn" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
+
+        </div>
+        <div class="w-full">
+            <!-- iterate through all med logs of that patient  -->
+            {% for i in medlogs %}
+            <button id="log-entry-open_{{ medlogs.index(i) + 1 }}" class="w-full">
+                <div id="log-entry"
+                    class="w-full bg-[#BDCAD6] rounded-lg focus:border focus:border-[#FF6969] p-7 mb-4 px-10">
+                    <span class="flex items-center justify-between  pb-2">
+                        <p>{{ i['date'] }}</p>
+                        <div class="border border-white rounded-3xl p-1 px-2">{{ i['mode'] }}</div>
+                    </span>
+                    <hr class="bg-[#868E96] mb-2">
+                    <p class="italic text-[#3E4B52] text-left">{{ i['doctor_diagnosis'] }}</p>
+                </div>
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Right Side Content -->
+
+    <!-- right side view  -->
+    <div id="right-side-view" class="hidden">
+        <div class="p-10 bg-[#E1E1E1]">
+            <button id="close-svg-view" class="w-full mb-5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
+                    viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                    <path
+                        d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z" />
+                </svg>
+            </button>
+            <div class="p-3">
+                <h1 class="font-bold text-2xl mb-5">Med Log Entry</h1>
+                <span class="flex items-center space-x-4 mb-5 justify-between">
+                    <div>
+                        <p id="entry-date"></p>
+                    </div>
+                    <div class="p-2 border border-gray-900 rounded-2xl">
+                        <p id="entry-mode"></p>
+                    </div>
+                </span>
+                <p class="font-semibold text-large mr-4">Personal Notes</p>
+                <p id="entry-personal-notes" class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96] min-h-10"
+                    min-h-5></p><br><br>
 
 
-{% block p_content %} 
+                <p class="font-semibold text-large mr-4">Doctor's diagnosis</p>
+                <p id="entry-doctor-diagnosis"
+                    class="p-1 w-full rounded-lg bg-[#ffffff] border border-[#868E96] min-h-10"></p><br><br>
+
+                <p class="font-semibold text-large mr-4">Medications</p>
+                <div class=" bg-[#ffffff] p-4 rounded-lg">
+
+                    <table class="w-full table-auto" id="med-table">
+                        <tr class="grid grid-cols-12 gap-x-4 border-b border-[#868E96]">
+                            <th class="py-3 text-left col-span-3">Medication</th>
+                            <th class="py-3 text-left col-span-2">Dosage</th>
+                            <th class="py-3 text-left col-span-6">Instructions</th>
+                            <th class="py-3 text-left col-span-1"> </th>
+                        </tr>
+                        <!-- for loop iteration through all patients  -->
+                        <tr class="grid grid-cols-12 gap-x-4 mt-4">
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
 
 
-{% endblock %}
+    </div>
+    {% endblock %}
 
 
-{% block script %}
 
-    
-    
-{% endblock %}
+    {% block script %}
+    <script>
+
+        const left_side = document.getElementById('left-side');
+
+        const right_side_view = document.getElementById('right-side-view');
+        const close_svg_view = document.getElementById('close-svg-view');
+
+        const med_logs = {{ medlogs | tojson }};
+
+        med_logs.forEach(element => {
+            let index = med_logs.indexOf(element) + 1;
+
+            document.getElementById(`log-entry-open_${index}`).addEventListener('click', () => {
+                document.getElementById('med-table').innerHTML = '';
+
+                let date = element['date'];
+                let personal_notes = element['personal_notes'];
+                let doctors_notes = element['doctor_diagnosis'];
+                let medications = element['medicines'];
+
+                console.log(date, personal_notes, doctors_notes, medications);
+
+                document.getElementById('entry-personal-notes').innerHTML = personal_notes;
+                document.getElementById('entry-doctor-diagnosis').innerHTML = doctors_notes;
+                document.getElementById('entry-date').innerHTML = date;
+                document.getElementById('entry-mode').innerHTML = element['mode'];
+
+                right_side_view.classList.remove('hidden');
+                left_side.classList.remove('mx-56')
+                left_side.classList.remove('col-span-2')
+                right_side_view.classList.add('h-screen');
+
+                medications.forEach(medication => {
+                    let med_index = medications.indexOf(medication);
+                    let med_name = medication['med_name'];
+                    let med_dosage = medication['med_dosage'];
+                    let med_instructions = medication['med_instructions'];
+
+                    let med_table = document.getElementById('med-table');
+                    let new_row = med_table.insertRow(-1);
+                    new_row.classList.add('grid', 'grid-cols-12', 'gap-x-4', 'mt-4');
+                    new_row.innerHTML = `
+                        <td class="col-span-3 w-full p-1" id="med-name">${med_name}</td>
+                        <td class="col-span-2 w-full p-1" id="med-dosage">${med_dosage}</td>
+                        <td class="col-span-6 w-full p-1" id="med-instructions">${med_instructions}</td>
+                    `;
+                })
+            })
+        });
+
+
+        // const log_entry_open = document.getElementById('log-entry-open')
+        // log_entry_open.addEventListener('click', () => {
+        //     console.log(right_side_view.className)
+        //     right_side_view.classList.remove('hidden');
+
+        //     left_side.classList.remove('mx-56');
+        //     // left_side.classList.remove('h-screen');
+        //     left_side.classList.remove('col-span-2');
+        //     right_side_view.classList.add('h-screen');
+
+        // });
+        close_svg_view.addEventListener('click', () => {
+            // page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
+            right_side_view.classList.add('hidden');
+            // right_side.classList.add('translate-x-full');
+            // right_side.classList.remove('translate-x-0');
+            left_side.classList.add('mx-56');
+            left_side.classList.add('col-span-2')
+            left_side.classList.add('h-screen');
+        });
+
+        // Event listener to open the pop-up
+        add_patient_btn.addEventListener('click', () => {
+            right_side_add.classList.remove('hidden');
+
+            left_side.classList.remove('mx-56');
+            // left_side.classList.remove('h-screen');
+            left_side.classList.remove('col-span-2');
+            right_side_add.classList.add('h-screen');
+        });
+
+        // Event listener to close the pop-up
+        add_log.addEventListener('click', () => {
+            // page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
+            right_side_add.classList.add('hidden');
+            // right_side.classList.add('translate-x-full');
+            // right_side.classList.remove('translate-x-0');
+            left_side.classList.add('mx-56');
+            left_side.classList.add('col-span-2')
+            // left_side.classList.add('h-screen');
+        });
+        close_svg_add.addEventListener('click', () => {
+            // page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
+            right_side_add.classList.add('hidden');
+            // right_side.classList.add('translate-x-full');
+            // right_side.classList.remove('translate-x-0');
+            left_side.classList.add('mx-56');
+            left_side.classList.add('col-span-2')
+            // left_side.classList.add('h-screen');
+        });
+
+
+        const medform = document.getElementById('medlog_form');
+        const add_med = document.getElementById('add_med');
+        const med_table = document.getElementById('med_table');
+        add_med.addEventListener('click', (event) => {
+            // Prevent the form from submitting
+            event.preventDefault();
+
+            const before_rowCount = med_table.querySelectorAll('tr').length;
+
+            // Add a new row to the table
+            const new_row = `< tr class="grid grid-cols-12 gap-x-4 mt-4" data - rows="3" >
+                <td class="col-span-3"><input type="text" class="w-full p-1" name="med_name_${before_rowCount}" placeholder="Medication..." /></td>
+                <td class="col-span-2"><input type="text" class="w-full p-1" name="med_dosage_${before_rowCount}" placeholder="Dosage..." /></td>
+                <td class="col-span-6"><textarea class="w-full p-1" name="med_instructions_${before_rowCount}" placeholder="Instructions..."></textarea></td>
+                <td class="col-span-1 p-1"><div class="text-right">
+                    <button class="p-1"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
+                    </button>
+                </td>
+            </tr >`;
+
+            // Append the new row to the table
+            med_table.insertAdjacentHTML('beforeend', new_row);
+
+            // Update the row count
+            const rowCount = med_table.querySelectorAll('tr').length - 1;
+            medform.action = '/d_patient_med_log/{{ patient["email"]}}?rows=' + rowCount;
+        });
+    </script>
+
+
+    {% endblock %}

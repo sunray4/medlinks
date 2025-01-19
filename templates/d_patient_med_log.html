@@ -14,17 +14,17 @@
         <div class="w-full">
             <!-- iterate through all med logs of that patient  -->
             {% for i in medlogs %}
-                <button id="log-entry-open_{{ medlogs.index(i) + 1 }}" class="w-full">
-                    <div id="log-entry"
-                        class="w-full bg-[#BDCAD6] rounded-lg focus:border focus:border-[#FF6969] p-7 mb-4 px-10">
-                        <span class="flex items-center justify-between  pb-2">
-                            <p>{{ i['date'] }}</p>
-                            <div class="border border-white rounded-3xl p-1 px-2">{{ i['mode'] }}</div>
-                        </span>
-                        <hr class="bg-[#868E96] mb-2">
-                        <p class="italic text-[#3E4B52] text-left">{{ i['doctor_diagnosis'] }}</p>
-                    </div>
-                </button>
+            <button id="log-entry-open_{{ medlogs.index(i) + 1 }}" class="w-full">
+                <div id="log-entry"
+                    class="w-full bg-[#BDCAD6] rounded-lg focus:border focus:border-[#FF6969] p-7 mb-4 px-10">
+                    <span class="flex items-center justify-between  pb-2">
+                        <p>{{ i['date'] }}</p>
+                        <div class="border border-white rounded-3xl p-1 px-2">{{ i['mode'] }}</div>
+                    </span>
+                    <hr class="bg-[#868E96] mb-2">
+                    <p class="italic text-[#3E4B52] text-left">{{ i['doctor_diagnosis'] }}</p>
+                </div>
+            </button>
             {% endfor %}
         </div>
     </div>
@@ -163,20 +163,6 @@
                         </tr>
                         <!-- for loop iteration through all patients  -->
                         <tr class="grid grid-cols-12 gap-x-4 mt-4">
-
-                            <td class="col-span-3 w-full p-1" id="med-name"></td>
-                            <td class="col-span-2 w-full p-1" id="med-dosage"></td>
-                            <td class="col-span-6 w-full p-1" id="med-instructions"></td>
-                            <td class="col-span-1  p-1">
-                                <div class="text-right">
-                                    <button id="view-log" class="">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
-                                            viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                                            <path
-                                                d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z" />
-                                        </svg>
-                                    </button>
-                            </td>
                         </tr>
 
                     </table>
@@ -207,12 +193,40 @@
             let index = med_logs.indexOf(element) + 1;
 
             document.getElementById(`log-entry-open_${index}`).addEventListener('click', () => {
+                document.getElementById('med-table').innerHTML = '';
+
                 let date = element['date'];
                 let personal_notes = element['personal_notes'];
                 let doctors_notes = element['doctor_diagnosis'];
                 let medications = element['medicines'];
 
                 console.log(date, personal_notes, doctors_notes, medications);
+
+                document.getElementById('entry-personal-notes').innerHTML = personal_notes;
+                document.getElementById('entry-doctor-diagnosis').innerHTML = doctors_notes;
+                document.getElementById('entry-date').innerHTML = date;
+                document.getElementById('entry-mode').innerHTML = element['mode'];
+
+                right_side_view.classList.remove('hidden');
+                left_side.classList.remove('mx-56')
+                left_side.classList.remove('col-span-2')
+                right_side_view.classList.add('h-screen');
+
+                medications.forEach(medication => {
+                    let med_index = medications.indexOf(medication);
+                    let med_name = medication['med_name'];
+                    let med_dosage = medication['med_dosage'];
+                    let med_instructions = medication['med_instructions'];
+
+                    let med_table = document.getElementById('med-table');
+                    let new_row = med_table.insertRow(-1);
+                    new_row.classList.add('grid', 'grid-cols-12', 'gap-x-4', 'mt-4');
+                    new_row.innerHTML = `
+                        <td class="col-span-3 w-full p-1" id="med-name">${med_name}</td>
+                        <td class="col-span-2 w-full p-1" id="med-dosage">${med_dosage}</td>
+                        <td class="col-span-6 w-full p-1" id="med-instructions">${med_instructions}</td>
+                    `;
+                })
             })
         });
 
@@ -279,7 +293,7 @@
             const before_rowCount = med_table.querySelectorAll('tr').length;
 
             // Add a new row to the table
-            const new_row = `<tr class="grid grid-cols-12 gap-x-4 mt-4" data-rows="3">
+            const new_row = `< tr class="grid grid-cols-12 gap-x-4 mt-4" data - rows="3" >
                 <td class="col-span-3"><input type="text" class="w-full p-1" name="med_name_${before_rowCount}" placeholder="Medication..." /></td>
                 <td class="col-span-2"><input type="text" class="w-full p-1" name="med_dosage_${before_rowCount}" placeholder="Dosage..." /></td>
                 <td class="col-span-6"><textarea class="w-full p-1" name="med_instructions_${before_rowCount}" placeholder="Instructions..."></textarea></td>
@@ -288,7 +302,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M135.2 17.7C140.6 6.8 151.7 0 163.8 0L284.2 0c12.1 0 23.2 6.8 28.6 17.7L320 32l96 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 96C14.3 96 0 81.7 0 64S14.3 32 32 32l96 0 7.2-14.3zM32 128l384 0 0 320c0 35.3-28.7 64-64 64L96 512c-35.3 0-64-28.7-64-64l0-320zm96 64c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16zm96 0c-8.8 0-16 7.2-16 16l0 224c0 8.8 7.2 16 16 16s16-7.2 16-16l0-224c0-8.8-7.2-16-16-16z"/></svg>
                     </button>
                 </td>
-            </tr>`;
+            </tr >`;
 
             // Append the new row to the table
             med_table.insertAdjacentHTML('beforeend', new_row);

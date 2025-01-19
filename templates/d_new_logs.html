@@ -16,14 +16,12 @@
             <td>Name</td>
             <td>Date sent</td>
             <td class="text-right p-2">
-                <form action="{{ url_for('redirect_doctor_to_patient_log') , doctor_id={{doctor_id}}}}" method="POST">
+                <form action="{{ url_for('redirect_doctor_to_patient_log') }}, doctor_id={{ doctor_id }}" method="POST">
                     <button id="view-log" class="bg-[#63A3B0] rounded-lg text-white"> 
-                        <!-- -{{loop.index}} -->
                         View Log
                     </button>
                 </form>
             </tr>
-            <!-- </fo -->
 
         </tr>
       </table>
