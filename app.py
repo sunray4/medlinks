@@ -157,7 +157,7 @@ def home():
     else:
         return redirect(url_for('login'))
     
-@app.route('/p-post', methods=['GET', 'POST'])
+@app.route('/p-post/', methods=['GET', 'POST'])
 def post():
     global bot
     bot = chatgpt.SymptomAnalyzer()
@@ -198,7 +198,8 @@ def new_logs():
 
 @app.route('/d-patient-list/')
 def patient_list():
-    return render_template("d_patient_list.html")
+    patients = {}
+    return render_template("d_patient_list.html", patients=patients)
 
 @app.route('/redirect-doctor-to-patient-log/<doctor_id>', methods=['POST'])
 def redirect_doctor_to_patient_log(doctor_id, patient_id, entry_id):
@@ -226,14 +227,20 @@ def patient_med_log(email):
         if not patient:
             return jsonify({'error': 'Patient not found'}), 404
     elif request.method == 'POST':
-        date = request.form['entry_date']
-        mode = request.form['entry_mode']
-        personal_notes = request.form['entry_personal_notes']
-        doctor_diagnosis = request.form['entry_doctor_diagnosis']
-        med_name = request.form['med_name']
-        med_dosage = request.form['med_dosage']
-        med_instructions = request.form['med_instructions']
-        inperson_meeting = request.form['inperson_meeting']
+        rows = request.args.get('rows')
+        date = request.form.get('entry_date', None)
+        mode = request.form.get('entry_mode', None)
+        personal_notes = request.form.get('entry_personal_notes', None)
+        doctor_diagnosis = request.form.get('entry_doctor_diagnosis', None)
+        med_name = request.form.get('med_name', None)
+        med_dosage = request.form.get('med_dosage', None)
+        med_instructions = request.form.get('med_instructions', None)
+        inperson_meeting = request.form.get('inperson_meeting', None)
+        
+        if not mode:
+            return jsonify({'error': 'Entry mode is required'}), 400
+        
+        print(rows)
         
         patient = users.find_one({'email': email})
         medlog_id = patient['medlog_id']
@@ -269,9 +276,12 @@ def create_event():
         if "email" in session:
             if session['type'] == 'patient':
                 user = users.find_one({'email': session['email']})
-                session_key = user['uuid']
+                session_key = user['user_id']
                 doctor_id = user['doctor_id']
-                events.insert_one({'doctor_id': doctor_id, 'patient_id': patie})
+                events.insert_one({'doctor_id': doctor_id, 'patient_id': session_key, 'date': date, 'time': time})
+                return render_template("p_calendar.html")
+        else: 
+            return redirect(url_for('login'))
                 
 
 @app.route('/display_events', methods=['GET'])
@@ -279,12 +289,12 @@ def get_events():
     if "email" in session:
         if session['type'] == 'doctor':
             user = users.find_one({'email': session['email']})
-            session_key = user['uuid']
+            session_key = user['user_id']
             events_session = events.find({ "doctor_id": session_key})
             return jsonify({'events': events_session}), 200
         elif session['type'] == 'patient':
             user = users.find_one({'email': session['email']})
-            session_key = user['uuid']
+            session_key = user['user_id']
             events_session = events.find({ "patient_id": session_key})
             return jsonify({'events': events_session}), 200
     else:

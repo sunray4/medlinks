@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+{%  %}
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -29,13 +30,13 @@
         .json-string {
             color: olive;
         }
-    </style>
-</head>
-<body>
-    <div id="chat"></div>
+    </style> -->
+{% block content %}
+    <div id="chat" class="bg-[#BDCAD6] rounded-lg p-10 m-10 mx-20"></div>
     <input type="text" id="message" placeholder="Type your message here...">
     <button id="send">Send</button>
 
+    {% block script %}
     <script>
         const socket = io();
 
@@ -75,5 +76,5 @@
                 });
         }
     </script>
-</body>
-</html>
+{% endblock %}
+
