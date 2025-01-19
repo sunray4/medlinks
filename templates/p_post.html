@@ -65,18 +65,21 @@
     document.getElementById('send').onclick = function() {
         const message = document.getElementById('message').value;
         const chat_bot = document.getElementById('chat');
-        const message_container_outer = document.createElement('div');
-        const message_container_inner = document.createElement('div');
-        const new_message = document.createElement('p');
-        new_message.innerText = message;
-        new_message.id = 'patient_message';
-        new_message.className = "text-white";
-        message_container_outer.className = "flex justify-end"
-        message_container_inner.className = "rounded-2xl bg-[#63A3B0] p-2 mb-2 max-w-2xl";
-        message_container_inner.appendChild(new_message);
-        message_container_outer.appendChild(message_container_inner);
+        // const message_container_outer = document.createElement('div');
+        // const message_container_inner = document.createElement('div');
+        // const new_message = document.createElement('p');
+        // new_message.innerText = message;
+        // new_message.id = 'patient_message';
+        // new_message.className = "text-white";
+        // message_container_outer.className = "flex justify-end"
+        // message_container_inner.className = "rounded-2xl bg-[#63A3B0] p-2 mb-2 max-w-2xl";
+        // message_container_inner.appendChild(new_message);
+        // message_container_outer.appendChild(message_container_inner);
         chat_bot.appendChild(message_container_outer);
-        chat.innerHTML += `<div  id="assistant_message" class="rounded-2xl bg-white p-2 mb-2 max-w-2xl inline-block">${formatJson(data)}</div>`;
+        chat.innerHTML += `<div class="flex justify-end">
+            <div class="rounded-2xl bg-white p-2 mb-2 max-w-2xl inline-block">
+                <p id='patient_message' class="text-white">${message}<p>
+                </div></div>`;
         socket.emit('user_message', message);
         document.getElementById('message').value = '';
     };

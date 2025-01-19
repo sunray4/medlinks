@@ -116,7 +116,8 @@ def home():
                 patients = get_patients()
                 return render_template("d_patient_list.html", patients=patients)
             elif session['type'] == 'patient':
-                return render_template("p_med_log.html")
+                patient = users.find_one({'email': session['email']})
+                return render_template("p_med_log.html", patient=patient, medlogs=medlogs.find_one({'medlog_id': patient['medlog_id']})['entries'])
         elif request.method == 'POST':
             patient_name = request.form['patient_fullname']
             patient_dob = request.form['patient_dob']
@@ -203,6 +204,14 @@ def new_logs():
 def patient_list():
     patients = get_patients()
     return render_template("d_patient_list.html", patients=patients)
+
+@app.route('/p_med_logs/')
+def patient_med_logs():
+    if session['type'] == 'patient':
+        patient = users.find_one({'email': session['email']})
+        return render_template("p_med_log.html", patient=patient, medlogs=medlogs.find_one({'medlog_id': patient['medlog_id']})['entries'])
+    else:
+        return redirect(url_for('home'))
 
 @app.route('/redirect-doctor-to-patient-log/<doctor_id>', methods=['POST'])
 def redirect_doctor_to_patient_log(doctor_id, patient_id, entry_id):

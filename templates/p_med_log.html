@@ -8,7 +8,7 @@
     <div id="left-side" class="m-10 mx-56 col-span-2 h-screen">
         <div class="flex justify-between mb-10 items-center">
             <p class="text-3xl font-bold">{{ patient['fullname'] }}'s Med Log</p>
-            <button id="add-patient-btn" class="p-2 rounded-lg bg-[#DFC623] text-white">Add Log</button>
+
 
         </div>
         <div class="w-full">
@@ -158,35 +158,6 @@
             left_side.classList.add('h-screen');
         });
 
-        // Event listener to open the pop-up
-        add_patient_btn.addEventListener('click', () => {
-            right_side_add.classList.remove('hidden');
-
-            left_side.classList.remove('mx-56');
-            // left_side.classList.remove('h-screen');
-            left_side.classList.remove('col-span-2');
-            right_side_add.classList.add('h-screen');
-        });
-
-        // Event listener to close the pop-up
-        add_log.addEventListener('click', () => {
-            // page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
-            right_side_add.classList.add('hidden');
-            // right_side.classList.add('translate-x-full');
-            // right_side.classList.remove('translate-x-0');
-            left_side.classList.add('mx-56');
-            left_side.classList.add('col-span-2')
-            // left_side.classList.add('h-screen');
-        });
-        close_svg_add.addEventListener('click', () => {
-            // page_container.classList.remove('grid', 'grid-cols-2', 'gap-4')
-            right_side_add.classList.add('hidden');
-            // right_side.classList.add('translate-x-full');
-            // right_side.classList.remove('translate-x-0');
-            left_side.classList.add('mx-56');
-            left_side.classList.add('col-span-2')
-            // left_side.classList.add('h-screen');
-        });
 
 
         const medform = document.getElementById('medlog_form');
