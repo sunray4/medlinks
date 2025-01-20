@@ -146,7 +146,6 @@ def home():
             users.insert_one({'user_id': patient_id, 'medlog_id': medlog_id, 'fullname': patient_name, 'email': patient_email, 'patient_sex': patient_sex, 'password': generate_password_hash(patient_password), 'type': type, 'doctor_id': session['doctor_id'], 'dob': patient_dob, 'bc_service_card_id': patient_service_id, 'address': patient_address, 'phone_number': patient_phone_num, 'height': patient_height, 'weight': patient_weight, 'allergies': patient_allergies})
             medlogs.insert_one({'medlog_id': medlog_id, 'patient_id': patient_id, 'entries': [], 'doctor_id': session['doctor_id']})
             
-            
             # send patient email w/ login info (email + password)
             email_content = f'''
             Hi {patient_name}!
@@ -196,7 +195,7 @@ def handle_user_message(message):
 def handle_final_data(data):
     print(data)
     user = users.find_one({'email': session['email']})
-    today_date = datetime.today().strftime('%Y-%m-%d')
+    today_date = datetime.today().strftime('%Y-%m-%d %H-%M-%S')
 
     patient_notes = data.replace('\n', '<br>')
     personal_notes = ''
@@ -476,4 +475,4 @@ if __name__ == "__main__":
     # app.config['DEBUG'] = True
     # app.config['MONGO_URI'] = config['PROD']['DB_URI']
 
-    socketio.run(app, debug=True, port=5500)
+    socketio.run(app, debug=True, port=5500, host='0.0.0.0')
