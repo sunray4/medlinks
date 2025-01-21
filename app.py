@@ -475,4 +475,4 @@ if __name__ == "__main__":
     # app.config['DEBUG'] = True
     # app.config['MONGO_URI'] = config['PROD']['DB_URI']
 
-    socketio.run(app, debug=True, port=5500, host='0.0.0.0')
+    socketio.run(app, debug=True, port=int(os.environ.get('PORT', 10000)), host='0.0.0.0')
