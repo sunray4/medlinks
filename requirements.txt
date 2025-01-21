@@ -7,6 +7,3 @@ openai
 werkzeug
 datetime
 flask_pymongo
-firebase_admin
-jinja2
-email
