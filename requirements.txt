@@ -7,3 +7,4 @@ openai
 werkzeug
 datetime
 flask_pymongo
+gunicorn
