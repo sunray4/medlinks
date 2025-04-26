@@ -1,5 +1,5 @@
 # Medlinks
-![med logs page](assets/Image.png)
+![med logs page](assets/log.png)
 
 ### Inspiration 🧠
 The concept for creating an app that enables users to list their symptoms and allows doctors to quickly book appointments was inspired by the need for more accessible and patient-focused healthcare solutions. In a time where speed and accessibility are essential, individuals often delay seeking medical attention due to the inconvenience of scheduling appointments or the inability to effectively communicate their health concerns. These delays add pressure to the healthcare system by increasing appointment backlogs, prolonging wait times, and overwhelming doctors with administrative tasks, ultimately reducing the system's efficiency and quality of care. 
